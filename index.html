@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AquoraX</title>
+
+<style>
+:root{
+  --bg:#02070d;
+  --panel:#06121d;
+  --panel2:#081827;
+  --blue:#00c8ff;
+  --blue2:#008cff;
+  --text:#ffffff;
+  --muted:#9fbcd3;
+  --line:rgba(0,170,255,.22);
+  --green:#63f7a3;
+  --amber:#ffd36a;
+  --danger:#ff6b6b;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:radial-gradient(circle at top, #062033 0%, var(--bg) 42%, #010409 100%);
+  color:var(--text);
+}
+
+/* WELCOME SCREEN */
+#welcomeScreen{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at top, #062033 0%, #02070d 48%, #010409 100%);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  z-index:999;
+  padding:24px;
+}
+
+.welcomeLogo{
+  width:82%;
+  max-width:390px;
+  margin-bottom:22px;
+  filter:drop-shadow(0 0 16px rgba(0,200,255,0.35));
+}
+
+#welcomeScreen h1{
+  margin:8px 0 8px;
+  font-size:28px;
+}
+
+#welcomeScreen p{
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.6;
+  max-width:340px;
+  margin:0 0 24px;
+}
+
+.primaryBtn{
+  width:100%;
+  max-width:320px;
+  background:linear-gradient(135deg, var(--blue2), var(--blue));
+  border:none;
+  padding:15px 18px;
+  border-radius:15px;
+  color:#00111f;
+  font-weight:bold;
+  font-size:16px;
+  box-shadow:0 0 18px rgba(0,200,255,0.25);
+}
+
+.secondaryBtn{
+  width:100%;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  padding:14px;
+  border-radius:15px;
+  color:white;
+  font-weight:bold;
+  font-size:15px;
+}
+
+.dangerBtn{
+  width:100%;
+  background:rgba(255,107,107,0.08);
+  border:1px solid rgba(255,107,107,0.25);
+  padding:14px;
+  border-radius:15px;
+  color:#ffd1d1;
+  font-weight:bold;
+  font-size:15px;
+}
+
+/* PAGES */
+.page{
+  display:none;
+  padding:20px;
+  padding-bottom:92px;
+  max-width:760px;
+  margin:0 auto;
+}
+
+.page.active{
+  display:block;
+}
+
+.pageHeader{
+  margin-bottom:18px;
+}
+
+.pageHeader h1{
+  margin:0 0 7px;
+  font-size:28px;
+}
+
+.pageHeader p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+/* CARDS */
+.card{
+  background:linear-gradient(145deg, rgba(8,24,39,0.96), rgba(4,12,22,0.96));
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:16px;
+  margin-bottom:15px;
+  box-shadow:0 0 18px rgba(0,200,255,0.08);
+}
+
+.card h2{
+  margin:0 0 12px;
+  font-size:18px;
+}
+
+.card p{
+  color:var(--muted);
+  line-height:1.5;
+  margin:0;
+}
+
+/* FORM */
+label{
+  display:block;
+  margin:0 0 6px;
+  color:#cbe5f7;
+  font-size:13px;
+  font-weight:bold;
+}
+
+input, select{
+  width:100%;
+  padding:13px;
+  margin-bottom:12px;
+  border-radius:14px;
+  border:1px solid rgba(0,170,255,.28);
+  background:#02070d;
+  color:white;
+  outline:none;
+  font-size:15px;
+}
+
+input:focus, select:focus{
+  border-color:rgba(0,200,255,.7);
+  box-shadow:0 0 12px rgba(0,200,255,.16);
+}
+
+.formGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.formGrid input{
+  margin-bottom:0;
+}
+
+/* HOME */
+.heroCard{
+  background:radial-gradient(circle at top right, rgba(0,200,255,.22), rgba(6,18,29,.94));
+}
+
+.simpleTile{
+  padding:16px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  margin-top:12px;
+}
+
+.simpleTile strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.simpleTile span{
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* CYCLE */
+.progressTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.progressTop h2{
+  margin:0;
+}
+
+#cycleProgressText{
+  color:var(--blue);
+  font-weight:bold;
+}
+
+.progressBar{
+  height:12px;
+  background:rgba(255,255,255,0.08);
+  border-radius:999px;
+  overflow:hidden;
+  margin:13px 0 16px;
+}
+
+#cycleProgressFill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg, var(--blue2), var(--blue));
+  border-radius:999px;
+  transition:width .25s ease;
+}
+
+.statusBox{
+  background:linear-gradient(145deg, rgba(0,140,255,.18), rgba(4,12,22,.96));
+}
+
+#cycleStatus{
+  color:white;
+}
+
+#cycleAdvice{
+  color:#b7cee2;
+}
+
+.stageList{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+}
+
+.stageItem{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#b7cee2;
+  font-size:14px;
+}
+
+.stageDot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:rgba(255,255,255,.14);
+  flex:none;
+}
+
+.stageItem.done{
+  color:white;
+}
+
+.stageItem.done .stageDot{
+  background:var(--blue);
+  box-shadow:0 0 8px rgba(0,200,255,.55);
+}
+
+/* GRAPH */
+.graphWrap{
+  width:100%;
+  overflow:hidden;
+  border-radius:16px;
+  background:#02070d;
+  border:1px solid rgba(0,170,255,.18);
+  padding:10px;
+}
+
+#cycleGraph{
+  width:100%;
+  height:230px;
+  display:block;
+}
+
+.graphLegend{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.legendItem{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:#cbe5f7;
+  font-size:13px;
+}
+
+.legendDot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+}
+
+.ammoniaDot{background:#63f7a3;}
+.nitriteDot{background:#00c8ff;}
+.nitrateDot{background:#ffd36a;}
+
+.historyList{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+
+.historyItem{
+  padding:12px;
+  border-radius:15px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.historyItem strong{
+  display:block;
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.historyItem span{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+/* BLUE SHARK PARTNERSHIP */
+.partnerCard{
+  border:1px solid rgba(0,200,255,.32);
+  background:
+    radial-gradient(circle at top, rgba(0,200,255,.18), transparent 34%),
+    linear-gradient(145deg, rgba(8,24,39,0.97), rgba(4,12,22,0.97));
+}
+
+.partnerLogoBox{
+  text-align:center;
+  padding:10px 0 14px;
+}
+
+.partnerLogo{
+  width:78%;
+  max-width:300px;
+  max-height:120px;
+  object-fit:contain;
+  filter:drop-shadow(0 0 14px rgba(0,200,255,0.35));
+}
+
+.partnerBadge{
+  display:inline-block;
+  margin:6px auto 0;
+  padding:7px 11px;
+  border-radius:999px;
+  border:1px solid rgba(0,200,255,.28);
+  color:#bfeeff;
+  font-size:12px;
+  background:rgba(0,200,255,.08);
+}
+
+.doseGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-top:12px;
+}
+
+.doseBox{
+  padding:14px;
+  border-radius:17px;
+  background:rgba(255,255,255,0.045);
+  border:1px solid rgba(255,255,255,0.09);
+}
+
+.doseBox strong{
+  display:block;
+  margin-bottom:6px;
+}
+
+.doseValue{
+  font-size:24px;
+  font-weight:bold;
+  color:var(--blue);
+  margin-bottom:4px;
+}
+
+.doseNote{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.fishStatus{
+  padding:14px;
+  border-radius:17px;
+  background:rgba(99,247,163,.08);
+  border:1px solid rgba(99,247,163,.22);
+  margin-top:12px;
+}
+
+.fishStatus strong{
+  display:block;
+  color:#d6ffe6;
+  margin-bottom:5px;
+}
+
+.fishStatus span{
+  color:#bde8cd;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.partnerLinks{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.partnerLinks a{
+  text-align:center;
+  text-decoration:none;
+  color:#00111f;
+  background:linear-gradient(135deg, var(--blue2), var(--blue));
+  padding:13px 10px;
+  border-radius:14px;
+  font-weight:bold;
+  font-size:14px;
+}
+
+.smallPrint{
+  color:#82a5bf !important;
+  font-size:12px;
+  margin-top:12px !important;
+}
+
+/* NAV */
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:68px;
+  background:rgba(2,7,13,.98);
+  border-top:1px solid rgba(0,170,255,.28);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:20;
+  backdrop-filter:blur(10px);
+}
+
+.nav button{
+  background:none;
+  border:none;
+  color:#7aaedb;
+  font-size:12px;
+  padding:8px 6px;
+}
+
+.nav button.active{
+  color:var(--blue);
+  font-weight:bold;
+}
+
+@media(max-width:430px){
+  .page{
+    padding:16px;
+    padding-bottom:88px;
+  }
+
+  .pageHeader h1{
+    font-size:25px;
+  }
+
+  .formGrid{
+    grid-template-columns:1fr;
+  }
+
+  .partnerLinks{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- WELCOME -->
+<div id="welcomeScreen">
+  <img src="aquorax-logo.png" class="welcomeLogo" alt="AquoraX Logo">
+  <h1>Welcome to AquoraX</h1>
+  <p>The home of aquarium keeping. Build, track, and perfect your aquarium.</p>
+  <button class="primaryBtn" onclick="enterApp()">Get Started</button>
+</div>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="pageHeader">
+    <h1>Home</h1>
+    <p>Your clean aquarium dashboard.</p>
+  </div>
+
+  <div class="card heroCard">
+    <h2>Welcome to AquoraX</h2>
+    <p>Track your tank, follow your cycle journey, and keep your aquarium care simple.</p>
+  </div>
+
+  <div class="card">
+    <h2>Quick Sections</h2>
+
+    <div class="simpleTile" onclick="openPage('tank')">
+      <strong>My Tank</strong>
+      <span>Set up your aquarium profile.</span>
+    </div>
+
+    <div class="simpleTile" onclick="openPage('cycle')">
+      <strong>My Cycle Journey</strong>
+      <span>Blue Shark endorsed cycle guidance and dosing.</span>
+    </div>
+
+    <div class="simpleTile" onclick="openPage('guides')">
+      <strong>Guides</strong>
+      <span>Simple aquarium help for beginners.</span>
+    </div>
+  </div>
+</div>
+
+<!-- MY TANK -->
+<div id="tank" class="page">
+  <div class="pageHeader">
+    <h1>My Tank</h1>
+    <p>Set your aquarium type so AquoraX can guide you properly.</p>
+  </div>
+
+  <div class="card">
+    <label>Tank Type</label>
+    <select id="tankTypeSelect" onchange="saveTank()">
+      <option value="">Select your tank type</option>
+      <option value="freshwater">Freshwater</option>
+      <option value="reef">Reef / Marine</option>
+    </select>
+
+    <label>System Volume Litres</label>
+    <input id="tankVolumeMain" type="number" step="1" placeholder="Example: 100" oninput="saveTank()">
+
+    <p id="tankSummary">No tank type selected yet.</p>
+  </div>
+</div>
+
+<!-- CYCLE -->
+<div id="cycle" class="page">
+  <div class="pageHeader">
+    <h1>My Cycle Journey</h1>
+    <p>Blue Shark Trading Co. endorsed cycle guidance for freshwater and reef aquariums.</p>
+  </div>
+
+  <div class="card partnerCard">
+    <div class="partnerLogoBox">
+      <img src="blue-shark-logo.png" class="partnerLogo" alt="Blue Shark Trading Co. Logo">
+      <div class="partnerBadge">Official AquoraX Cycle Partner</div>
+    </div>
+    <h2>Cycle Guidance Powered by Blue Shark Trading Co.</h2>
+    <p>Use your system volume to calculate clear Blue Shark Colony and Paradigm dosing for your cycle journey.</p>
+  </div>
+
+  <div class="card">
+    <label>Tank Type</label>
+    <select id="cycleTank" onchange="saveCycle()">
+      <option value="freshwater">Freshwater</option>
+      <option value="reef">Reef / Marine</option>
+    </select>
+
+    <label>System Volume Litres</label>
+    <input id="cycleVolume" type="number" step="1" placeholder="Example: 100" oninput="saveCycle()">
+  </div>
+
+  <div class="card">
+    <div class="progressTop">
+      <h2>Cycle Progress</h2>
+      <span id="cycleProgressText">0%</span>
+    </div>
+
+    <div class="progressBar">
+      <div id="cycleProgressFill"></div>
+    </div>
+
+    <label>Current Stage</label>
+    <select id="cycleStage" onchange="saveCycle()">
+      <option value="0">1. Setup started</option>
+      <option value="1">2. Bacteria added</option>
+      <option value="2">3. Ammonia detected</option>
+      <option value="3">4. Nitrite detected</option>
+      <option value="4">5. Nitrate detected</option>
+      <option value="5">6. Ammonia zero</option>
+      <option value="6">7. Nitrite zero</option>
+      <option value="7">8. Water change done</option>
+      <option value="8">9. Tank cycled</option>
+    </select>
+
+    <div id="cycleStageList" class="stageList"></div>
+  </div>
+
+  <div class="card">
+    <h2>Latest Water Test</h2>
+
+    <div class="formGrid">
+      <div>
+        <label>Ammonia ppm</label>
+        <input id="ammonia" type="number" step="0.01" placeholder="0.00" oninput="saveCycle()">
+      </div>
+
+      <div>
+        <label>Nitrite ppm</label>
+        <input id="nitrite" type="number" step="0.01" placeholder="0.00" oninput="saveCycle()">
+      </div>
+
+      <div>
+        <label>Nitrate ppm</label>
+        <input id="nitrate" type="number" step="0.01" placeholder="0" oninput="saveCycle()">
+      </div>
+
+      <div>
+        <label>pH</label>
+        <input id="ph" type="number" step="0.01" placeholder="7.5" oninput="saveCycle()">
+      </div>
+
+      <div>
+        <label>Temperature °C</label>
+        <input id="temp" type="number" step="0.1" placeholder="25" oninput="saveCycle()">
+      </div>
+
+      <div id="salinityBox">
+        <label>Salinity SG</label>
+        <input id="salinity" type="number" step="0.001" placeholder="1.025" oninput="saveCycle()">
+      </div>
+    </div>
+
+    <button class="primaryBtn" style="margin-top:14px;max-width:none;" onclick="saveCycleTest()">Save Test Result</button>
+  </div>
+
+  <div class="card">
+    <h2>Cycle Review Graph</h2>
+    <p>Review how ammonia, nitrite and nitrate are changing through your cycle.</p>
+
+    <div class="graphWrap" style="margin-top:14px;">
+      <canvas id="cycleGraph" width="680" height="280"></canvas>
+    </div>
+
+    <div class="graphLegend">
+      <div class="legendItem"><span class="legendDot ammoniaDot"></span> Ammonia</div>
+      <div class="legendItem"><span class="legendDot nitriteDot"></span> Nitrite</div>
+      <div class="legendItem"><span class="legendDot nitrateDot"></span> Nitrate</div>
+    </div>
+
+    <div id="cycleHistoryList" class="historyList"></div>
+
+    <button class="secondaryBtn" style="margin-top:14px;" onclick="clearCycleHistory()">Clear Graph History</button>
+  </div>
+
+  <div class="card statusBox">
+    <h2 id="cycleStatus">Not started</h2>
+    <p id="cycleAdvice">Add your first readings to begin tracking your cycle.</p>
+  </div>
+
+  <div class="card partnerCard">
+    <div class="partnerLogoBox">
+      <img src="blue-shark-logo.png" class="partnerLogo" alt="Blue Shark Trading Co. Logo">
+      <div class="partnerBadge">100% Partnership Guidance</div>
+    </div>
+
+    <h2>Blue Shark Dosing Calculator</h2>
+    <p>Calculated from your system volume. Dose the full real water volume of the aquarium.</p>
+
+    <div class="doseGrid">
+      <div class="doseBox">
+        <strong id="colonyProductName">Blue Shark Colony Freshwater</strong>
+        <div id="colonyDose" class="doseValue">Enter volume</div>
+        <div id="colonyNote" class="doseNote">Rapid cycle single dose. Add once per tank/system.</div>
+      </div>
+
+      <div class="doseBox">
+        <strong>Blue Shark Paradigm</strong>
+        <div id="paradigmDose" class="doseValue">Enter volume</div>
+        <div class="doseNote">Weekly dose based on system volume.</div>
+      </div>
+    </div>
+
+    <div class="fishStatus">
+      <strong id="fishAddTitle">Fish Guidance</strong>
+      <span id="fishAddText">After Blue Shark Colony has been dosed, fish can be added following Blue Shark cycle guidance. Add livestock sensibly and keep testing.</span>
+    </div>
+
+    <div class="partnerLinks">
+      <a href="https://bluesharkjourney.com/" target="_blank" rel="noopener">Visit Website</a>
+      <a href="https://www.youtube.com/results?search_query=Blue+Shark+Journey+aquarium" target="_blank" rel="noopener">YouTube Guides</a>
+    </div>
+
+    <p class="smallPrint">Always confirm dosing with the product label and Blue Shark guidance. Do not overdose. Keep testing during the cycle.</p>
+  </div>
+
+  <div class="card">
+    <button class="dangerBtn" onclick="resetCycle()">Reset Cycle Journey</button>
+  </div>
+</div>
+
+<!-- GUIDES -->
+<div id="guides" class="page">
+  <div class="pageHeader">
+    <h1>Guides</h1>
+    <p>Simple aquarium guides will live here.</p>
+  </div>
+
+  <div class="card">
+    <h2>Coming Next</h2>
+    <p>Beginner reef, freshwater setup, cycling, water testing, and livestock guides.</p>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="profile" class="page">
+  <div class="pageHeader">
+    <h1>Profile</h1>
+    <p>Your AquoraX settings and saved details.</p>
+  </div>
+
+  <div class="card">
+    <h2>Saved On This Device</h2>
+    <p>AquoraX currently saves your tank, dosing volume, cycle journey and graph history using localStorage on this device.</p>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button id="nav-home" onclick="openPage('home')">Home</button>
+  <button id="nav-tank" onclick="openPage('tank')">My Tank</button>
+  <button id="nav-cycle" onclick="openPage('cycle')">Cycle</button>
+  <button id="nav-guides" onclick="openPage('guides')">Guides</button>
+  <button id="nav-profile" onclick="openPage('profile')">Profile</button>
+</div>
+
+<script>
+const cycleStages = [
+  "Setup started",
+  "Bacteria added",
+  "Ammonia detected",
+  "Nitrite detected",
+  "Nitrate detected",
+  "Ammonia zero",
+  "Nitrite zero",
+  "Water change done",
+  "Tank cycled"
+];
+
+function el(id){
+  return document.getElementById(id);
+}
+
+function val(id){
+  const item = el(id);
+  return item ? item.value : "";
+}
+
+function setVal(id, value){
+  const item = el(id);
+  if(item) item.value = value || "";
+}
+
+function parseNum(value){
+  const n = parseFloat(value);
+  return isNaN(n) ? null : n;
+}
+
+function roundDose(num){
+  if(num === null || num <= 0) return null;
+  if(num < 10) return Math.round(num * 10) / 10;
+  return Math.round(num);
+}
+
+/* WELCOME */
+function enterApp(){
+  el("welcomeScreen").style.display = "none";
+  localStorage.setItem("aquoraxWelcomeSeen", "yes");
+}
+
+/* NAV */
+function openPage(page){
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+
+  const target = el(page);
+  const navBtn = el("nav-" + page);
+
+  if(target) target.classList.add("active");
+  if(navBtn) navBtn.classList.add("active");
+
+  localStorage.setItem("aquoraxCurrentPage", page);
+  window.scrollTo(0,0);
+
+  if(page === "cycle"){
+    setTimeout(drawCycleGraph, 80);
+  }
+}
+
+/* TANK */
+function saveTank(){
+  const type = val("tankTypeSelect");
+  const volume = val("tankVolumeMain");
+
+  localStorage.setItem("aquoraxTankType", type);
+  localStorage.setItem("aquoraxTankVolume", volume);
+
+  if(type && el("cycleTank")) setVal("cycleTank", type);
+  if(volume && el("cycleVolume")) setVal("cycleVolume", volume);
+
+  saveCycle();
+  updateTankSummary();
+}
+
+function updateTankSummary(){
+  const type = localStorage.getItem("aquoraxTankType") || "";
+  const volume = localStorage.getItem("aquoraxTankVolume") || "";
+
+  let text = "No tank type selected yet.";
+
+  if(type === "reef") text = "Reef / Marine tank selected.";
+  if(type === "freshwater") text = "Freshwater tank selected.";
+
+  if(volume) text += " System volume: " + volume + " L.";
+
+  if(el("tankSummary")) el("tankSummary").innerText = text;
+}
+
+/* CYCLE */
+function saveCycle(){
+  const data = {
+    tank: val("cycleTank"),
+    volume: val("cycleVolume"),
+    stage: val("cycleStage"),
+    ammonia: val("ammonia"),
+    nitrite: val("nitrite"),
+    nitrate: val("nitrate"),
+    ph: val("ph"),
+    temp: val("temp"),
+    salinity: val("salinity")
+  };
+
+  localStorage.setItem("aquoraxCycleData", JSON.stringify(data));
+  localStorage.setItem("aquoraxTankType", data.tank);
+  localStorage.setItem("aquoraxTankVolume", data.volume);
+
+  if(el("tankTypeSelect")) setVal("tankTypeSelect", data.tank);
+  if(el("tankVolumeMain")) setVal("tankVolumeMain", data.volume);
+
+  updateTankSummary();
+  updateCycle();
+}
+
+function numberValue(id){
+  return parseNum(val(id));
+}
+
+function updateCycle(){
+  const saved = JSON.parse(localStorage.getItem("aquoraxCycleData") || "{}");
+
+  const tank = val("cycleTank") || saved.tank || "freshwater";
+  const stage = Number(val("cycleStage") || saved.stage || 0);
+
+  const ammonia = numberValue("ammonia");
+  const nitrite = numberValue("nitrite");
+  const nitrate = numberValue("nitrate");
+  const ph = numberValue("ph");
+  const temp = numberValue("temp");
+  const salinity = numberValue("salinity");
+
+  const progress = Math.round((stage / 8) * 100);
+
+  if(el("cycleProgressFill")) el("cycleProgressFill").style.width = progress + "%";
+  if(el("cycleProgressText")) el("cycleProgressText").innerText = progress + "%";
+  if(el("salinityBox")) el("salinityBox").style.display = tank === "reef" ? "block" : "none";
+
+  renderCycleStages(stage);
+  updateBlueSharkDosing();
+
+  let status = "Not started";
+  let advice = "Add your first readings to begin tracking your cycle.";
+
+  if(stage >= 1){
+    status = "Ammonia rising";
+    advice = "Your cycle has started. Keep testing every few days and follow the Blue Shark dosing guide below.";
+  }
+
+  if(ammonia !== null && ammonia > 0.25){
+    status = "Ammonia rising";
+    advice = "Ammonia is present. Keep testing and follow the cycle process carefully.";
+  }
+
+  if(nitrite !== null && nitrite > 0.25){
+    status = "Nitrite rising";
+    advice = "Nitrite is showing. This means the cycle is moving forward. Keep monitoring the graph.";
+  }
+
+  if(nitrate !== null && nitrate > 5){
+    status = "Nitrate building";
+    advice = "Nitrate is building, which is a good sign. Watch for ammonia and nitrite to reduce.";
+  }
+
+  if(ammonia !== null && nitrite !== null && nitrate !== null && ammonia <= 0.1 && nitrite <= 0.1 && nitrate > 0 && stage >= 6){
+    status = "Nearly cycled";
+    advice = "Ammonia and nitrite are close to zero. Review your graph and consider a water change before adding more livestock.";
+  }
+
+  if(stage >= 8 && (ammonia === null || ammonia <= 0.1) && (nitrite === null || nitrite <= 0.1)){
+    status = "Cycled";
+    advice = "Your tank looks cycled. Add livestock slowly and keep testing regularly.";
+  }
+
+  if(ph !== null && (ph < 6.5 || ph > 8.6)){
+    advice += " Your pH looks outside the usual range, so double-check it.";
+  }
+
+  if(temp !== null && (temp < 22 || temp > 30)){
+    advice += " Your temperature looks outside the Blue Shark cycle temperature range of 23-30°C, so adjust carefully.";
+  }
+
+  if(tank === "reef" && salinity !== null && (salinity < 1.023 || salinity > 1.026)){
+    advice += " For reef tanks, salinity is usually kept close to 1.025.";
+  }
+
+  if(el("cycleStatus")) el("cycleStatus").innerText = status;
+  if(el("cycleAdvice")) el("cycleAdvice").innerText = advice;
+}
+
+function renderCycleStages(currentStage){
+  const list = el("cycleStageList");
+  if(!list) return;
+
+  list.innerHTML = cycleStages.map((stage, index) => {
+    const done = index <= currentStage ? "done" : "";
+    return `
+      <div class="stageItem ${done}">
+        <span class="stageDot"></span>
+        <span>${index + 1}. ${stage}</span>
+      </div>
+    `;
+  }).join("");
+}
+
+/* BLUE SHARK DOSING */
+function updateBlueSharkDosing(){
+  const tank = val("cycleTank") || "freshwater";
+  const volume = parseNum(val("cycleVolume"));
+
+  const colonyName = tank === "reef" ? "Blue Shark Colony Marine" : "Blue Shark Colony Freshwater";
+  if(el("colonyProductName")) el("colonyProductName").innerText = colonyName;
+
+  if(volume === null || volume <= 0){
+    if(el("colonyDose")) el("colonyDose").innerText = "Enter volume";
+    if(el("paradigmDose")) el("paradigmDose").innerText = "Enter volume";
+    return;
+  }
+
+  let colonyDose;
+
+  if(tank === "reef"){
+    colonyDose = volume * (118 / 45);
+  }else{
+    colonyDose = volume * (118 / 95);
+  }
+
+  const paradigmDose = volume * (5 / 37.85);
+
+  const colonyRounded = roundDose(colonyDose);
+  const paradigmRounded = roundDose(paradigmDose);
+
+  if(el("colonyDose")) el("colonyDose").innerText = colonyRounded + " ml";
+  if(el("paradigmDose")) el("paradigmDose").innerText = paradigmRounded + " ml";
+
+  if(el("colonyNote")){
+    el("colonyNote").innerText = tank === "reef"
+      ? "Rapid cycle single dose. 118 ml treats 45 L. Add once per tank/system."
+      : "Rapid cycle single dose. 118 ml treats 95 L. Add once per tank/system.";
+  }
+}
+
+/* GRAPH HISTORY */
+function getCycleHistory(){
+  return JSON.parse(localStorage.getItem("aquoraxCycleHistory") || "[]");
+}
+
+function saveCycleHistory(history){
+  localStorage.setItem("aquoraxCycleHistory", JSON.stringify(history));
+}
+
+function saveCycleTest(){
+  const ammonia = numberValue("ammonia");
+  const nitrite = numberValue("nitrite");
+  const nitrate = numberValue("nitrate");
+
+  if(ammonia === null && nitrite === null && nitrate === null){
+    alert("Add at least one ammonia, nitrite or nitrate reading first.");
+    return;
+  }
+
+  const now = new Date();
+
+  const test = {
+    id: Date.now(),
+    date: now.toLocaleDateString(),
+    time: now.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}),
+    stage: Number(val("cycleStage") || 0),
+    ammonia: ammonia,
+    nitrite: nitrite,
+    nitrate: nitrate,
+    ph: numberValue("ph"),
+    temp: numberValue("temp"),
+    salinity: numberValue("salinity")
+  };
+
+  const history = getCycleHistory();
+  history.push(test);
+
+  if(history.length > 30){
+    history.shift();
+  }
+
+  saveCycleHistory(history);
+  drawCycleGraph();
+  renderCycleHistory();
+}
+
+function clearCycleHistory(){
+  if(!confirm("Clear cycle graph history?")) return;
+  localStorage.removeItem("aquoraxCycleHistory");
+  drawCycleGraph();
+  renderCycleHistory();
+}
+
+function drawCycleGraph(){
+  const canvas = el("cycleGraph");
+  if(!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  const history = getCycleHistory();
+
+  const width = canvas.width;
+  const height = canvas.height;
+  const pad = 34;
+
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "#02070d";
+  ctx.fillRect(0, 0, width, height);
+
+  ctx.strokeStyle = "rgba(255,255,255,0.09)";
+  ctx.lineWidth = 1;
+
+  for(let i=0;i<=4;i++){
+    const y = pad + ((height - pad*2) / 4) * i;
+    ctx.beginPath();
+    ctx.moveTo(pad, y);
+    ctx.lineTo(width - 12, y);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = "#9fbcd3";
+  ctx.font = "13px Arial";
+
+  if(history.length === 0){
+    ctx.fillText("Save test results to build your cycle graph.", pad, height / 2);
+    return;
+  }
+
+  const values = [];
+  history.forEach(h => {
+    if(h.ammonia !== null) values.push(h.ammonia);
+    if(h.nitrite !== null) values.push(h.nitrite);
+    if(h.nitrate !== null) values.push(h.nitrate);
+  });
+
+  let maxValue = Math.max(...values, 1);
+  maxValue = Math.ceil(maxValue);
+
+  ctx.fillText(maxValue + " ppm", 4, pad + 4);
+  ctx.fillText("0", 18, height - pad + 4);
+
+  function point(index, value){
+    const x = history.length === 1
+      ? width / 2
+      : pad + ((width - pad - 18) / (history.length - 1)) * index;
+
+    const cleanValue = value === null ? 0 : value;
+    const y = height - pad - ((cleanValue / maxValue) * (height - pad*2));
+    return {x, y};
+  }
+
+  function drawLine(key, color){
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+
+    history.forEach((h, index) => {
+      const p = point(index, h[key]);
+      if(index === 0) ctx.moveTo(p.x, p.y);
+      else ctx.lineTo(p.x, p.y);
+    });
+
+    ctx.stroke();
+
+    history.forEach((h, index) => {
+      const p = point(index, h[key]);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  drawLine("ammonia", "#63f7a3");
+  drawLine("nitrite", "#00c8ff");
+  drawLine("nitrate", "#ffd36a");
+}
+
+function renderCycleHistory(){
+  const list = el("cycleHistoryList");
+  if(!list) return;
+
+  const history = getCycleHistory().slice().reverse();
+
+  if(history.length === 0){
+    list.innerHTML = "";
+    return;
+  }
+
+  list.innerHTML = history.slice(0, 5).map(h => {
+    const stageName = cycleStages[h.stage] || "Cycle stage";
+    return `
+      <div class="historyItem">
+        <strong>${h.date} ${h.time} — ${stageName}</strong>
+        <span>Ammonia: ${h.ammonia ?? "-"} ppm · Nitrite: ${h.nitrite ?? "-"} ppm · Nitrate: ${h.nitrate ?? "-"} ppm</span>
+      </div>
+    `;
+  }).join("");
+}
+
+function resetCycle(){
+  if(!confirm("Reset your cycle journey?")) return;
+
+  localStorage.removeItem("aquoraxCycleData");
+  localStorage.removeItem("aquoraxCycleHistory");
+
+  const savedTank = localStorage.getItem("aquoraxTankType") || "freshwater";
+  const savedVolume = localStorage.getItem("aquoraxTankVolume") || "";
+
+  setVal("cycleTank", savedTank);
+  setVal("cycleVolume", savedVolume);
+  setVal("cycleStage", "0");
+  setVal("ammonia", "");
+  setVal("nitrite", "");
+  setVal("nitrate", "");
+  setVal("ph", "");
+  setVal("temp", "");
+  setVal("salinity", "");
+
+  saveCycle();
+  drawCycleGraph();
+  renderCycleHistory();
+}
+
+/* LOAD */
+window.addEventListener("DOMContentLoaded", () => {
+  const welcomeSeen = localStorage.getItem("aquoraxWelcomeSeen");
+  if(welcomeSeen === "yes" && el("welcomeScreen")){
+    el("welcomeScreen").style.display = "none";
+  }
+
+  const savedTank = localStorage.getItem("aquoraxTankType") || "";
+  const savedVolume = localStorage.getItem("aquoraxTankVolume") || "";
+
+  setVal("tankTypeSelect", savedTank);
+  setVal("tankVolumeMain", savedVolume);
+  updateTankSummary();
+
+  const savedCycle = JSON.parse(localStorage.getItem("aquoraxCycleData") || "{}");
+
+  setVal("cycleTank", savedCycle.tank || savedTank || "freshwater");
+  setVal("cycleVolume", savedCycle.volume || savedVolume || "");
+  setVal("cycleStage", savedCycle.stage || "0");
+  setVal("ammonia", savedCycle.ammonia || "");
+  setVal("nitrite", savedCycle.nitrite || "");
+  setVal("nitrate", savedCycle.nitrate || "");
+  setVal("ph", savedCycle.ph || "");
+  setVal("temp", savedCycle.temp || "");
+  setVal("salinity", savedCycle.salinity || "");
+
+  updateCycle();
+  renderCycleHistory();
+  drawCycleGraph();
+
+  const savedPage = localStorage.getItem("aquoraxCurrentPage") || "home";
+  openPage(savedPage);
+});
+</script>
+
+</body>
+</html>
