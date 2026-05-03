@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquoraX</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:#02070d;
+      color:white;
+    }
+
+    /* WELCOME SCREEN */
+    #welcomeScreen{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:#02070d;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      z-index:999;
+    }
+
+    .welcomeLogo{
+      width:85%;
+      max-width:420px;
+      margin-bottom:20px;
+      filter: drop-shadow(0 0 12px rgba(0,170,255,0.4));
+    }
+
+    #welcomeScreen h1{
+      margin:10px 0;
+      font-size:26px;
+    }
+
+    #welcomeScreen p{
+      color:#9fbcd3;
+      font-size:14px;
+      line-height:1.6;
+      margin-bottom:25px;
+    }
+
+    #welcomeScreen button{
+      background:#008cff;
+      border:none;
+      padding:14px 24px;
+      border-radius:12px;
+      color:white;
+      font-weight:bold;
+      font-size:16px;
+      box-shadow:0 0 15px rgba(0,140,255,0.4);
+    }
+
+    /* PAGES */
+    .page{
+      display:none;
+      padding:20px;
+      padding-bottom:80px;
+    }
+
+    .active{
+      display:block;
+    }
+
+    h1{
+      margin-top:0;
+    }
+
+    /* BOTTOM NAV */
+    .nav{
+      position:fixed;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:65px;
+      background:#02070d;
+      border-top:1px solid rgba(0,170,255,.3);
+      display:flex;
+      justify-content:space-around;
+      align-items:center;
+    }
+
+    .nav button{
+      background:none;
+      border:none;
+      color:#7aaedb;
+      font-size:12px;
+    }
+
+    .nav button.active{
+      color:#00c8ff;
+      font-weight:bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔥 WELCOME -->
+<div id="welcomeScreen">
+  <img src="aquorax-logo.png" class="welcomeLogo">
+
+  <h1>Welcome to AquoraX</h1>
+
+  <p>
+    The home of aquarium keeping.<br>
+    Build, track, and perfect your tank.
+  </p>
+
+  <button onclick="enterApp()">Get Started</button>
+</div>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <h1>Home</h1>
+  <p>Welcome to AquoraX</p>
+</div>
+
+<!-- MY TANK -->
+<div id="tank" class="page">
+  <h1>My Tank</h1>
+
+  <p>Select Tank Type:</p>
+
+  <button onclick="setTank('reef')">Reef</button>
+  <button onclick="setTank('freshwater')">Freshwater</button>
+
+  <p id="tankType"></p>
+</div>
+
+<!-- CYCLE JOURNEY -->
+<div id="cycle" class="page">
+  <h1>Cycle Journey</h1>
+  <p>Track your tank cycle here.</p>
+</div>
+
+<!-- GUIDES -->
+<div id="guides" class="page">
+  <h1>Guides</h1>
+</div>
+
+<!-- PROFILE -->
+<div id="profile" class="page">
+  <h1>Profile</h1>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button onclick="openPage('home')">Home</button>
+  <button onclick="openPage('tank')">My Tank</button>
+  <button onclick="openPage('cycle')">Cycle</button>
+  <button onclick="openPage('guides')">Guides</button>
+  <button onclick="openPage('profile')">Profile</button>
+</div>
+
+<script>
+function enterApp(){
+  document.getElementById("welcomeScreen").style.display = "none";
+}
+
+function openPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+}
+
+function setTank(type){
+  document.getElementById('tankType').innerText = "Selected: " + type;
+}
+</script>
+
+</body>
+</html>
