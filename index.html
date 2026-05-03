@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AquoraX</title>
+
+<style>
+:root{
+  --bg:#050b14;
+  --card:#0b1626;
+  --card2:#0f2035;
+  --blue:#28a8ff;
+  --blue2:#67d7ff;
+  --text:#eef8ff;
+  --muted:#8fa9bf;
+  --good:#39d98a;
+  --warn:#ffd166;
+  --bad:#ff5c7a;
+  --line:rgba(103,215,255,.18);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:radial-gradient(circle at top,#0d2946 0%,#050b14 42%,#02050a 100%);
+  color:var(--text);
+  min-height:100vh;
+  padding-bottom:90px;
+}
+
+.app{
+  max-width:520px;
+  margin:0 auto;
+  padding:18px;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.hero{
+  padding:22px;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(15,40,70,.95),rgba(6,13,24,.95));
+  box-shadow:0 0 35px rgba(40,168,255,.18);
+  margin-bottom:16px;
+}
+
+h1,h2,h3,p{margin-top:0}
+h1{font-size:30px;margin-bottom:8px}
+h2{font-size:22px;margin-bottom:10px}
+h3{font-size:16px;margin-bottom:8px}
+p{color:var(--muted);line-height:1.45}
+
+.card{
+  background:rgba(11,22,38,.92);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:16px;
+  margin-bottom:14px;
+  box-shadow:0 0 22px rgba(40,168,255,.08);
+}
+
+.glow{
+  box-shadow:0 0 28px rgba(40,168,255,.18);
+}
+
+button,select,input{
+  width:100%;
+  border:none;
+  outline:none;
+  border-radius:16px;
+  padding:14px;
+  font-size:15px;
+}
+
+button{
+  background:linear-gradient(135deg,var(--blue),#126aff);
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 0 18px rgba(40,168,255,.22);
+}
+
+button.secondary{
+  background:#10243b;
+  color:var(--text);
+  border:1px solid var(--line);
+}
+
+button.danger{
+  background:linear-gradient(135deg,#ff5c7a,#b41838);
+}
+
+input,select{
+  background:#081321;
+  color:var(--text);
+  border:1px solid var(--line);
+  margin-bottom:10px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.small{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.badge{
+  display:inline-block;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(40,168,255,.12);
+  border:1px solid var(--line);
+  color:var(--blue2);
+  font-size:12px;
+  font-weight:700;
+}
+
+.product{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.price{
+  font-size:24px;
+  color:var(--blue2);
+  font-weight:800;
+}
+
+.guidance{
+  border-color:rgba(57,217,138,.35);
+  box-shadow:0 0 28px rgba(57,217,138,.12);
+}
+
+.status{
+  font-size:20px;
+  font-weight:800;
+  color:var(--good);
+}
+
+canvas{
+  width:100%;
+  height:220px;
+  background:#07111d;
+  border-radius:18px;
+  border:1px solid var(--line);
+}
+
+.log{
+  border-top:1px solid var(--line);
+  padding-top:10px;
+  margin-top:10px;
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:rgba(3,8,15,.96);
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:center;
+  padding:10px;
+  z-index:99;
+}
+
+.nav-inner{
+  max-width:520px;
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+}
+
+.nav button{
+  padding:10px 4px;
+  font-size:12px;
+  border-radius:14px;
+  background:#081321;
+  box-shadow:none;
+  color:var(--muted);
+}
+
+.nav button.active{
+  color:white;
+  background:linear-gradient(135deg,var(--blue),#126aff);
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<section id="home" class="page active">
+  <div class="hero">
+    <h1>AquoraX</h1>
+    <p>The home of aquarium keeping, cycle tracking, smart guides and clean tank management.</p>
+    <span class="badge">Mobile-first aquarium tool</span>
+  </div>
+
+  <div class="card">
+    <h2>Welcome back</h2>
+    <p>Track your tank, follow your cycle journey and find the products you need without clutter.</p>
+    <button onclick="openPage('cycle')">Open My Cycle Journey</button>
+  </div>
+
+  <div class="card">
+    <h2>Blue Shark Journey</h2>
+    <p>A clean partner area for Blue Shark Trading Co. products, with global currency switching.</p>
+    <button class="secondary" onclick="openPage('blueShark')">Open Blue Shark</button>
+  </div>
+</section>
+
+<section id="tank" class="page">
+  <div class="hero">
+    <h1>My Tank</h1>
+    <p>Basic tank profile saved on this device.</p>
+  </div>
+
+  <div class="card">
+    <input id="tankName" placeholder="Tank name" />
+    <input id="tankSize" placeholder="Tank size / litres" />
+    <button onclick="saveTank()">Save Tank</button>
+  </div>
+</section>
+
+<section id="cycle" class="page">
+  <div class="hero">
+    <span class="badge">Blue Shark Journey</span>
+    <h1>My Cycle Journey</h1>
+    <p>Track ammonia, nitrite and nitrate while AquoraX guides your next step.</p>
+  </div>
+
+  <div id="guidanceCard" class="card guidance"></div>
+
+  <div class="card">
+    <h2>Add Test Result</h2>
+    <div class="grid">
+      <input id="ammonia" type="number" step="0.01" placeholder="Ammonia ppm" />
+      <input id="nitrite" type="number" step="0.01" placeholder="Nitrite ppm" />
+      <input id="nitrate" type="number" step="0.01" placeholder="Nitrate ppm" />
+      <input id="testDate" type="date" />
+    </div>
+    <button onclick="saveTest()">Save Test</button>
+  </div>
+
+  <div class="card">
+    <h2>Dosing Calculator</h2>
+    <input id="doseLitres" type="number" placeholder="Tank litres" />
+    <p id="doseOutput" class="small">Enter litres to calculate dose guidance.</p>
+    <button class="secondary" onclick="calculateDose()">Calculate Dose</button>
+  </div>
+
+  <div class="card">
+    <h2>Dose Log</h2>
+    <div id="rapidDoseArea"></div>
+    <button class="secondary" onclick="logParadigm()">Log Paradigm Weekly Dose</button>
+    <div id="doseLog" class="log"></div>
+  </div>
+
+  <div class="card glow">
+    <h2>Cycle Graph</h2>
+    <canvas id="cycleGraph" width="440" height="220"></canvas>
+    <p class="small">Blue: Ammonia · Cyan: Nitrite · Green: Nitrate · Markers show dosing events.</p>
+  </div>
+
+  <div class="card">
+    <h2>Find What You Need</h2>
+    <p>Retailer placeholder: Finest Aquatics UK.</p>
+    <button class="secondary" onclick="openPage('blueShark')">View Blue Shark Products</button>
+  </div>
+</section>
+
+<section id="blueShark" class="page">
+  <div class="hero">
+    <span class="badge">Partner</span>
+    <h1>Blue Shark Journey</h1>
+    <p>Blue Shark Trading Co. products for aquarium cycling and care.</p>
+  </div>
+
+  <div class="card">
+    <h2>Currency</h2>
+    <select id="currencySelect" onchange="setCurrency(this.value)">
+      <option value="GBP">GBP £</option>
+      <option value="USD">USD $</option>
+      <option value="EUR">EUR €</option>
+      <option value="AUD">AUD $</option>
+      <option value="CAD">CAD $</option>
+      <option value="NZD">NZD $</option>
+      <option value="AED">AED د.إ</option>
+    </select>
+    <p class="small">Prices are estimates. Final price confirmed by retailer.</p>
+  </div>
+
+  <div id="blueProducts"></div>
+</section>
+
+<section id="guides" class="page">
+  <div class="hero">
+    <h1>Guides</h1>
+    <p>Simple aquarium guides coming next.</p>
+  </div>
+
+  <div class="card">
+    <h2>Cycle Basics</h2>
+    <p>Ammonia rises first, nitrite follows, then nitrate appears as the filter matures.</p>
+  </div>
+</section>
+
+<section id="profile" class="page">
+  <div class="hero">
+    <h1>Profile</h1>
+    <p>Your AquoraX app data is saved locally on this device.</p>
+  </div>
+
+  <div class="card">
+    <button class="danger" onclick="resetApp()">Reset Local Data</button>
+  </div>
+</section>
+
+</div>
+
+<div class="nav">
+  <div class="nav-inner">
+    <button onclick="openPage('home',this)" class="active">Home</button>
+    <button onclick="openPage('tank',this)">My Tank</button>
+    <button onclick="openPage('cycle',this)">Cycle</button>
+    <button onclick="openPage('guides',this)">Guides</button>
+    <button onclick="openPage('profile',this)">Profile</button>
+  </div>
+</div>
+
+<script>
+const store = {
+  get(k,d){try{return JSON.parse(localStorage.getItem(k)) ?? d}catch{return d}},
+  set(k,v){localStorage.setItem(k,JSON.stringify(v))}
+};
+
+const rates = {
+  GBP:{symbol:"£",rate:1},
+  USD:{symbol:"$",rate:1.25},
+  EUR:{symbol:"€",rate:1.17},
+  AUD:{symbol:"$",rate:1.92},
+  CAD:{symbol:"$",rate:1.71},
+  NZD:{symbol:"$",rate:2.08},
+  AED:{symbol:"د.إ",rate:4.59}
+};
+
+const products = [
+  ["Blue Shark Colony Freshwater","From",9.99],
+  ["Blue Shark Colony Marine","From",9.99],
+  ["Blue Shark Outbreak Freshwater","",21.99],
+  ["Blue Shark Outbreak Marine 16oz","",21.99],
+  ["Blue Shark Paradigm","From",9.99],
+  ["Blue Shark Complete","From",9.99]
+];
+
+function openPage(id,btn){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  if(id==="cycle"){renderCycle()}
+  if(id==="blueShark"){renderProducts()}
+  window.scrollTo(0,0);
+}
+
+function saveTank(){
+  store.set("tank",{name:tankName.value,size:tankSize.value});
+  alert("Tank saved");
+}
+
+function loadTank(){
+  const t=store.get("tank",{});
+  tankName.value=t.name||"";
+  tankSize.value=t.size||"";
+}
+
+function saveTest(){
+  const tests=store.get("tests",[]);
+  tests.push({
+    date:testDate.value || new Date().toISOString().slice(0,10),
+    ammonia:parseFloat(ammonia.value||0),
+    nitrite:parseFloat(nitrite.value||0),
+    nitrate:parseFloat(nitrate.value||0)
+  });
+  store.set("tests",tests);
+  ammonia.value=nitrite.value=nitrate.value="";
+  renderCycle();
+  document.getElementById("guidanceCard").scrollIntoView({behavior:"smooth"});
+}
+
+function calculateDose(){
+  const l=parseFloat(doseLitres.value||0);
+  if(!l){doseOutput.textContent="Enter litres to calculate dose guidance.";return}
+  doseOutput.textContent=
+    "Estimated guide: Colony rapid cycle dose for " + l + "L. Paradigm can be logged weekly. Always follow the bottle label.";
+}
+
+function logRapid(){
+  if(!confirm("Rapid Cycle can only be logged once. Continue?"))return;
+  if(!confirm("Are you sure this dose has been added to the tank?"))return;
+  store.set("rapidDose",new Date().toISOString());
+  renderCycle();
+}
+
+function logParadigm(){
+  const logs=store.get("paradigmLogs",[]);
+  logs.push(new Date().toISOString());
+  store.set("paradigmLogs",logs);
+  renderCycle();
+}
+
+function renderCycle(){
+  renderGuidance();
+  renderDoseArea();
+  drawGraph();
+}
+
+function renderGuidance(){
+  const tests=store.get("tests",[]);
+  let html="";
+  if(!tests.length){
+    html=`
+    <h2>Cycle Guidance</h2>
+    <div class="status">Waiting for first test</div>
+    <p><b>What’s happening:</b> AquoraX needs your first ammonia, nitrite and nitrate reading.</p>
+    <p><b>What to do next:</b> Add your first test result above.</p>
+    <p><b>Confidence:</b> Low until test data is added.</p>`;
+  } else {
+    const last=tests[tests.length-1];
+    const ammoniaPeak=Math.max(...tests.map(t=>t.ammonia));
+    const nitritePeak=Math.max(...tests.map(t=>t.nitrite));
+    const nitrateStarted=tests.some(t=>t.nitrate>0);
+    const complete=last.ammonia===0 && last.nitrite===0 && last.nitrate>0;
+
+    if(complete){
+      html=`
+      <h2>Cycle Guidance</h2>
+      <div class="status">Cycle appears complete</div>
+      <p><b>What’s happening:</b> Ammonia and nitrite are reading zero while nitrate is present.</p>
+      <p><b>What to do next:</b> Confirm stability with another test before adding livestock.</p>
+      <p><b>Confidence:</b> High.</p>`;
+    } else if(last.nitrite>0){
+      html=`
+      <h2>Cycle Guidance</h2>
+      <div class="status" style="color:var(--warn)">Nitrite stage active</div>
+      <p><b>What’s happening:</b> Ammonia is being processed and nitrite is building.</p>
+      <p><b>What to do next:</b> Keep testing and avoid rushing livestock.</p>
+      <p><b>Confidence:</b> Medium to high.</p>`;
+    } else if(last.ammonia>0){
+      html=`
+      <h2>Cycle Guidance</h2>
+      <div class="status" style="color:var(--warn)">Ammonia stage active</div>
+      <p><b>What’s happening:</b> The cycle is starting and bacteria are developing.</p>
+      <p><b>What to do next:</b> Keep monitoring ammonia and nitrite.</p>
+      <p><b>Confidence:</b> Medium.</p>`;
+    } else {
+      html=`
+      <h2>Cycle Guidance</h2>
+      <div class="status">Monitoring cycle</div>
+      <p><b>What’s happening:</b> Readings are low, but more data is needed.</p>
+      <p><b>What to do next:</b> Add another test in 24–48 hours.</p>
+      <p><b>Confidence:</b> Medium.</p>`;
+    }
+
+    html += `<p class="small">Detected: ammonia peak ${ammoniaPeak} ppm · nitrite peak ${nitritePeak} ppm · nitrate ${nitrateStarted?"started":"not detected yet"}.</p>`;
+  }
+  guidanceCard.innerHTML=html;
+}
+
+function renderDoseArea(){
+  const rapid=store.get("rapidDose",null);
+  const paradigms=store.get("paradigmLogs",[]);
+  rapidDoseArea.innerHTML = rapid
+    ? `<p class="small">Rapid Cycle logged: ${new Date(rapid).toLocaleString()}</p>`
+    : `<button onclick="logRapid()">Log Colony Rapid Cycle Dose</button>`;
+
+  doseLog.innerHTML = paradigms.length
+    ? paradigms.map(x=>`<p class="small">Paradigm dose: ${new Date(x).toLocaleString()}</p>`).join("")
+    : `<p class="small">No Paradigm doses logged yet.</p>`;
+}
+
+function drawGraph(){
+  const c=document.getElementById("cycleGraph");
+  const ctx=c.getContext("2d");
+  const tests=store.get("tests",[]);
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.strokeStyle="rgba(103,215,255,.2)";
+  ctx.lineWidth=1;
+  for(let i=0;i<5;i++){
+    ctx.beginPath();
+    ctx.moveTo(30,20+i*38);
+    ctx.lineTo(420,20+i*38);
+    ctx.stroke();
+  }
+  if(!tests.length){
+    ctx.fillStyle="#8fa9bf";
+    ctx.fillText("Add test results to build your graph",95,110);
+    return;
+  }
+  const max=Math.max(1,...tests.flatMap(t=>[t.ammonia,t.nitrite,t.nitrate]));
+  function plot(key,color){
+    ctx.strokeStyle=color;
+    ctx.lineWidth=3;
+    ctx.beginPath();
+    tests.forEach((t,i)=>{
+      const x=40+(i*(360/Math.max(1,tests.length-1)));
+      const y=190-(t[key]/max)*160;
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+  }
+  plot("ammonia","#28a8ff");
+  plot("nitrite","#67d7ff");
+  plot("nitrate","#39d98a");
+}
+
+function detectCurrency(){
+  const saved=store.get("currency",null);
+  if(saved)return saved;
+  const lang=navigator.language||"en-GB";
+  if(lang.includes("US"))return"USD";
+  if(lang.includes("AU"))return"AUD";
+  if(lang.includes("CA"))return"CAD";
+  if(lang.includes("NZ"))return"NZD";
+  if(lang.includes("AE"))return"AED";
+  if(lang.includes("IE")||lang.includes("FR")||lang.includes("DE")||lang.includes("ES"))return"EUR";
+  return"GBP";
+}
+
+function setCurrency(cur){
+  store.set("currency",cur);
+  renderProducts();
+}
+
+function formatPrice(gbp){
+  const cur=store.get("currency",detectCurrency());
+  const r=rates[cur]||rates.GBP;
+  return r.symbol + (gbp*r.rate).toFixed(2);
+}
+
+function renderProducts(){
+  const cur=store.get("currency",detectCurrency());
+  currencySelect.value=cur;
+  blueProducts.innerHTML=products.map(p=>`
+    <div class="card product">
+      <h2>${p[0]}</h2>
+      <div class="price">${p[1] ? p[1]+" " : ""}${formatPrice(p[2])}</div>
+      <p>Blue Shark branded aquarium product.</p>
+      <button class="secondary">Retailer link coming soon</button>
+    </div>
+  `).join("");
+}
+
+function resetApp(){
+  if(confirm("Reset all AquoraX local data?")){
+    localStorage.clear();
+    location.reload();
+  }
+}
+
+window.onload=()=>{
+  testDate.value=new Date().toISOString().slice(0,10);
+  store.set("currency",store.get("currency",detectCurrency()));
+  loadTank();
+  renderCycle();
+  renderProducts();
+};
+</script>
+</body>
+</html>
