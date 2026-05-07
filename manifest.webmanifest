@@ -1,0 +1,38 @@
+{
+  "name": "AquoraX",
+  "short_name": "AquoraX",
+  "description": "AquoraX premium aquarium management with cloud backup and real-time care notifications.",
+  "start_url": "./index.html?v=firestore-fcm-clean-20260507c",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#00131c",
+  "background_color": "#00070b",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "gcm_sender_id": "103953800507"
+}
