@@ -1,0 +1,4588 @@
+
+:root{
+  --bg:#02070d;
+  --panel:#06121d;
+  --panel2:#081827;
+  --blue:#00c8ff;
+  --blue2:#008cff;
+  --text:#ffffff;
+  --muted:#9fbcd3;
+  --line:rgba(0,170,255,.22);
+  --green:#63f7a3;
+  --amber:#ffd36a;
+  --purple:#c084fc;
+  --danger:#ff6b6b;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:radial-gradient(circle at top, #062033 0%, var(--bg) 42%, #010409 100%);
+  color:var(--text);
+}
+
+#welcomeScreen{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at top, #062033 0%, #02070d 48%, #010409 100%);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  z-index:999;
+  padding:24px;
+}
+
+.welcomeLogo{
+  width:82%;
+  max-width:390px;
+  margin-bottom:22px;
+  filter:drop-shadow(0 0 16px rgba(0,200,255,0.35));
+}
+
+#welcomeScreen h1{
+  margin:8px 0 8px;
+  font-size:28px;
+}
+
+#welcomeScreen p{
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.6;
+  max-width:340px;
+  margin:0 0 24px;
+}
+
+.primaryBtn,
+.secondaryBtn,
+.dangerBtn,
+.lockedBtn{
+  width:100%;
+  border:none;
+  padding:14px 16px;
+  border-radius:15px;
+  font-weight:bold;
+  font-size:15px;
+}
+
+.primaryBtn{
+  background:linear-gradient(135deg, var(--blue2), var(--blue));
+  color:#00111f;
+  box-shadow:0 0 18px rgba(0,200,255,0.22);
+}
+
+.secondaryBtn{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  color:white;
+}
+
+.dangerBtn{
+  background:rgba(255,107,107,0.08);
+  border:1px solid rgba(255,107,107,0.25);
+  color:#ffd1d1;
+}
+
+.lockedBtn{
+  background:rgba(99,247,163,.11);
+  border:1px solid rgba(99,247,163,.28);
+  color:#d7ffe7;
+}
+
+.page{
+  display:none;
+  padding:20px;
+  padding-bottom:92px;
+  max-width:760px;
+  margin:0 auto;
+}
+
+.page.active{
+  display:block;
+}
+
+.pageHeader{
+  margin-bottom:18px;
+}
+
+.homeBrandHeader{
+  text-align:center;
+  margin:2px 0 18px;
+}
+.homeBrandLogo{
+  width:min(82%, 340px);
+  max-height:150px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto 12px;
+  filter:drop-shadow(0 0 18px rgba(0,200,255,.38));
+}
+.homeBrandHeader h1{
+  margin:0 0 7px;
+  font-size:28px;
+}
+.homeBrandHeader p{
+  margin:0 auto;
+  color:var(--muted);
+  line-height:1.5;
+  max-width:420px;
+}
+
+.pageHeader h1{
+  margin:0 0 7px;
+  font-size:28px;
+}
+
+.pageHeader p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.card{
+  background:linear-gradient(145deg, rgba(8,24,39,0.96), rgba(4,12,22,0.96));
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:16px;
+  margin-bottom:15px;
+  box-shadow:0 0 18px rgba(0,200,255,0.08);
+}
+
+.card h2{
+  margin:0 0 12px;
+  font-size:18px;
+}
+
+.card p{
+  color:var(--muted);
+  line-height:1.5;
+  margin:0;
+}
+
+label{
+  display:block;
+  margin:0 0 6px;
+  color:#cbe5f7;
+  font-size:13px;
+  font-weight:bold;
+}
+
+input, select, textarea{
+  width:100%;
+  padding:13px;
+  margin-bottom:12px;
+  border-radius:14px;
+  border:1px solid rgba(0,170,255,.28);
+  background:#02070d;
+  color:white;
+  outline:none;
+  font-size:15px;
+}
+
+input:focus, select:focus, textarea:focus{
+  border-color:rgba(0,200,255,.7);
+  box-shadow:0 0 12px rgba(0,200,255,.16);
+}
+
+
+textarea{
+  min-height:104px;
+  resize:vertical;
+  font-family:inherit;
+  line-height:1.45;
+  background:linear-gradient(145deg, rgba(2,7,13,.96), rgba(7,21,35,.92));
+  color:var(--aqxTextColour,#ffffff);
+  border:1px solid rgba(73,201,255,.28);
+  box-shadow:inset 0 0 18px rgba(0,0,0,.22);
+}
+
+textarea::placeholder{
+  color:rgba(203,229,247,.45);
+}
+
+#jobNotes{
+  border-radius:18px;
+  min-height:118px;
+  margin-bottom:0;
+}
+
+.formGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.formGrid input{
+  margin-bottom:0;
+}
+
+.heroCard{
+  background:radial-gradient(circle at top right, rgba(0,200,255,.22), rgba(6,18,29,.94));
+}
+
+.simpleTile{
+  padding:16px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  margin-top:12px;
+}
+
+.simpleTile strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.simpleTile span{
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* BLUE SHARK TOP TOOL */
+.partnerCard{
+  border:1px solid rgba(0,200,255,.32);
+  background:
+    radial-gradient(circle at top, rgba(0,200,255,.18), transparent 34%),
+    linear-gradient(145deg, rgba(8,24,39,0.98), rgba(4,12,22,0.98));
+}
+
+.partnerLogoBox{
+  text-align:center;
+  padding:8px 0 12px;
+}
+
+.partnerLogo{
+  width:78%;
+  max-width:300px;
+  max-height:120px;
+  object-fit:contain;
+  filter:drop-shadow(0 0 14px rgba(0,200,255,0.35));
+}
+
+.partnerBadge{
+  display:inline-block;
+  margin:6px auto 0;
+  padding:7px 11px;
+  border-radius:999px;
+  border:1px solid rgba(0,200,255,.28);
+  color:#bfeeff;
+  font-size:12px;
+  background:rgba(0,200,255,.08);
+}
+
+.doseGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-top:12px;
+}
+
+.doseBox{
+  padding:14px;
+  border-radius:17px;
+  background:rgba(255,255,255,0.045);
+  border:1px solid rgba(255,255,255,0.09);
+}
+
+.doseBox strong{
+  display:block;
+  margin-bottom:6px;
+}
+
+.doseValue{
+  font-size:25px;
+  font-weight:bold;
+  color:var(--blue);
+  margin-bottom:5px;
+}
+
+.doseNote{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+  margin-bottom:12px;
+}
+
+.timestampBox{
+  margin-top:10px;
+  padding:10px;
+  border-radius:13px;
+  background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.08);
+  color:#cbe5f7;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.timestampBox strong{
+  margin:0 0 3px;
+  color:white;
+}
+
+.fishStatus{
+  padding:14px;
+  border-radius:17px;
+  background:rgba(99,247,163,.08);
+  border:1px solid rgba(99,247,163,.22);
+  margin-top:12px;
+}
+
+.fishStatus strong{
+  display:block;
+  color:#d6ffe6;
+  margin-bottom:5px;
+}
+
+.fishStatus span{
+  color:#bde8cd;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.partnerLinks{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.partnerLinks a{
+  text-align:center;
+  text-decoration:none;
+  color:#00111f;
+  background:linear-gradient(135deg, var(--blue2), var(--blue));
+  padding:13px 10px;
+  border-radius:14px;
+  font-weight:bold;
+  font-size:14px;
+}
+
+.smallPrint{
+  color:#82a5bf !important;
+  font-size:12px;
+  margin-top:12px !important;
+}
+
+/* CYCLE */
+.progressTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.progressTop h2{
+  margin:0;
+}
+
+#cycleProgressText{
+  color:var(--blue);
+  font-weight:bold;
+}
+
+.progressBar{
+  height:12px;
+  background:rgba(255,255,255,0.08);
+  border-radius:999px;
+  overflow:hidden;
+  margin:13px 0 16px;
+}
+
+#cycleProgressFill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg, var(--blue2), var(--blue));
+  border-radius:999px;
+  transition:width .25s ease;
+}
+
+.statusBox{
+  background:linear-gradient(145deg, rgba(0,140,255,.18), rgba(4,12,22,.96));
+}
+
+.stageList{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+}
+
+.stageItem{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#b7cee2;
+  font-size:14px;
+}
+
+.stageDot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:rgba(255,255,255,.14);
+  flex:none;
+}
+
+.stageItem.done{
+  color:white;
+}
+
+.stageItem.done .stageDot{
+  background:var(--blue);
+  box-shadow:0 0 8px rgba(0,200,255,.55);
+}
+
+/* GRAPH */
+.graphWrap{
+  width:100%;
+  overflow:hidden;
+  border-radius:16px;
+  background:#02070d;
+  border:1px solid rgba(0,170,255,.18);
+  padding:10px;
+}
+
+#cycleGraph{
+  width:100%;
+  height:250px;
+  display:block;
+}
+
+.graphLegend{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.legendItem{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:#cbe5f7;
+  font-size:13px;
+}
+
+.legendDot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+}
+
+.ammoniaDot{background:#63f7a3;}
+.nitriteDot{background:#00c8ff;}
+.nitrateDot{background:#ffd36a;}
+.rapidDot{background:#ff6b6b;}
+.paradigmDot{background:#c084fc;}
+
+.historyList{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+
+.historyItem{
+  padding:12px;
+  border-radius:15px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.historyItem strong{
+  display:block;
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.historyItem span{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+/* PREMIUM JOURNEY MODAL */
+.modalOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,4,10,.86);
+  backdrop-filter:blur(12px);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+  padding:22px;
+}
+
+.modalOverlay.show{
+  display:flex;
+}
+
+.journeyModal{
+  width:100%;
+  max-width:420px;
+  background:
+    radial-gradient(circle at top, rgba(0,200,255,.24), transparent 38%),
+    linear-gradient(145deg, rgba(7,24,40,.98), rgba(2,7,13,.99));
+  border:1px solid rgba(0,200,255,.34);
+  border-radius:28px;
+  padding:24px;
+  text-align:center;
+  box-shadow:
+    0 0 40px rgba(0,200,255,.18),
+    inset 0 0 22px rgba(255,255,255,.03);
+}
+
+.journeyLogoRow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  margin-bottom:18px;
+}
+
+.journeyLogo{
+  max-width:42%;
+  max-height:80px;
+  object-fit:contain;
+  filter:drop-shadow(0 0 12px rgba(0,200,255,.34));
+}
+
+.journeyDivider{
+  width:1px;
+  height:52px;
+  background:linear-gradient(transparent, rgba(0,200,255,.65), transparent);
+}
+
+.journeyModal h2{
+  margin:0 0 10px;
+  font-size:25px;
+}
+
+.journeyModal p{
+  margin:0 0 18px;
+  color:#bfe3f7;
+  line-height:1.55;
+  font-size:15px;
+}
+
+.journeyModal .modalHighlight{
+  color:white;
+  font-weight:bold;
+}
+
+.modalBtn{
+  width:100%;
+  border:none;
+  border-radius:16px;
+  padding:15px;
+  font-size:16px;
+  font-weight:bold;
+  color:#00111f;
+  background:linear-gradient(135deg, var(--blue2), var(--blue));
+  box-shadow:0 0 18px rgba(0,200,255,.24);
+}
+
+.blueSharkStoreCard{
+  border:1px solid rgba(0,200,255,.3);
+  background:
+    radial-gradient(circle at top right, rgba(0,200,255,.16), transparent 34%),
+    linear-gradient(145deg, rgba(8,24,39,.98), rgba(4,12,22,.98));
+}
+
+.storeIntro{
+  color:#bfe3f7;
+  line-height:1.55;
+  margin-bottom:14px;
+}
+
+.productAssistGrid{
+  display:grid;
+  gap:12px;
+  margin-top:12px;
+}
+
+.productAssist{
+  padding:14px;
+  border-radius:17px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09);
+}
+
+.productAssist strong{
+  display:block;
+  margin-bottom:5px;
+  color:white;
+}
+
+.productAssist span{
+  display:block;
+  color:#9fbcd3;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.partnerTrustStrip{
+  margin-top:12px;
+  padding:12px;
+  border-radius:16px;
+  background:rgba(0,200,255,.07);
+  border:1px solid rgba(0,200,255,.18);
+  color:#bfeeff;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.shopNeedGrid{
+  display:grid;
+  gap:11px;
+  margin-top:12px;
+}
+
+.shopNeed{
+  display:block;
+  text-decoration:none;
+  padding:14px;
+  border-radius:17px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(0,200,255,.16);
+  transition:.18s ease;
+}
+
+.shopNeed:hover{
+  border-color:rgba(0,200,255,.55);
+  box-shadow:0 0 16px rgba(0,200,255,.12);
+  transform:translateY(-1px);
+}
+
+.shopNeed strong{
+  display:block;
+  color:white;
+  margin-bottom:5px;
+}
+
+.shopNeed span{
+  display:block;
+  color:#9fbcd3;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.shopNeed small{
+  display:block;
+  margin-top:7px;
+  color:#00c8ff;
+  font-weight:bold;
+  font-size:12px;
+}
+
+/* Aquarium type welcome selection + parameters */
+.welcomeChoiceGrid{
+  width:100%;
+  max-width:320px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:0 0 14px;
+}
+
+.welcomeChoice{
+  border:1px solid rgba(0,200,255,.22);
+  background:rgba(255,255,255,.055);
+  color:#eaf8ff;
+  border-radius:16px;
+  padding:13px 10px;
+  font-weight:900;
+  font-size:14px;
+  box-shadow:inset 0 0 14px rgba(255,255,255,.02);
+}
+
+.welcomeChoice.active{
+  color:#00111f;
+  background:linear-gradient(135deg, var(--blue2), var(--blue));
+  border-color:rgba(0,200,255,.75);
+  box-shadow:0 0 20px rgba(0,200,255,.24);
+}
+
+.parameterHero{
+  background:radial-gradient(circle at top right, rgba(0,200,255,.22), rgba(6,18,29,.96));
+  border-color:rgba(0,200,255,.34);
+}
+
+.paramGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+
+.paramTile{
+  padding:13px;
+  border-radius:16px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.085);
+}
+
+.paramTile strong{
+  display:block;
+  color:white;
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.paramTile span{
+  display:block;
+  color:var(--blue);
+  font-weight:900;
+  font-size:15px;
+}
+
+.trackerList{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+
+.trackerItem{
+  padding:13px;
+  border-radius:16px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.085);
+}
+
+.trackerItem strong{
+  display:block;
+  color:white;
+  margin-bottom:5px;
+}
+
+.trackerItem span{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.trackerItem button{
+  margin-top:10px;
+}
+
+@media(max-width:430px){
+  .paramGrid{grid-template-columns:1fr;}
+  .nav button{font-size:9px;padding:8px 2px;}
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:68px;
+  background:rgba(2,7,13,.98);
+  border-top:1px solid rgba(0,170,255,.28);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:20;
+  backdrop-filter:blur(10px);
+}
+
+.nav button{
+  position:relative;
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(255,255,255,0.055);
+  color:#7aaedb;
+  font-size:11px;
+  padding:9px 8px;
+  min-width:66px;
+  border-radius:16px;
+  transition:transform .16s ease, color .16s ease, background .16s ease, box-shadow .16s ease, border-color .16s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.nav button:active,
+.nav button.buttonPressed{
+  transform:scale(.92);
+  color:#ffffff;
+  background:rgba(0,200,255,.13);
+  border-color:rgba(0,200,255,.45);
+  box-shadow:0 0 22px rgba(0,200,255,.34);
+}
+
+.nav button.active{
+  color:var(--blue);
+  font-weight:bold;
+  background:rgba(0,200,255,.09);
+  border-color:rgba(0,200,255,.28);
+  box-shadow:0 0 18px rgba(0,200,255,.16);
+}
+
+.primaryBtn,
+.secondaryBtn,
+.dangerBtn,
+.lockedBtn,
+.cameraBtn,
+.modalBtn,
+.simpleTile,
+.trackerOpenCard,
+.shopLinkCard,
+.shopNeed{
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, filter .16s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.primaryBtn:active,
+.secondaryBtn:active,
+.dangerBtn:active,
+.lockedBtn:active,
+.cameraBtn:active,
+.modalBtn:active,
+.simpleTile:active,
+.trackerOpenCard:active,
+.shopLinkCard:active,
+.shopNeed:active,
+.buttonPressed{
+  transform:scale(.97);
+  filter:brightness(1.08);
+  box-shadow:0 0 24px rgba(0,200,255,.24) !important;
+}
+
+@media(max-width:430px){
+  .page{
+    padding:16px;
+    padding-bottom:88px;
+  }
+
+  .pageHeader h1{
+    font-size:25px;
+  }
+
+  .formGrid{
+    grid-template-columns:1fr;
+  }
+
+  .partnerLinks{
+    grid-template-columns:1fr;
+  }
+}
+
+.cycleDownArrow{
+  text-align:center;
+  margin:10px 0 18px;
+  color:#b9ecff;
+}
+
+.cycleDownArrow .arrowText{
+  font-size:13px;
+  opacity:.9;
+  margin-bottom:4px;
+}
+
+.cycleDownArrow .arrowIcon{
+  font-size:34px;
+  line-height:1;
+  color:#49c9ff;
+  text-shadow:0 0 16px rgba(73,201,255,.8);
+  animation:arrowPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes arrowPulse{
+  0%,100%{transform:translateY(0);opacity:.75}
+  50%{transform:translateY(6px);opacity:1}
+}
+
+.cycleStateCard{
+  background:linear-gradient(135deg,rgba(5,22,35,.96),rgba(7,34,55,.9));
+  border:1px solid rgba(73,201,255,.35);
+  box-shadow:0 0 24px rgba(73,201,255,.12);
+}
+
+.tankStateTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.tankStateBadge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:800;
+  border:1px solid rgba(255,255,255,.12);
+  white-space:nowrap;
+}
+
+.tankStateBadge.stable{
+  color:#7dffbf;
+  background:rgba(31,199,113,.12);
+  border-color:rgba(31,199,113,.35);
+}
+
+.tankStateBadge.cycling{
+  color:#ffd66b;
+  background:rgba(255,196,68,.12);
+  border-color:rgba(255,196,68,.35);
+}
+
+.tankStateBadge.issue{
+  color:#ff8ea1;
+  background:rgba(255,92,122,.12);
+  border-color:rgba(255,92,122,.35);
+}
+
+.tankStateBadge.waiting{
+  color:#8fdcff;
+  background:rgba(73,201,255,.12);
+  border-color:rgba(73,201,255,.35);
+}
+
+.lastTestGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:10px;
+}
+
+.lastTestBox{
+  padding:10px 8px;
+  border-radius:14px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+  text-align:center;
+}
+
+.lastTestBox span{
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+
+.lastTestBox b{
+  font-size:16px;
+  color:#eaf8ff;
+}
+
+.graphPulse{
+  animation:graphPulseGlow 1.1s ease-out;
+}
+
+@keyframes graphPulseGlow{
+  0%{box-shadow:0 0 0 rgba(73,201,255,0)}
+  35%{box-shadow:0 0 34px rgba(73,201,255,.55)}
+  100%{box-shadow:0 0 0 rgba(73,201,255,0)}
+}
+
+.cycleCompleteOverlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(0,5,12,.82);
+  backdrop-filter:blur(10px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+}
+
+.cycleCompleteOverlay.show{
+  display:flex;
+}
+
+.cycleCompleteModal{
+  width:min(92vw,430px);
+  border-radius:28px;
+  padding:26px 20px 20px;
+  text-align:center;
+  background:
+    radial-gradient(circle at top,rgba(73,201,255,.28),transparent 38%),
+    linear-gradient(145deg,rgba(10,39,62,.98),rgba(4,12,22,.98));
+  border:1px solid rgba(100,220,255,.45);
+  box-shadow:0 0 55px rgba(73,201,255,.38);
+  animation:cycleCompletePop .45s ease-out;
+  position:relative;
+  overflow:hidden;
+}
+
+.cycleCompleteModal:before{
+  content:"";
+  position:absolute;
+  inset:-30%;
+  background:conic-gradient(from 90deg,transparent,rgba(73,201,255,.16),transparent,rgba(57,217,138,.16),transparent);
+  animation:cycleCompleteSpin 5s linear infinite;
+  opacity:.8;
+}
+
+.cycleCompleteInner{
+  position:relative;
+  z-index:2;
+}
+
+.cycleCompleteIcon{
+  font-size:54px;
+  margin-bottom:10px;
+  filter:drop-shadow(0 0 16px rgba(73,201,255,.9));
+}
+
+.cycleCompleteModal h2{
+  font-size:28px;
+  margin:0 0 10px;
+  color:#f3fbff;
+}
+
+.cycleCompleteModal p{
+  color:#c4efff;
+  margin-bottom:16px;
+}
+
+.cycleCompleteStats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:14px 0 18px;
+}
+
+.cycleCompleteStat{
+  border-radius:16px;
+  padding:10px 6px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.cycleCompleteStat span{
+  display:block;
+  font-size:10px;
+  color:#9fc8dd;
+  margin-bottom:4px;
+}
+
+.cycleCompleteStat b{
+  font-size:14px;
+  color:white;
+}
+
+.cycleCompleteButton{
+  margin-top:4px;
+}
+
+@keyframes cycleCompletePop{
+  0%{transform:scale(.86) translateY(20px);opacity:0}
+  100%{transform:scale(1) translateY(0);opacity:1}
+}
+
+@keyframes cycleCompleteSpin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+/* AquoraX Journey hero branding - stable surgical insert */
+.cycleHeroBrandCard{
+  position:relative;
+  overflow:hidden;
+  padding:0;
+  border-radius:26px;
+  border:1px solid rgba(73,201,255,.42);
+  background:#02070d;
+  box-shadow:0 0 38px rgba(73,201,255,.22);
+}
+
+.cycleHeroBrandCard img{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:16/8.2;
+  object-fit:cover;
+  object-position:center;
+}
+
+.cycleHeroBrandCard::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(to bottom,rgba(0,0,0,0) 48%,rgba(2,8,15,.78) 100%);
+}
+
+.cycleHeroBrandBadge{
+  position:absolute;
+  left:50%;
+  bottom:12px;
+  transform:translateX(-50%);
+  z-index:2;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 13px;
+  border-radius:999px;
+  color:#e4f9ff;
+  background:rgba(3,14,24,.76);
+  border:1px solid rgba(126,228,255,.45);
+  box-shadow:0 0 18px rgba(73,201,255,.24);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.2px;
+  white-space:nowrap;
+  backdrop-filter:blur(8px);
+}
+
+@media(max-width:520px){
+  .cycleHeroBrandCard{border-radius:22px}
+  .cycleHeroBrandBadge{font-size:11px;padding:7px 11px}
+}
+
+/* Blue Shark / Finest Aquatics shop links */
+.shopLinkGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.shopLinkCard{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  padding:14px;
+  border-radius:18px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(73,201,255,.18);
+  transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.shopLinkCard:hover{
+  transform:translateY(-1px);
+  border-color:rgba(73,201,255,.45);
+  box-shadow:0 0 20px rgba(73,201,255,.14);
+}
+
+.shopLinkCard strong{
+  display:block;
+  font-size:16px;
+  color:#ffffff;
+  margin-bottom:4px;
+}
+
+.shopLinkCard span{
+  display:block;
+  font-size:13px;
+  color:#aee8ff;
+  line-height:1.35;
+}
+
+.shopLinkButton{
+  margin-top:10px;
+  display:inline-flex;
+  width:100%;
+  justify-content:center;
+  align-items:center;
+  border-radius:14px;
+  padding:11px 12px;
+  background:linear-gradient(135deg,#159dff,#13d5ff);
+  color:#00121f;
+  font-weight:900;
+  font-size:13px;
+}
+
+/* Cycle reset button - locked to My Journey only */
+.cycleResetCard{
+  margin:18px 0 22px;
+}
+body > .cycleResetCard{
+  display:none !important;
+}
+#cycle:not(.active) .cycleResetCard{
+  display:none !important;
+}
+#cycle.active .cycleResetCard{
+  display:block;
+}
+
+
+/* Separate tracker panels */
+.trackerHubGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-top:12px;
+}
+
+.trackerOpenCard{
+  width:100%;
+  text-align:left;
+  border:none;
+  color:inherit;
+  padding:16px;
+  border-radius:19px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(73,201,255,.18);
+  box-shadow:0 0 18px rgba(0,200,255,.06);
+}
+
+.trackerOpenCard strong{
+  display:block;
+  font-size:17px;
+  color:white;
+  margin-bottom:5px;
+}
+
+.trackerOpenCard span{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.trackerOpenCard small{
+  display:inline-block;
+  margin-top:10px;
+  color:var(--blue);
+  font-weight:900;
+  font-size:12px;
+}
+
+.trackerPanel{
+  display:none;
+}
+
+.trackerPanel.active{
+  display:block;
+}
+
+.backBtn{
+  margin-bottom:14px;
+}
+
+.imageInput{
+  padding:12px;
+  background:rgba(255,255,255,.045);
+}
+
+.sideBySideImages{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:10px;
+}
+
+.compareImageBox{
+  border-radius:15px;
+  overflow:hidden;
+  background:rgba(0,0,0,.22);
+  border:1px solid rgba(255,255,255,.09);
+  min-height:120px;
+}
+
+.compareImageBox img{
+  width:100%;
+  height:125px;
+  object-fit:cover;
+  display:block;
+}
+
+.compareImageBox span{
+  display:block;
+  padding:8px;
+  color:#bfe3f7;
+  font-size:11px;
+  text-align:center;
+}
+
+.growthBadge{
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 9px;
+  border-radius:999px;
+  background:rgba(99,247,163,.09);
+  border:1px solid rgba(99,247,163,.2);
+  color:#c9ffdf;
+  font-size:12px;
+  font-weight:bold;
+}
+
+@media(max-width:430px){
+  .sideBySideImages{grid-template-columns:1fr;}
+}
+
+
+/* Before / after image comparison slider */
+.compareSliderWrap{
+  margin-top:12px;
+  border-radius:17px;
+  overflow:hidden;
+  border:1px solid rgba(73,201,255,.22);
+  background:rgba(0,0,0,.24);
+}
+
+.compareSlider{
+  position:relative;
+  width:100%;
+  height:230px;
+  overflow:hidden;
+  background:#02070d;
+}
+
+.compareSlider img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.compareSlider .latestImageLayer{
+  clip-path:inset(0 0 0 50%);
+}
+
+.compareSliderLine{
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:50%;
+  width:3px;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 0 14px rgba(0,200,255,.75);
+  transform:translateX(-50%);
+  pointer-events:none;
+}
+
+.compareSliderHandle{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  background:linear-gradient(135deg, var(--blue2), var(--blue));
+  border:2px solid rgba(255,255,255,.8);
+  box-shadow:0 0 18px rgba(0,200,255,.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#00111f;
+  font-weight:900;
+  pointer-events:none;
+}
+
+.compareSliderLabels{
+  position:absolute;
+  inset:auto 0 0;
+  display:flex;
+  justify-content:space-between;
+  padding:9px;
+  pointer-events:none;
+}
+
+.compareSliderLabels span{
+  padding:6px 9px;
+  border-radius:999px;
+  color:white;
+  background:rgba(2,7,13,.72);
+  border:1px solid rgba(255,255,255,.12);
+  font-size:11px;
+  font-weight:900;
+  backdrop-filter:blur(6px);
+}
+
+.compareRange{
+  width:100%;
+  margin:0;
+  padding:12px;
+  accent-color:#00c8ff;
+  background:rgba(255,255,255,.045);
+}
+
+.sliderHint{
+  padding:9px 12px 12px;
+  color:#9fbcd3;
+  font-size:12px;
+  line-height:1.4;
+}
+
+
+/* Large coral / plant collection support */
+.trackerCollectionTools{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.trackerSearchInput{
+  margin-bottom:0;
+}
+
+.trackerCountBadge{
+  display:inline-block;
+  margin-top:8px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(0,200,255,.08);
+  border:1px solid rgba(0,200,255,.18);
+  color:#bfeeff;
+  font-size:12px;
+  font-weight:900;
+}
+
+.trackerItem{
+  overflow:hidden;
+}
+
+.trackerItemHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.trackerItemHeader button{
+  width:auto;
+  min-width:86px;
+  padding:9px 10px;
+  font-size:12px;
+}
+
+.trackerDetails{
+  display:none;
+  margin-top:12px;
+}
+
+.trackerDetails.open{
+  display:block;
+}
+
+.trackerThumbRow{
+  display:flex;
+  gap:9px;
+  margin-top:10px;
+  overflow-x:auto;
+  padding-bottom:2px;
+}
+
+.trackerThumb{
+  width:74px;
+  height:74px;
+  border-radius:14px;
+  object-fit:cover;
+  border:1px solid rgba(73,201,255,.18);
+  background:#02070d;
+  flex:none;
+}
+
+.storageNote{
+  margin-top:10px;
+  padding:10px;
+  border-radius:14px;
+  background:rgba(255,211,106,.08);
+  border:1px solid rgba(255,211,106,.18);
+  color:#ffe5a3;
+  font-size:12px;
+  line-height:1.45;
+}
+
+
+/* Fullscreen Timeline Image Viewer */
+.viewerOverlay{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at top, rgba(0,48,78,.32), #000 48%, #000 100%);
+  z-index:99999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:16px;
+  touch-action:pan-y;
+}
+
+.viewerOverlay.show{
+  display:flex;
+}
+
+.viewerTopBar{
+  position:absolute;
+  top:14px;
+  left:14px;
+  right:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  z-index:2;
+}
+
+.viewerTitle{
+  color:white;
+  font-weight:900;
+  font-size:14px;
+  max-width:70%;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.viewerClose{
+  width:auto;
+  border:none;
+  border-radius:999px;
+  padding:9px 12px;
+  color:white;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);
+}
+
+.viewerImg{
+  max-width:96vw;
+  max-height:72vh;
+  object-fit:contain;
+  border-radius:18px;
+  box-shadow:0 0 34px rgba(0,200,255,.18);
+}
+
+.viewerMeta{
+  margin-top:12px;
+  width:min(96vw,520px);
+  padding:12px;
+  border-radius:16px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:#dff7ff;
+  text-align:center;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.viewerControls{
+  margin-top:12px;
+  display:flex;
+  gap:10px;
+  width:min(96vw,520px);
+}
+
+.viewerBtn{
+  flex:1;
+  padding:12px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.1);
+  color:white;
+  border:1px solid rgba(255,255,255,.14);
+  font-weight:900;
+}
+
+.viewerBtn:disabled{
+  opacity:.35;
+}
+
+.viewerThumbStrip{
+  margin-top:10px;
+  width:min(96vw,520px);
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:2px 0 6px;
+}
+
+.viewerThumb{
+  width:56px;
+  height:56px;
+  border-radius:12px;
+  object-fit:cover;
+  border:2px solid rgba(255,255,255,.16);
+  opacity:.62;
+  flex:none;
+}
+
+.viewerThumb.active{
+  border-color:var(--blue);
+  opacity:1;
+  box-shadow:0 0 14px rgba(0,200,255,.42);
+}
+
+.viewerSwipeHint{
+  margin-top:6px;
+  color:#8fbad1;
+  font-size:12px;
+  text-align:center;
+}
+
+
+/* Growth camera quick buttons */
+.cameraQuickBox{
+  margin-top:12px;
+  padding:13px;
+  border-radius:17px;
+  background:rgba(0,200,255,.07);
+  border:1px solid rgba(0,200,255,.18);
+}
+
+.cameraQuickBox strong{
+  display:block;
+  color:white;
+  margin-bottom:5px;
+}
+
+.cameraQuickBox span{
+  display:block;
+  color:#bfe3f7;
+  font-size:13px;
+  line-height:1.45;
+  margin-bottom:10px;
+}
+
+.cameraBtn{
+  width:100%;
+  border:none;
+  border-radius:15px;
+  padding:14px 16px;
+  font-weight:900;
+  font-size:15px;
+  color:#00111f;
+  background:linear-gradient(135deg, var(--blue2), var(--blue));
+  box-shadow:0 0 18px rgba(0,200,255,0.22);
+}
+
+
+/* Custom navigation menu */
+.menuToggle{
+  position:fixed;
+  top:14px;
+  left:14px;
+  width:44px;
+  height:44px;
+  border-radius:15px;
+  border:1px solid rgba(0,200,255,.28);
+  background:rgba(2,7,13,.82);
+  color:#dff7ff;
+  z-index:70;
+  font-size:21px;
+  font-weight:900;
+  box-shadow:0 0 18px rgba(0,200,255,.14);
+  backdrop-filter:blur(10px);
+}
+
+.menuOverlay{
+  position:fixed;
+  inset:0;
+  display:none;
+  z-index:80;
+  background:rgba(0,4,10,.55);
+  backdrop-filter:blur(6px);
+}
+
+.menuOverlay.show{
+  display:block;
+}
+
+.navMenuPanel{
+  position:absolute;
+  top:0;
+  left:0;
+  width:min(86vw,340px);
+  height:100%;
+  padding:18px;
+  background:
+    radial-gradient(circle at top left, rgba(0,200,255,.18), transparent 34%),
+    linear-gradient(145deg, rgba(6,18,29,.98), rgba(2,7,13,.99));
+  border-right:1px solid rgba(0,200,255,.24);
+  box-shadow:18px 0 40px rgba(0,0,0,.42);
+  overflow-y:auto;
+}
+
+.navMenuTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:16px;
+}
+
+.navMenuTop h2{
+  margin:0;
+  font-size:20px;
+}
+
+.navMenuTop p{
+  margin:3px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.closeMenuBtn{
+  width:auto;
+  border:none;
+  border-radius:999px;
+  padding:9px 11px;
+  color:white;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.14);
+  font-weight:900;
+}
+
+.navCustomList{
+  display:grid;
+  gap:10px;
+}
+
+.navCustomItem{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:13px;
+  border-radius:17px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.navCustomItem strong{
+  display:block;
+  color:white;
+  margin-bottom:3px;
+}
+
+.navCustomItem span{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.35;
+}
+
+.navSwitch{
+  position:relative;
+  width:52px;
+  height:30px;
+  flex:none;
+}
+
+.navSwitch input{
+  display:none;
+}
+
+.navSlider{
+  position:absolute;
+  inset:0;
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.12);
+  cursor:pointer;
+  transition:.18s ease;
+}
+
+.navSlider:before{
+  content:"";
+  position:absolute;
+  width:22px;
+  height:22px;
+  left:4px;
+  top:3px;
+  border-radius:50%;
+  background:#d6e8f4;
+  transition:.18s ease;
+}
+
+.navSwitch input:checked + .navSlider{
+  background:linear-gradient(135deg, var(--blue2), var(--blue));
+  border-color:rgba(0,200,255,.6);
+}
+
+.navSwitch input:checked + .navSlider:before{
+  transform:translateX(21px);
+  background:#00111f;
+}
+
+.menuNote{
+  margin-top:14px;
+  padding:12px;
+  border-radius:16px;
+  color:#bfe3f7;
+  background:rgba(0,200,255,.07);
+  border:1px solid rgba(0,200,255,.16);
+  font-size:12px;
+  line-height:1.45;
+}
+
+.nav button.navHidden{
+  display:none !important;
+}
+
+@media(max-width:430px){
+  .menuToggle{
+    top:10px;
+    left:10px;
+    width:40px;
+    height:40px;
+    border-radius:14px;
+  }
+}
+
+
+/* Parameters + Test Logging */
+.paramLiveGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:14px;
+}
+
+.paramLiveCard{
+  padding:15px;
+  border-radius:20px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 0 16px rgba(0,200,255,.05);
+}
+
+.paramLiveTop{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-bottom:12px;
+}
+
+.paramIcon{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#bff4ff;
+  border:1px solid rgba(0,200,255,.45);
+  background:rgba(0,200,255,.07);
+  font-size:13px;
+  font-weight:900;
+  flex:none;
+}
+
+.paramLiveCard h3{
+  margin:0;
+  font-size:15px;
+}
+
+.paramValue{
+  font-size:36px;
+  font-weight:900;
+  color:white;
+  margin-bottom:6px;
+  letter-spacing:-1px;
+}
+
+.paramValue small{
+  font-size:13px;
+  color:#d3e6f2;
+  letter-spacing:0;
+}
+
+.paramTarget{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.35;
+}
+
+.paramStatusGood{color:#63f7a3;font-weight:900;}
+.paramStatusWatch{color:#ffd36a;font-weight:900;}
+.paramStatusBad{color:#ff6b6b;font-weight:900;}
+
+.logNote{
+  padding:13px;
+  border-radius:17px;
+  background:rgba(0,200,255,.06);
+  border:1px solid rgba(0,200,255,.14);
+  color:#bfe3f7;
+  line-height:1.45;
+  margin-bottom:14px;
+}
+
+.testHistoryItem{
+  padding:14px;
+  border-radius:17px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.085);
+  margin-bottom:10px;
+}
+
+.testHistoryItem strong{
+  display:block;
+  color:white;
+  margin-bottom:5px;
+}
+
+.testHistoryItem span{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.smartInsightCard{
+  background:
+    radial-gradient(circle at top right, rgba(255,211,106,.12), transparent 35%),
+    linear-gradient(145deg, rgba(8,24,39,0.96), rgba(4,12,22,0.96));
+  border-color:rgba(255,211,106,.22);
+}
+
+.scoreCard{
+  text-align:center;
+}
+
+.scoreNumber{
+  font-size:64px;
+  font-weight:900;
+  color:var(--blue);
+  text-shadow:0 0 20px rgba(0,200,255,.28);
+}
+
+.graphCanvasWrap{
+  width:100%;
+  overflow:hidden;
+  border-radius:17px;
+  border:1px solid rgba(0,200,255,.18);
+  background:#02070d;
+  padding:10px;
+  margin-top:14px;
+}
+
+#parameterTrendGraph{
+  width:100%;
+  height:260px;
+  display:block;
+}
+
+@media(max-width:520px){
+  .paramLiveGrid{grid-template-columns:1fr 1fr;gap:9px;}
+  .paramLiveCard{padding:12px;}
+  .paramValue{font-size:30px;}
+  .paramLiveCard h3{font-size:13px;}
+}
+
+
+.parameterLegendDot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  display:inline-block;
+}
+
+
+/* Fix hero image cropping instead of masking */
+.cycleHeroBrandCard{
+  overflow:hidden;
+}
+
+.cycleHeroBrandCard img{
+  width:100%;
+  height:auto;
+  object-fit:cover;
+  object-position:top;
+  transform:scale(1.05);
+}
+
+/* Remove any previous mask attempts */
+.cycleHeroBrandCard::before,
+.partnerBadge,
+.cycleHeroBrandBadge{
+  display:none !important;
+}
+
+
+
+/* AquoraX Advanced Customiser - protected rebuild */
+:root{
+  --aqxPanelOpacity:.96;
+  --aqxPanelGlow:.12;
+  --aqxBgDim:.58;
+  --aqxBlur:0px;
+  --aqxRadiusBoost:0px;
+  --aqxAccent:#00c8ff;
+  --aqxTextColour:#ffffff;
+  --aqxMutedColour:#9fbcd3;
+  --aqxHeadingColour:#ffffff;
+  --aqxButtonTextColour:#00111f;
+  --aqxValueColour:var(--aqxAccent,#00c8ff);
+}
+
+body{
+  background-image:
+    linear-gradient(rgba(1,4,9,var(--aqxBgDim)), rgba(1,4,9,var(--aqxBgDim))),
+    var(--aqxCustomBg, radial-gradient(circle at top, #062033 0%, var(--bg) 42%, #010409 100%));
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  color:var(--aqxTextColour) !important;
+}
+
+body.aqxCustomBgActive #welcomeScreen{
+  background:
+    linear-gradient(rgba(1,4,9,var(--aqxBgDim)), rgba(1,4,9,var(--aqxBgDim))),
+    var(--aqxCustomBg) center center / cover fixed no-repeat !important;
+}
+
+.card,.heroCard,.paramLiveCard,.trackerItem,.simpleTile,.doseBox,.timestampBox,.productAssist,.shopNeed,.shopLinkCard,.testHistoryItem,.partnerCard,.statusBox,.cycleStateCard,.blueSharkStoreCard,.smartInsightCard,.parameterHero,.customiserHero{
+  background:
+    linear-gradient(145deg, rgba(8,24,39,var(--aqxPanelOpacity)), rgba(4,12,22,var(--aqxPanelOpacity))) !important;
+  box-shadow:
+    0 15px 40px rgba(0,0,0,calc(.32 * var(--aqxPanelOpacity))),
+    0 0 34px rgba(0,200,255,calc(var(--aqxPanelGlow) * var(--aqxPanelOpacity))) !important;
+  border-radius:calc(20px + var(--aqxRadiusBoost)) !important;
+  backdrop-filter:blur(var(--aqxBlur));
+  -webkit-backdrop-filter:blur(var(--aqxBlur));
+}
+
+body.aqxFullClear .card,body.aqxFullClear .heroCard,body.aqxFullClear .paramLiveCard,body.aqxFullClear .trackerItem,body.aqxFullClear .simpleTile,body.aqxFullClear .doseBox,body.aqxFullClear .timestampBox,body.aqxFullClear .productAssist,body.aqxFullClear .shopNeed,body.aqxFullClear .shopLinkCard,body.aqxFullClear .testHistoryItem{
+  background:transparent !important;
+  box-shadow:none !important;
+  border-color:rgba(255,255,255,.08) !important;
+}
+
+body,.page,.card,input,select,textarea{color:var(--aqxTextColour) !important;}
+.pageHeader h1,.card h2,.card h3,.trackerItem strong,.historyItem strong,.testHistoryItem strong,.paramLiveCard h3,#parameterTitle,#reefScoreTitle{color:var(--aqxHeadingColour) !important;}
+p,.card p,.pageHeader p,.simpleTile span,.timestampBox,.paramTarget,.trackerItem span,.testHistoryItem span,.smallPrint,.storeIntro,.themePreset span,.fullClearRow span{color:var(--aqxMutedColour) !important;}
+.primaryBtn,.modalBtn,.partnerLinks a,.shopLinkButton,.cameraBtn{color:var(--aqxButtonTextColour) !important;background:linear-gradient(135deg, var(--blue2), var(--aqxAccent)) !important;}
+.nav button.active,.doseValue,#cycleProgressText,.shopNeed small,.paramValue,.scoreNumber,.customValue{color:var(--aqxValueColour) !important;}
+.nav{background:rgba(2,7,13,calc(.98 * var(--aqxPanelOpacity,.96))) !important;}
+.customPreview{width:100%;height:190px;border-radius:22px;border:1px solid rgba(0,200,255,.24);background:#02070d;object-fit:cover;display:none;margin:12px 0;box-shadow:0 0 24px rgba(0,200,255,.1);}
+.customPreview.show{display:block;}
+.customRangeRow{display:grid;grid-template-columns:1fr 76px;gap:12px;align-items:center;margin:6px 0 14px;}
+.customRangeRow input{margin:0;padding:0;accent-color:var(--aqxAccent);}
+.customValue{border:1px solid rgba(0,200,255,.22);border-radius:999px;padding:8px 10px;text-align:center;font-weight:900;background:rgba(0,200,255,.06);font-size:13px;}
+.customColourGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0 14px;}
+.colourDot{width:100%;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 15px rgba(0,0,0,.18);}
+.customButtonGrid,.fontPresetGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.fullClearRow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border-radius:17px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);margin-top:10px;}
+.fullClearRow strong{display:block;margin-bottom:3px;}
+.fullClearRow input{width:24px;height:24px;margin:0;}
+.fontColourGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+.fontColourControl{padding:13px;border-radius:17px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);}
+.fontColourControl input[type="color"],#aqxAccentPicker{width:100%;height:48px;padding:4px;margin:0;border-radius:14px;background:#02070d;}
+[data-panel].aqxPanelHidden{display:none !important;}
+.menuToggle,.menuOverlay{display:none !important;}
+
+/* Profile customisation dropdown cleanup */
+.customMenuIntro{
+  border:1px solid rgba(0,200,255,.22) !important;
+}
+.customDrop{
+  padding:0 !important;
+  overflow:hidden;
+}
+.customDrop summary{
+  list-style:none;
+  cursor:pointer;
+  padding:18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  min-height:64px;
+}
+.customDrop summary::-webkit-details-marker{display:none;}
+.customDrop summary strong{
+  display:block;
+  color:var(--aqxHeadingColour,#fff);
+  font-size:17px;
+  letter-spacing:-.02em;
+}
+.customDrop summary span{
+  display:block;
+  color:var(--aqxMutedColour,#9fbcd3);
+  font-size:12px;
+  line-height:1.35;
+  margin-top:3px;
+}
+.customDrop summary:after{
+  content:'⌄';
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  color:var(--aqxAccent,#00c8ff);
+  border:1px solid rgba(0,200,255,.22);
+  background:rgba(0,200,255,.07);
+  transition:transform .22s ease, box-shadow .22s ease;
+}
+.customDrop[open] summary:after{
+  transform:rotate(180deg);
+  box-shadow:0 0 18px rgba(0,200,255,.16);
+}
+.customDropBody{
+  padding:0 18px 18px;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.customDropBody h3{
+  margin:18px 0 8px;
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:var(--aqxAccent,#00c8ff) !important;
+}
+.customDropBody p{margin-top:0;}
+.customDropMiniNote{
+  margin:0 0 12px;
+  color:var(--aqxMutedColour,#9fbcd3);
+  font-size:13px;
+}
+
+@media(max-width:430px){.customButtonGrid,.fontColourGrid,.fontPresetGrid{grid-template-columns:1fr;}}
+
+
+
+/* AquoraX Beginner Mode - Journey guidance layer */
+.beginnerToggleCard{
+  border-color:rgba(99,247,163,.24) !important;
+  background:
+    radial-gradient(circle at top right, rgba(99,247,163,.12), transparent 35%),
+    linear-gradient(145deg, rgba(8,24,39,var(--aqxPanelOpacity,.96)), rgba(4,12,22,var(--aqxPanelOpacity,.96))) !important;
+}
+.beginnerModeTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.beginnerModeTop h2{margin:0 0 5px;}
+.beginnerModeTop p{margin:0;}
+.beginnerSwitch{
+  position:relative;
+  width:58px;
+  height:32px;
+  flex:none;
+}
+.beginnerSwitch input{display:none;}
+.beginnerSlider{
+  position:absolute;
+  inset:0;
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.14);
+  transition:.18s ease;
+}
+.beginnerSlider:before{
+  content:"";
+  position:absolute;
+  width:24px;
+  height:24px;
+  left:4px;
+  top:3px;
+  border-radius:50%;
+  background:#d6e8f4;
+  transition:.18s ease;
+}
+.beginnerSwitch input:checked + .beginnerSlider{
+  background:linear-gradient(135deg,#1fc771,#63f7a3);
+  border-color:rgba(99,247,163,.55);
+}
+.beginnerSwitch input:checked + .beginnerSlider:before{
+  transform:translateX(25px);
+  background:#001a10;
+}
+.beginnerGuideCard{
+  display:none;
+}
+body.aqxBeginnerMode .beginnerGuideCard{
+  display:block;
+}
+.beginnerStageBadge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin:4px 0 12px;
+  padding:8px 12px;
+  border-radius:999px;
+  color:#d8ffe8;
+  background:rgba(99,247,163,.10);
+  border:1px solid rgba(99,247,163,.22);
+  font-size:13px;
+  font-weight:900;
+}
+.beginnerStepGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.beginnerStep{
+  padding:13px;
+  border-radius:17px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.085);
+}
+.beginnerStep strong{
+  display:block;
+  color:white;
+  margin-bottom:5px;
+}
+.beginnerStep span{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+.fishSafetyBadge{
+  display:inline-block;
+  margin-top:8px;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+}
+.fishSafetyBadge.safe{
+  color:#d8ffe8;
+  background:rgba(99,247,163,.10);
+  border:1px solid rgba(99,247,163,.22);
+}
+.fishSafetyBadge.caution{
+  color:#fff1bf;
+  background:rgba(255,211,106,.10);
+  border:1px solid rgba(255,211,106,.22);
+}
+.fishSafetyBadge.unsafe{
+  color:#ffd1d1;
+  background:rgba(255,107,107,.10);
+  border:1px solid rgba(255,107,107,.22);
+}
+.beginnerParamGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.beginnerParam{
+  padding:12px;
+  border-radius:16px;
+  background:rgba(0,200,255,.045);
+  border:1px solid rgba(0,200,255,.12);
+}
+.beginnerParam strong{
+  display:block;
+  color:white;
+  margin-bottom:4px;
+  font-size:13px;
+}
+.beginnerParam span{
+  display:block;
+  color:#bfe3f7;
+  font-size:12px;
+  line-height:1.35;
+}
+.beginnerReminder{
+  margin-top:12px;
+  padding:12px;
+  border-radius:16px;
+  background:rgba(0,200,255,.07);
+  border:1px solid rgba(0,200,255,.16);
+  color:#bfeeff;
+  font-size:13px;
+  line-height:1.45;
+}
+@media(max-width:430px){
+  .beginnerParamGrid{grid-template-columns:1fr;}
+  .beginnerModeTop{align-items:flex-start;}
+}
+
+
+/* AquoraX Cycle Completion Gate - Home onboarding */
+.cycleGateCard{
+  overflow:hidden;
+  padding:0 !important;
+  border:1px solid rgba(73,201,255,.38);
+  background:
+    radial-gradient(circle at top, rgba(0,200,255,.20), transparent 42%),
+    linear-gradient(145deg, rgba(8,24,39,var(--aqxPanelOpacity,.96)), rgba(4,12,22,var(--aqxPanelOpacity,.96))) !important;
+  box-shadow:0 0 38px rgba(73,201,255,.18), 0 18px 44px rgba(0,0,0,.36) !important;
+}
+
+.cycleGateHero{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+  background:#02070d;
+  border-bottom:1px solid rgba(73,201,255,.18);
+}
+
+.cycleGateHero img{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:16/8.2;
+  object-fit:cover;
+  object-position:top center;
+  transform:scale(1.035);
+}
+
+.cycleGateHero:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(to bottom, rgba(0,0,0,0) 45%, rgba(2,8,15,.78) 100%);
+}
+
+.cycleGateContent{
+  padding:16px;
+}
+
+.cycleGateBadge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 11px;
+  border-radius:999px;
+  background:rgba(0,200,255,.08);
+  border:1px solid rgba(0,200,255,.22);
+  color:#dff8ff;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.cycleGateTitle{
+  margin:0 0 8px !important;
+  font-size:21px !important;
+}
+
+.cycleGateActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+
+.cycleGateLockedNote{
+  margin-top:12px !important;
+  padding:12px;
+  border-radius:16px;
+  background:rgba(0,200,255,.06);
+  border:1px solid rgba(0,200,255,.14);
+  color:#bfe3f7 !important;
+  font-size:13px;
+}
+
+body:not(.aqxCycleConfirmed) .requiresCycleComplete{
+  display:none !important;
+}
+
+body.aqxCycleConfirmed .cycleGateCard{
+  display:none !important;
+}
+
+@media(max-width:430px){
+  .cycleGateActions{grid-template-columns:1fr;}
+  .cycleGateContent{padding:15px;}
+  .cycleGateTitle{font-size:19px !important;}
+}
+
+
+
+
+/* Dosing + ICP Tracker */
+.dosingHero{
+  background:
+    radial-gradient(circle at top right, rgba(0,200,255,.20), transparent 36%),
+    linear-gradient(145deg, rgba(8,24,39,.96), rgba(4,12,22,.96));
+}
+.doseTrackerGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:12px;
+}
+.doseTrackerCard{
+  padding:14px;
+  border-radius:18px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(0,200,255,.14);
+}
+.doseTrackerCard strong{display:block;color:white;margin-bottom:5px;}
+.doseTrackerCard span{display:block;color:var(--muted);font-size:13px;line-height:1.45;}
+.doseStatusPill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 10px;
+  border-radius:999px;
+  margin-top:10px;
+  background:rgba(0,200,255,.08);
+  border:1px solid rgba(0,200,255,.18);
+  color:#bfeeff;
+  font-size:12px;
+  font-weight:900;
+}
+.doseStatusPill.due{background:rgba(255,211,106,.10);border-color:rgba(255,211,106,.26);color:#ffe8a8;}
+.doseStatusPill.done{background:rgba(99,247,163,.10);border-color:rgba(99,247,163,.26);color:#d7ffe7;}
+.doseActionRow{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.icpParameterBuilder{
+  display:grid;
+  gap:10px;
+  margin-top:12px;
+}
+.icpParameterRow{
+  display:grid;
+  grid-template-columns:1.2fr .8fr .7fr auto;
+  gap:8px;
+  align-items:end;
+  padding:10px;
+  border-radius:16px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+}
+.icpParameterRow input,
+.icpParameterRow select{margin-bottom:0;}
+.icpRemoveBtn{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  border:1px solid rgba(255,107,107,.25);
+  background:rgba(255,107,107,.10);
+  color:#ffd1d1;
+  font-weight:900;
+}
+.icpParamChips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:10px;
+}
+.icpChip{
+  padding:7px 9px;
+  border-radius:999px;
+  background:rgba(0,200,255,.07);
+  border:1px solid rgba(0,200,255,.16);
+  color:#ccefff;
+  font-size:12px;
+}
+.icpChip.warn{background:rgba(255,211,106,.09);border-color:rgba(255,211,106,.22);color:#ffe4a3;}
+.icpChip.bad{background:rgba(255,107,107,.09);border-color:rgba(255,107,107,.22);color:#ffd1d1;}
+.icpChip.good{background:rgba(99,247,163,.09);border-color:rgba(99,247,163,.22);color:#d7ffe7;}
+@media(max-width:520px){
+  .doseTrackerGrid,.doseActionRow{grid-template-columns:1fr;}
+  .icpParameterRow{grid-template-columns:1fr 1fr;}
+  .icpRemoveBtn{width:100%;}
+}
+
+/* Clean core nav hard safety */
+#nav-log{display:none !important;}
+.nav button.navHidden{display:none !important;}
+
+
+/* HARD LOCKED CLEAN NAV DEFAULT - Home/Growth/Journey/Dosing/Profile visible, optional buttons hidden until Profile enables them */
+#nav-parameters,
+#nav-history,
+#nav-graphs,
+#nav-guides,
+#nav-jobs,
+#nav-log{
+  display:none !important;
+}
+body.aqxShowNavParameters #nav-parameters{display:block !important;}
+body.aqxShowNavHistory #nav-history{display:block !important;}
+body.aqxShowNavGraphs #nav-graphs{display:block !important;}
+body.aqxShowNavGuides #nav-guides{display:block !important;}
+body.aqxShowNavLog #nav-log{display:none !important;}
+
+
+
+/* AquoraX Global Save Overlay + Cloud Hub */
+.aqxSavingOverlay{
+  position:fixed; inset:0; z-index:120000; display:none; align-items:center; justify-content:center;
+  background:rgba(0,5,12,.72); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); padding:22px;
+}
+.aqxSavingOverlay.show{display:flex;}
+.aqxSavingCard{
+  width:min(88vw,360px); text-align:center; border-radius:28px; padding:26px 22px;
+  background:radial-gradient(circle at top,rgba(0,200,255,.24),transparent 38%),linear-gradient(145deg,rgba(8,24,39,.98),rgba(2,7,13,.99));
+  border:1px solid rgba(0,200,255,.36); box-shadow:0 0 44px rgba(0,200,255,.24);
+}
+.aqxSpinner{
+  width:58px; height:58px; margin:0 auto 14px; border-radius:50%; border:4px solid rgba(255,255,255,.12);
+  border-top-color:var(--aqxAccent,#00c8ff); animation:aqxSpin .82s linear infinite; box-shadow:0 0 22px rgba(0,200,255,.25);
+}
+.aqxSavingCard.saved .aqxSpinner{animation:none; border-color:rgba(99,247,163,.35); display:flex; align-items:center; justify-content:center; font-size:30px; color:#63f7a3;}
+.aqxSavingCard.saved .aqxSpinner:before{content:'✓';}
+.aqxSavingTitle{font-weight:900; font-size:19px; color:white; margin-bottom:5px;}
+.aqxSavingSub{font-size:13px; color:#bfe3f7; line-height:1.45;}
+@keyframes aqxSpin{to{transform:rotate(360deg)}}
+
+.aqxLoginScreen{
+  position:fixed; inset:0; z-index:110000; display:none; align-items:center; justify-content:center; padding:22px;
+  background:radial-gradient(circle at top, #062033 0%, #02070d 48%, #010409 100%);
+}
+.aqxLoginScreen.show{display:flex;}
+.aqxLoginCard{width:min(92vw,430px); text-align:center; border-radius:30px; padding:24px; background:radial-gradient(circle at top,rgba(0,200,255,.20),transparent 36%),linear-gradient(145deg,rgba(8,24,39,.98),rgba(2,7,13,.99)); border:1px solid rgba(0,200,255,.35); box-shadow:0 0 48px rgba(0,200,255,.2);}
+.aqxLoginLogo{width:76%; max-width:280px; margin:0 auto 14px; filter:drop-shadow(0 0 16px rgba(0,200,255,.34));}
+.aqxLoginCard h1{margin:6px 0 8px; font-size:28px;}
+.aqxLoginCard p{color:var(--muted); line-height:1.5; margin:0 0 16px;}
+.aqxLoginFields{text-align:left; margin-top:14px;}
+.aqxCloudStatusLine{margin-top:12px; padding:11px; border-radius:16px; background:rgba(0,200,255,.07); border:1px solid rgba(0,200,255,.18); color:#bfe3f7; font-size:12px; line-height:1.45;}
+.aqxCloudButton{position:fixed; top:12px; right:12px; width:44px; height:44px; display:none; z-index:65; border-radius:15px; border:1px solid rgba(0,200,255,.28); background:rgba(2,7,13,.82); color:#dff7ff; font-size:20px; box-shadow:0 0 18px rgba(0,200,255,.14); backdrop-filter:blur(10px);}
+body.aqxLoggedIn .aqxCloudButton{display:block;}
+.aqxCloudPanelOverlay{position:fixed; inset:0; z-index:100000; display:none; background:rgba(0,4,10,.62); backdrop-filter:blur(7px); padding:18px; align-items:center; justify-content:center;}
+.aqxCloudPanelOverlay.show{display:flex;}
+.aqxCloudPanel{width:min(92vw,430px); max-height:88vh; overflow:auto; border-radius:28px; padding:22px; background:radial-gradient(circle at top right,rgba(0,200,255,.18),transparent 34%),linear-gradient(145deg,rgba(8,24,39,.98),rgba(2,7,13,.99)); border:1px solid rgba(0,200,255,.32); box-shadow:0 0 42px rgba(0,200,255,.2);}
+.aqxCloudPanel h2{margin:0 0 8px;}
+.aqxCloudPanel p{color:var(--muted); line-height:1.5;}
+.aqxCloudButtonGrid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;}
+@media(max-width:430px){.aqxCloudButtonGrid{grid-template-columns:1fr}.aqxCloudButton{top:10px; right:10px; width:40px; height:40px;}}
+
+.dosingInsightGrid{display:grid; gap:10px; margin-top:12px;}
+.dosingInsightItem{padding:13px; border-radius:17px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.09);}
+.dosingInsightItem strong{display:block; margin-bottom:5px; color:white;}
+.dosingInsightItem span{display:block; color:var(--muted); font-size:13px; line-height:1.45;}
+.dosingInsightItem.good{border-color:rgba(99,247,163,.22); background:rgba(99,247,163,.065);}
+.dosingInsightItem.warn{border-color:rgba(255,211,106,.24); background:rgba(255,211,106,.07);}
+.dosingInsightItem.bad{border-color:rgba(255,107,107,.24); background:rgba(255,107,107,.07);}
+.consumptionMini{margin-top:8px; padding:9px; border-radius:13px; background:rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.08); color:#bfe3f7; font-size:12px; line-height:1.42;}
+
+
+
+/* Fully customisable Home + ICP parameter monitoring */
+.paramCustomSection{display:grid;gap:10px;margin-top:12px;}
+.paramCustomItem{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border-radius:17px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);}
+.paramCustomItem strong{display:block;color:white;margin-bottom:3px;}
+.paramCustomItem span{display:block;color:var(--muted);font-size:12px;line-height:1.35;}
+.paramCustomForm{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.paramCustomForm input{margin-bottom:0;}
+.paramSourceBadge{display:inline-block;margin-top:6px;padding:5px 8px;border-radius:999px;background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.18);color:#bfeeff;font-size:11px;font-weight:900;}
+@media(max-width:520px){.paramCustomForm{grid-template-columns:1fr}.paramCustomItem{align-items:flex-start}.paramCustomItem .navSwitch{margin-top:4px}}
+
+
+
+/* AquoraX Simple Home Parameter Controls */
+.homeParamActions{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.homeParamActions button{padding:12px 10px;font-size:13px;}
+.paramDragHint{display:block;margin-top:8px;color:#89c4e1;font-size:12px;line-height:1.35;}
+.homeStyleQuickGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px;}
+.homeStyleBtn{border:1px solid rgba(0,200,255,.18);border-radius:16px;padding:12px 8px;background:rgba(255,255,255,.045);color:white;font-weight:900;font-size:12px;}
+.homeStyleBtn.active{background:linear-gradient(135deg,var(--blue2),var(--aqxAccent,#00c8ff));color:#00111f;border-color:rgba(0,200,255,.7);box-shadow:0 0 18px rgba(0,200,255,.22);}
+.homePriorityList{display:grid;gap:10px;margin-top:12px;}
+.homePriorityItem{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border-radius:17px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);}
+.homePriorityItem strong{display:block;color:white;margin-bottom:3px;}
+.homePriorityItem span{display:block;color:var(--muted);font-size:12px;line-height:1.35;}
+.homePinBtn{width:auto;min-width:92px;border:none;border-radius:999px;padding:10px 12px;font-weight:900;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#cfefff;}
+.homePinBtn.pinned{background:rgba(255,211,106,.14);border-color:rgba(255,211,106,.35);color:#ffe6a6;box-shadow:0 0 14px rgba(255,211,106,.14);}
+.homeCardPin{
+  position:absolute;
+  top:11px;
+  right:11px;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.13);
+  background:rgba(2,7,13,.72);
+  color:#bdefff;
+  font-size:18px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 14px rgba(0,200,255,.08);
+}
+.homeCardPin.pinned{
+  color:#ffe6a6;
+  border-color:rgba(255,211,106,.38);
+  background:rgba(255,211,106,.14);
+  box-shadow:0 0 16px rgba(255,211,106,.18);
+}
+.paramLiveCard{position:relative;}
+.paramLiveCard .paramLiveTop{padding-right:36px;}
+
+.paramLiveGrid.aqxHomeGridLarge{grid-template-columns:1fr;}
+.paramLiveCard.aqxParamTileCompact{padding:10px;border-radius:15px;min-height:auto;}
+.paramLiveCard.aqxParamTileCompact .paramValue{font-size:25px;margin-bottom:3px;}
+.paramLiveCard.aqxParamTileCompact .paramLiveTop{margin-bottom:7px;}
+.paramLiveCard.aqxParamTileLarge{padding:18px;}
+.paramLiveCard.aqxParamTileLarge .paramValue{font-size:44px;}
+.paramLiveCard.aqxParamTileRound{border-radius:30px !important;}
+.paramLiveCard.aqxParamTileSquare{border-radius:8px !important;}
+.paramLiveCard.aqxParamTileGlass{background:rgba(255,255,255,.025) !important;border-color:rgba(255,255,255,.16) !important;backdrop-filter:blur(10px);}
+.paramLiveCard.aqxParamTileGlow{box-shadow:0 0 30px rgba(0,200,255,.22), inset 0 0 18px rgba(255,255,255,.025) !important;border-color:rgba(0,200,255,.36) !important;}
+@media(max-width:520px){
+  .homeStyleQuickGrid{grid-template-columns:1fr 1fr;}
+}
+
+
+
+/* AquoraX Home Controls HARD REBUILD - working global controls */
+#homeParameterLiveGrid{transition:all .22s ease;}
+body.aqxHomeSizeCompact #homeParameterLiveGrid{grid-template-columns:repeat(3,1fr) !important;gap:8px !important;}
+body.aqxHomeSizeStandard #homeParameterLiveGrid{grid-template-columns:repeat(2,1fr) !important;gap:12px !important;}
+body.aqxHomeSizeLarge #homeParameterLiveGrid{grid-template-columns:1fr !important;gap:12px !important;}
+body.aqxHomeSizeCompact #homeParameterLiveGrid .paramLiveCard{padding:10px !important;min-height:0 !important;}
+body.aqxHomeSizeCompact #homeParameterLiveGrid .paramValue{font-size:24px !important;}
+body.aqxHomeSizeCompact #homeParameterLiveGrid .paramIcon{width:30px !important;height:30px !important;font-size:11px !important;}
+body.aqxHomeSizeCompact #homeParameterLiveGrid h3{font-size:12px !important;}
+body.aqxHomeSizeCompact #homeParameterLiveGrid .paramTarget{font-size:11px !important;}
+body.aqxHomeSizeLarge #homeParameterLiveGrid .paramLiveCard{padding:20px !important;}
+body.aqxHomeSizeLarge #homeParameterLiveGrid .paramValue{font-size:48px !important;}
+body.aqxHomeSizeLarge #homeParameterLiveGrid h3{font-size:17px !important;}
+body.aqxHomeStyleDefault #homeParameterLiveGrid .paramLiveCard{border-radius:20px !important;}
+body.aqxHomeStyleRounded #homeParameterLiveGrid .paramLiveCard{border-radius:32px !important;}
+body.aqxHomeStyleSquare #homeParameterLiveGrid .paramLiveCard{border-radius:8px !important;}
+body.aqxHomeStyleGlass #homeParameterLiveGrid .paramLiveCard{background:rgba(255,255,255,.028) !important;border-color:rgba(255,255,255,.18) !important;box-shadow:0 12px 30px rgba(0,0,0,.24), inset 0 0 18px rgba(255,255,255,.025) !important;backdrop-filter:blur(13px) !important;-webkit-backdrop-filter:blur(13px) !important;}
+body.aqxHomeStyleGlow #homeParameterLiveGrid .paramLiveCard{border-color:rgba(0,200,255,.5) !important;box-shadow:0 0 34px rgba(0,200,255,.30), inset 0 0 18px rgba(255,255,255,.03) !important;}
+.aqxHomeControlActive{background:linear-gradient(135deg,var(--blue2),var(--aqxAccent,#00c8ff)) !important;color:#00111f !important;border-color:rgba(0,200,255,.75) !important;box-shadow:0 0 18px rgba(0,200,255,.25) !important;}
+@media(max-width:520px){
+  body.aqxHomeSizeCompact #homeParameterLiveGrid{grid-template-columns:repeat(2,1fr) !important;}
+  body.aqxHomeSizeStandard #homeParameterLiveGrid{grid-template-columns:repeat(2,1fr) !important;}
+  body.aqxHomeSizeLarge #homeParameterLiveGrid{grid-template-columns:1fr !important;}
+}
+@media(max-width:360px){body.aqxHomeSizeCompact #homeParameterLiveGrid{grid-template-columns:1fr 1fr !important;}}
+
+
+
+/* AquoraX FULLY customisable Home parameter panels */
+.aqxPanelControlGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.aqxPanelControl{padding:13px;border-radius:17px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);}
+.aqxPanelControl label{margin-bottom:8px;}
+.aqxPanelControl input[type=range]{width:100%;padding:0;margin:0 0 8px;accent-color:var(--aqxAccent,#00c8ff);}
+
+.aqxColourRow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.aqxColourPick{padding:13px;border-radius:17px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);}
+.aqxColourPick label{display:block;margin-bottom:8px;color:#dff7ff;font-size:12px;font-weight:900;letter-spacing:.02em;}
+.aqxColourPick input[type=color]{width:100%;height:44px;padding:4px;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.24);}
+.aqxColourPresetGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:12px;}
+.aqxColourPreset{height:42px;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 18px rgba(0,0,0,.16), inset 0 0 12px rgba(255,255,255,.04);}
+.aqxColourPreset.active{outline:2px solid var(--aqxAccent,#00c8ff);box-shadow:0 0 22px rgba(0,200,255,.28);}
+.aqxColourPreview{margin-top:12px;padding:14px;border-radius:18px;background:linear-gradient(145deg,var(--aqxHomeParamBoxColour,#081827),var(--aqxHomeParamBoxColour2,#040c16));border:1px solid var(--aqxHomeParamBoxBorderColour,rgba(0,200,255,.28));box-shadow:0 0 24px var(--aqxHomeParamBoxGlowColour,rgba(0,200,255,.20));}
+.aqxColourPreview strong{display:block;color:var(--aqxHomeParamBoxTextColour,#ffffff);}
+.aqxColourPreview span{display:block;margin-top:3px;color:color-mix(in srgb,var(--aqxHomeParamBoxTextColour,#ffffff) 72%, transparent);font-size:12px;}
+@media(max-width:520px){.aqxColourRow{grid-template-columns:1fr}.aqxColourPresetGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.aqxPanelControlGrid{grid-template-columns:1fr}.homeStyleQuickGrid{grid-template-columns:1fr 1fr !important;}}
+#homeParameterLiveGrid{gap:var(--aqxHomePanelGap,12px) !important;}
+body.aqxHomeCols1 #homeParameterLiveGrid{grid-template-columns:1fr !important;}
+body.aqxHomeCols2 #homeParameterLiveGrid{grid-template-columns:repeat(2,1fr) !important;}
+body.aqxHomeCols3 #homeParameterLiveGrid{grid-template-columns:repeat(3,1fr) !important;}
+body.aqxHomeSizeCompact #homeParameterLiveGrid .paramLiveCard{padding:10px !important;min-height:118px;}
+body.aqxHomeSizeStandard #homeParameterLiveGrid .paramLiveCard{padding:15px !important;min-height:148px;}
+body.aqxHomeSizeLarge #homeParameterLiveGrid .paramLiveCard{padding:20px !important;min-height:186px;}
+#homeParameterLiveGrid .paramLiveCard{
+  border-radius:var(--aqxHomePanelRadius,20px) !important;
+  background:linear-gradient(145deg, rgba(var(--aqxHomeParamBoxRgb,8,24,39),var(--aqxHomePanelOpacity,.96)), rgba(var(--aqxHomeParamBoxRgb2,4,12,22),var(--aqxHomePanelOpacity,.96))) !important;
+  border-color:var(--aqxHomeParamBoxBorderColour,rgba(0,200,255,var(--aqxHomePanelBorder,.22))) !important;
+  box-shadow:0 15px 36px rgba(0,0,0,.26),0 0 calc(12px + (30px * var(--aqxHomePanelGlow,.20))) var(--aqxHomeParamBoxGlowColour,rgba(0,200,255,var(--aqxHomePanelGlow,.20))) !important;
+  text-align:var(--aqxHomePanelAlign,left);
+  color:var(--aqxHomeParamBoxTextColour,#ffffff) !important;
+  transition:all .22s ease, transform .12s ease;
+}
+#homeParameterLiveGrid .paramLiveCard:active{transform:scale(.985);}
+#homeParameterLiveGrid .paramValue{font-size:var(--aqxHomeValueSize,36px) !important;}
+#homeParameterLiveGrid .paramLiveTop{justify-content:var(--aqxHomeTopJustify,flex-start);}
+body.aqxHomeAlignCenter #homeParameterLiveGrid .paramLiveTop{justify-content:center;}
+body.aqxHomeAlignRight #homeParameterLiveGrid .paramLiveTop{justify-content:flex-end;}
+body.aqxHomeStyleRectangle #homeParameterLiveGrid .paramLiveCard{aspect-ratio:auto !important;border-radius:var(--aqxHomePanelRadius,20px) !important;}
+body.aqxHomeStyleRounded #homeParameterLiveGrid .paramLiveCard{border-radius:36px !important;}
+body.aqxHomeStyleSquare #homeParameterLiveGrid .paramLiveCard{aspect-ratio:1/1 !important;border-radius:10px !important;display:flex;flex-direction:column;justify-content:center;}
+body.aqxHomeStyleCircle #homeParameterLiveGrid .paramLiveCard{aspect-ratio:1/1 !important;border-radius:999px !important;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;}
+body.aqxHomeStyleCircle #homeParameterLiveGrid .paramLiveCard .paramLiveTop{padding-right:0;justify-content:center;flex-direction:column;gap:6px;margin-bottom:7px;}
+body.aqxHomeStyleCircle #homeParameterLiveGrid .paramLiveCard .homeCardPin{top:8px;right:50%;transform:translateX(50%);width:30px;height:30px;font-size:14px;}
+body.aqxHomeStyleCircle #homeParameterLiveGrid .paramLiveCard .paramTarget{font-size:10px;line-height:1.25;max-width:82%;}
+body.aqxHomeStyleGlass #homeParameterLiveGrid .paramLiveCard{background:rgba(255,255,255,calc(.025 + var(--aqxHomePanelOpacity,.96) * .05)) !important;border-color:rgba(255,255,255,.20) !important;backdrop-filter:blur(16px) !important;-webkit-backdrop-filter:blur(16px) !important;}
+body.aqxHomeStyleGlow #homeParameterLiveGrid .paramLiveCard{border-color:rgba(0,200,255,.60) !important;box-shadow:0 0 42px rgba(0,200,255,.34), inset 0 0 20px rgba(255,255,255,.035) !important;}
+@media(max-width:520px){body.aqxHomeCols3 #homeParameterLiveGrid{grid-template-columns:repeat(2,1fr) !important;}}
+@media(max-width:360px){body.aqxHomeCols2 #homeParameterLiveGrid,body.aqxHomeCols3 #homeParameterLiveGrid{grid-template-columns:repeat(2,1fr) !important;}}
+
+
+
+/* AquoraX hard-wired parameter panel controls - visual fallback */
+#homeParameterLiveGrid.aqxPanelStyle-rectangle .paramLiveCard{border-radius:18px !important; aspect-ratio:auto !important;}
+#homeParameterLiveGrid.aqxPanelStyle-rounded .paramLiveCard{border-radius:34px !important; aspect-ratio:auto !important;}
+#homeParameterLiveGrid.aqxPanelStyle-square .paramLiveCard{border-radius:10px !important; aspect-ratio:1/1 !important; display:flex !important; flex-direction:column !important; justify-content:center !important;}
+#homeParameterLiveGrid.aqxPanelStyle-circle .paramLiveCard{border-radius:999px !important; aspect-ratio:1/1 !important; display:flex !important; flex-direction:column !important; justify-content:center !important; align-items:center !important; text-align:center !important; overflow:hidden !important;}
+#homeParameterLiveGrid.aqxPanelStyle-glass .paramLiveCard{background:rgba(255,255,255,.055) !important; border-color:rgba(255,255,255,.22) !important; backdrop-filter:blur(16px) !important; -webkit-backdrop-filter:blur(16px) !important;}
+#homeParameterLiveGrid.aqxPanelStyle-glow .paramLiveCard{border-color:rgba(0,200,255,.65) !important; box-shadow:0 0 42px rgba(0,200,255,.38), inset 0 0 18px rgba(255,255,255,.035) !important;}
+#homeParameterLiveGrid.aqxPanelSize-compact .paramLiveCard{padding:10px !important; min-height:112px !important;}
+#homeParameterLiveGrid.aqxPanelSize-standard .paramLiveCard{padding:15px !important; min-height:148px !important;}
+#homeParameterLiveGrid.aqxPanelSize-large .paramLiveCard{padding:22px !important; min-height:190px !important;}
+#homeParameterLiveGrid.aqxPanelCols-1{grid-template-columns:1fr !important;}
+#homeParameterLiveGrid.aqxPanelCols-2{grid-template-columns:repeat(2,1fr) !important;}
+#homeParameterLiveGrid.aqxPanelCols-3{grid-template-columns:repeat(3,1fr) !important;}
+#homeParameterLiveGrid.aqxPanelAlign-left .paramLiveCard{text-align:left !important; align-items:stretch !important;}
+#homeParameterLiveGrid.aqxPanelAlign-center .paramLiveCard{text-align:center !important; align-items:center !important;}
+#homeParameterLiveGrid.aqxPanelAlign-right .paramLiveCard{text-align:right !important; align-items:flex-end !important;}
+#homeParameterLiveGrid.aqxPanelAlign-center .paramLiveTop{justify-content:center !important;}
+#homeParameterLiveGrid.aqxPanelAlign-right .paramLiveTop{justify-content:flex-end !important;}
+#homeParameterLiveGrid .paramLiveCard{transition:all .22s ease, transform .12s ease !important;}
+#homeParameterLiveGrid .paramLiveCard h3,#homeParameterLiveGrid .paramLiveCard .paramValue,#homeParameterLiveGrid .paramLiveCard .paramTarget{color:var(--aqxHomeParamBoxTextColour,#ffffff) !important;}
+#homeParameterLiveGrid .paramLiveCard .paramTarget{opacity:.78;}
+#homeParameterLiveGrid .paramLiveCard .paramIcon{border-color:var(--aqxHomeParamBoxBorderColour,rgba(0,200,255,.28)) !important;background:rgba(var(--aqxHomeParamBoxRgb,8,24,39),.72) !important;color:var(--aqxHomeParamBoxTextColour,#ffffff) !important;}
+.homeStyleBtn[data-aqx-panel].active{background:linear-gradient(135deg,var(--blue2),var(--aqxAccent,#00c8ff)) !important;color:#00111f !important;border-color:rgba(0,200,255,.75) !important;box-shadow:0 0 18px rgba(0,200,255,.28) !important;}
+@media(max-width:520px){#homeParameterLiveGrid.aqxPanelCols-3{grid-template-columns:repeat(2,1fr) !important;}}
+
+
+
+/* AquoraX Jobs - safe in-app reminders */
+.jobsOverview{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;}
+.jobsStat{padding:12px;border-radius:18px;background:rgba(7,21,35,.72);border:1px solid rgba(73,201,255,.14);text-align:center;}
+.jobsStat strong{display:block;font-size:24px;color:var(--aqxValueColour,#49c9ff);line-height:1;}
+.jobsStat span{display:block;margin-top:5px;font-size:11px;color:var(--muted);}
+.jobsFormGrid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px;}
+.jobsFormGrid label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;}
+.jobsQuickGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.jobsQuickGrid button{min-height:58px;}
+.jobCard{padding:14px;border-radius:20px;background:rgba(7,21,35,.78);border:1px solid rgba(73,201,255,.15);margin-top:12px;box-shadow:0 0 calc(var(--aqxGlow,18px) * .55) rgba(73,201,255,.08);}
+.jobCard.overdue{border-color:rgba(255,91,91,.42);box-shadow:0 0 18px rgba(255,91,91,.08);}
+.jobCard.dueSoon{border-color:rgba(255,203,92,.34);}
+.jobTop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.jobTop strong{display:block;color:white;font-size:16px;margin-bottom:4px;}
+.jobMeta{font-size:12px;color:var(--muted);line-height:1.45;}
+.jobBadge{font-size:10px;text-transform:uppercase;letter-spacing:.08em;border:1px solid rgba(73,201,255,.22);background:rgba(73,201,255,.08);padding:5px 8px;border-radius:999px;color:var(--aqxValueColour,#49c9ff);white-space:nowrap;}
+.jobBadge.overdue{color:#ff8c8c;border-color:rgba(255,91,91,.38);background:rgba(255,91,91,.1);}
+.jobBadge.dueSoon{color:#ffd27a;border-color:rgba(255,203,92,.34);background:rgba(255,203,92,.09);}
+.jobNotes{margin-top:10px;color:var(--text);font-size:13px;line-height:1.45;opacity:.9;}
+.jobActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.jobEmpty{padding:16px;border-radius:20px;background:rgba(7,21,35,.55);border:1px dashed rgba(73,201,255,.18);color:var(--muted);text-align:center;margin-top:12px;}
+.jobsFilterRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.jobsFilterRow button{width:auto;min-width:92px;padding-left:12px;padding-right:12px;}
+.jobsFilterRow button.active{box-shadow:0 0 18px rgba(73,201,255,.22);border-color:rgba(73,201,255,.45);}
+.jobsLogItem{padding:12px;border-radius:16px;background:rgba(7,21,35,.58);border:1px solid rgba(73,201,255,.1);margin-top:8px;font-size:13px;color:var(--muted);}
+.jobsHomeAlert{border-color:rgba(255,203,92,.26) !important;}
+@media(max-width:420px){.jobsOverview{grid-template-columns:1fr 1fr 1fr;gap:8px}.jobsStat{padding:10px 6px}.jobActions{grid-template-columns:1fr}.jobsQuickGrid{grid-template-columns:1fr}}
+body.aqxShowNavJobs #nav-jobs{display:block !important;}
+
+
+
+/* AquoraX global branded app header */
+.aqxAppHeader{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:80;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:12px 16px 10px;
+  background:linear-gradient(180deg, rgba(2,7,13,.96) 0%, rgba(2,7,13,.84) 72%, rgba(2,7,13,0) 100%);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  pointer-events:none;
+}
+.aqxAppHeaderInner{
+  width:min(100%,760px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border:1px solid rgba(73,201,255,.16);
+  border-radius:22px;
+  padding:9px 16px;
+  background:linear-gradient(135deg, rgba(6,18,29,.82), rgba(8,24,39,.55));
+  box-shadow:0 0 24px rgba(0,200,255,.13), inset 0 0 18px rgba(255,255,255,.03);
+}
+.aqxAppHeaderLogo{
+  width:min(58vw,230px);
+  max-height:54px;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 0 14px rgba(0,200,255,.32));
+}
+body:not(.aqxLoggedIn) .aqxAppHeader{display:none;}
+body.aqxLoggedIn .page{padding-top:112px;}
+body.aqxLoggedIn .homeBrandHeader{margin-top:0;}
+body.aqxLoggedIn .homeBrandLogo{display:none;}
+@media(max-width:420px){
+  .aqxAppHeader{padding:9px 12px 8px;}
+  .aqxAppHeaderInner{border-radius:20px;padding:8px 14px;}
+  .aqxAppHeaderLogo{width:min(62vw,210px);max-height:48px;}
+  body.aqxLoggedIn .page{padding-top:98px;}
+}
+
+
+/* AquoraX UI polish pass - visual layer only */
+:root{
+  --aqxSoftPanel:rgba(8,24,39,.86);
+  --aqxDeepPanel:rgba(2,7,13,.92);
+  --aqxSoftLine:rgba(73,201,255,.18);
+}
+body{
+  letter-spacing:.01em;
+  background:
+    radial-gradient(circle at 50% -8%, rgba(0,200,255,.20), transparent 34%),
+    radial-gradient(circle at 0% 22%, rgba(0,140,255,.10), transparent 32%),
+    radial-gradient(circle at 100% 18%, rgba(99,247,163,.055), transparent 26%),
+    linear-gradient(180deg,#02070d 0%,#010409 100%);
+}
+.page{
+  padding-left:18px;
+  padding-right:18px;
+}
+body.aqxLoggedIn .page{
+  padding-top:118px;
+}
+.pageHeader,
+.homeBrandHeader{
+  margin-bottom:20px;
+  padding:2px 2px 0;
+}
+.pageHeader h1,
+.homeBrandHeader h1{
+  font-size:30px;
+  letter-spacing:-.035em;
+  line-height:1.06;
+}
+.pageHeader p,
+.homeBrandHeader p{
+  font-size:14px;
+  color:rgba(203,229,247,.72) !important;
+}
+.card,
+.heroCard,
+.parameterHero,
+.smartInsightCard,
+.scoreCard,
+.customiserHero,
+.partnerCard,
+.cycleStateCard,
+.blueSharkStoreCard{
+  border-radius:24px !important;
+  padding:18px !important;
+  margin-bottom:16px !important;
+  border:1px solid var(--aqxSoftLine) !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(0,200,255,.10), transparent 30%),
+    linear-gradient(145deg, var(--aqxSoftPanel), var(--aqxDeepPanel)) !important;
+  box-shadow:
+    0 18px 46px rgba(0,0,0,.31),
+    0 0 28px rgba(0,200,255,.075),
+    inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+.card h2,
+.card h3{
+  letter-spacing:-.02em;
+}
+.card h2{
+  font-size:19px;
+  margin-bottom:9px;
+}
+.card p{
+  font-size:14px;
+  color:rgba(203,229,247,.70) !important;
+}
+.primaryBtn,
+.secondaryBtn,
+.dangerBtn,
+.lockedBtn,
+.cameraBtn,
+.modalBtn{
+  min-height:48px;
+  border-radius:17px !important;
+  font-weight:900;
+  letter-spacing:.005em;
+}
+.primaryBtn{
+  box-shadow:0 12px 26px rgba(0,140,255,.22),0 0 22px rgba(0,200,255,.18) !important;
+}
+.secondaryBtn{
+  background:linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.032)) !important;
+  border:1px solid rgba(203,229,247,.12) !important;
+  color:#dff7ff !important;
+}
+.dangerBtn{
+  background:linear-gradient(145deg, rgba(255,107,107,.12), rgba(255,107,107,.055)) !important;
+}
+input,select,textarea{
+  border-radius:17px !important;
+  background:linear-gradient(145deg, rgba(1,8,15,.98), rgba(5,18,30,.92)) !important;
+  border-color:rgba(73,201,255,.22) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025), inset 0 0 18px rgba(0,0,0,.18);
+}
+label{
+  color:rgba(203,229,247,.86) !important;
+  letter-spacing:.02em;
+}
+.simpleTile,
+.trackerItem,
+.testHistoryItem,
+.jobsLogItem{
+  border-radius:20px !important;
+  background:linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.025)) !important;
+  border:1px solid rgba(203,229,247,.10) !important;
+}
+.simpleTile strong,
+.trackerItem strong{
+  letter-spacing:-.01em;
+}
+.nav{
+  height:74px;
+  padding:8px 10px 10px;
+  background:linear-gradient(180deg, rgba(2,7,13,.76), rgba(2,7,13,.98)) !important;
+  border-top-color:rgba(73,201,255,.20) !important;
+  box-shadow:0 -16px 34px rgba(0,0,0,.34),0 0 24px rgba(0,200,255,.08);
+}
+.nav button{
+  min-width:62px;
+  min-height:48px;
+  border-radius:19px;
+  font-weight:800;
+  letter-spacing:-.01em;
+}
+.nav button.active{
+  background:radial-gradient(circle at top, rgba(0,200,255,.22), rgba(0,200,255,.07)) !important;
+  border-color:rgba(73,201,255,.38) !important;
+  color:#dff7ff !important;
+}
+.aqxAppHeader{
+  padding-top:10px;
+}
+.aqxAppHeaderInner{
+  border-radius:25px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(0,200,255,.18), transparent 58%),
+    linear-gradient(135deg, rgba(6,18,29,.88), rgba(2,7,13,.70));
+  box-shadow:0 0 30px rgba(0,200,255,.14),0 16px 38px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.055);
+}
+.parameterHero{
+  position:relative;
+  overflow:hidden;
+}
+.parameterHero:before{
+  content:'LIVE';
+  position:absolute;
+  top:16px;
+  right:16px;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.10em;
+  color:#00111f;
+  background:linear-gradient(135deg,var(--blue2),var(--aqxAccent,#00c8ff));
+  box-shadow:0 0 18px rgba(0,200,255,.24);
+}
+#homeParameterLiveGrid{
+  margin-top:14px;
+}
+#homeParameterLiveGrid .paramLiveCard{
+  border-radius:24px !important;
+  border-color:rgba(73,201,255,.20) !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(0,200,255,.12), transparent 32%),
+    linear-gradient(145deg, rgba(8,24,39,.88), rgba(3,10,18,.94)) !important;
+  box-shadow:0 16px 34px rgba(0,0,0,.28),0 0 20px rgba(0,200,255,.09) !important;
+}
+#homeParameterLiveGrid .paramValue{
+  letter-spacing:-.045em;
+}
+.scoreNumber,
+.paramValue,
+.jobsStat strong{
+  text-shadow:0 0 18px rgba(0,200,255,.22);
+}
+#homeJobsCard{
+  border-color:rgba(255,211,106,.24) !important;
+  background:
+    radial-gradient(circle at top right, rgba(255,211,106,.10), transparent 32%),
+    linear-gradient(145deg, rgba(8,24,39,.88), rgba(3,10,18,.94)) !important;
+}
+.jobsOverview{
+  gap:11px;
+}
+.jobsStat{
+  border-radius:22px;
+  padding:15px 8px;
+  background:
+    radial-gradient(circle at top, rgba(0,200,255,.13), transparent 55%),
+    linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
+  border:1px solid rgba(73,201,255,.16);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.jobsStat strong{
+  font-size:27px;
+}
+.jobsStat span{
+  color:rgba(203,229,247,.68) !important;
+  font-weight:800;
+}
+.jobsFilterRow{
+  background:rgba(255,255,255,.035);
+  padding:7px;
+  border-radius:20px;
+  border:1px solid rgba(203,229,247,.08);
+}
+.jobsFilterRow button{
+  flex:1;
+  min-width:0;
+  min-height:42px;
+  padding:10px 8px;
+}
+.jobsFilterRow button.active{
+  background:linear-gradient(135deg,var(--blue2),var(--aqxAccent,#00c8ff)) !important;
+  color:#00111f !important;
+}
+.jobCard{
+  border-radius:23px !important;
+  padding:16px !important;
+  background:
+    radial-gradient(circle at top right, rgba(0,200,255,.10), transparent 38%),
+    linear-gradient(145deg, rgba(7,21,35,.86), rgba(2,7,13,.86)) !important;
+  border-color:rgba(73,201,255,.17) !important;
+  box-shadow:0 16px 34px rgba(0,0,0,.25),0 0 20px rgba(0,200,255,.07) !important;
+}
+.jobTop strong{
+  font-size:17px;
+  letter-spacing:-.015em;
+}
+.jobBadge{
+  font-weight:900;
+  padding:6px 9px;
+}
+.jobNotes{
+  padding:10px 12px;
+  border-radius:16px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(203,229,247,.08);
+}
+.jobActions{
+  gap:10px;
+}
+.jobsQuickGrid button{
+  min-height:62px;
+}
+.jobEmpty{
+  border-radius:22px;
+  background:rgba(255,255,255,.035);
+}
+.formGrid,
+.jobsFormGrid{
+  gap:12px;
+}
+@media(max-width:430px){
+  body.aqxLoggedIn .page{padding-top:104px; padding-left:14px; padding-right:14px; padding-bottom:96px;}
+  .pageHeader h1,.homeBrandHeader h1{font-size:27px;}
+  .card,.heroCard,.parameterHero,.smartInsightCard,.scoreCard{padding:16px !important;border-radius:22px !important;}
+  .nav{height:72px;padding-left:7px;padding-right:7px;}
+  .nav button{min-width:0;flex:1;font-size:10px;padding:8px 4px;}
+  .jobsOverview{grid-template-columns:repeat(3,1fr);gap:8px;}
+  .jobsStat strong{font-size:23px;}
+}
+
+
+
+/* AquoraX customiser reconnection patch - keeps dropdown UI but restores live styling */
+:root{
+  --aqxSoftPanel:rgba(8,24,39,var(--aqxPanelOpacity,.96));
+  --aqxDeepPanel:rgba(2,7,13,var(--aqxPanelOpacity,.96));
+}
+body:not(.aqxCustomBgActive){
+  background:
+    linear-gradient(rgba(1,4,9,var(--aqxBgDim,.58)), rgba(1,4,9,var(--aqxBgDim,.58))),
+    radial-gradient(circle at 50% -8%, rgba(0,200,255,.20), transparent 34%),
+    radial-gradient(circle at 0% 22%, rgba(0,140,255,.10), transparent 32%),
+    radial-gradient(circle at 100% 18%, rgba(99,247,163,.055), transparent 26%),
+    linear-gradient(180deg,#02070d 0%,#010409 100%) !important;
+}
+body.aqxCustomBgActive{
+  background:
+    linear-gradient(rgba(1,4,9,var(--aqxBgDim,.58)), rgba(1,4,9,var(--aqxBgDim,.58))),
+    var(--aqxCustomBg) center center / cover fixed no-repeat !important;
+}
+.card,.heroCard,.parameterHero,.smartInsightCard,.scoreCard,.customiserHero,.partnerCard,.cycleStateCard,.blueSharkStoreCard,.customDrop,.paramLiveCard,.trackerItem,.simpleTile,.doseBox,.timestampBox,.productAssist,.shopNeed,.shopLinkCard,.testHistoryItem,.statusBox{
+  border-radius:calc(24px + var(--aqxRadiusBoost,0px)) !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(0,200,255,calc(.10 * var(--aqxPanelOpacity,.96))), transparent 30%),
+    linear-gradient(145deg, rgba(8,24,39,var(--aqxPanelOpacity,.96)), rgba(4,12,22,var(--aqxPanelOpacity,.96))) !important;
+  box-shadow:
+    0 18px 46px rgba(0,0,0,calc(.31 * var(--aqxPanelOpacity,.96))),
+    0 0 34px rgba(0,200,255,calc(var(--aqxPanelGlow,.12) * var(--aqxPanelOpacity,.96))),
+    inset 0 1px 0 rgba(255,255,255,.045) !important;
+  backdrop-filter:blur(var(--aqxBlur,0px)) !important;
+  -webkit-backdrop-filter:blur(var(--aqxBlur,0px)) !important;
+}
+body.aqxFullClear .card,body.aqxFullClear .heroCard,body.aqxFullClear .parameterHero,body.aqxFullClear .smartInsightCard,body.aqxFullClear .scoreCard,body.aqxFullClear .customiserHero,body.aqxFullClear .partnerCard,body.aqxFullClear .cycleStateCard,body.aqxFullClear .blueSharkStoreCard,body.aqxFullClear .customDrop,body.aqxFullClear .paramLiveCard,body.aqxFullClear .trackerItem,body.aqxFullClear .simpleTile,body.aqxFullClear .doseBox,body.aqxFullClear .timestampBox,body.aqxFullClear .productAssist,body.aqxFullClear .shopNeed,body.aqxFullClear .shopLinkCard,body.aqxFullClear .testHistoryItem{
+  background:rgba(5,14,24,.16) !important;
+  border-color:rgba(255,255,255,.18) !important;
+  box-shadow:0 10px 26px rgba(0,0,0,.22),0 0 22px rgba(0,200,255,calc(var(--aqxPanelGlow,.12) * .75)) !important;
+}
+.nav,.aqxAppHeaderInner{
+  background:rgba(2,7,13,calc(.92 * var(--aqxPanelOpacity,.96))) !important;
+  backdrop-filter:blur(var(--aqxBlur,0px)) !important;
+  -webkit-backdrop-filter:blur(var(--aqxBlur,0px)) !important;
+}
+.primaryBtn{background:var(--aqxAccent,#00c8ff) !important;color:var(--aqxButtonTextColour,#00111f) !important;}
+.secondaryBtn,.nav button.active{border-color:color-mix(in srgb, var(--aqxAccent,#00c8ff) 55%, transparent) !important;}
+
+
+
+/* AquoraX Layout & Visual Hierarchy Upgrade - safe visual layer only */
+:root{
+  --aqxPageGap:16px;
+  --aqxCardPad:18px;
+  --aqxSoftLine:rgba(73,201,255,.16);
+}
+body{
+  -webkit-tap-highlight-color:transparent;
+}
+.page{
+  display:none;
+  flex-direction:column;
+  gap:var(--aqxPageGap);
+}
+.page.active{
+  display:flex;
+  animation:aqxPageRise .24s ease both;
+}
+@keyframes aqxPageRise{
+  from{opacity:.72;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.card{
+  position:relative;
+  overflow:hidden;
+  padding:var(--aqxCardPad);
+  margin-bottom:0 !important;
+  border-color:rgba(73,201,255,.17);
+  box-shadow:0 16px 38px rgba(0,0,0,.26), 0 0 calc(var(--aqxGlow,18px) * .72) rgba(73,201,255,.09), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(73,201,255,.42), transparent);
+  opacity:.75;
+  pointer-events:none;
+}
+.card h2{
+  letter-spacing:-.02em;
+}
+.pageHeader{
+  margin:0 0 2px !important;
+  padding:4px 2px 2px;
+}
+.pageHeader h1{
+  letter-spacing:-.04em;
+  font-size:clamp(26px,7vw,34px) !important;
+}
+.pageHeader p{
+  max-width:560px;
+  font-size:14px;
+}
+.pageHeader::before{
+  content:"AquoraX";
+  display:inline-flex;
+  width:max-content;
+  margin-bottom:8px;
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid rgba(73,201,255,.22);
+  background:rgba(73,201,255,.075);
+  color:var(--aqxValueColour,#49c9ff);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+#jobs .pageHeader::before{content:"Maintenance Hub";}
+#growth .pageHeader::before{content:"Growth Studio";}
+#cycle .pageHeader::before{content:"Journey Guidance";}
+#dosing .pageHeader::before{content:"Dosing Control";}
+#profile .pageHeader::before{content:"Settings";}
+#parameters .pageHeader::before{content:"Live Water";}
+#history .pageHeader::before{content:"Timeline";}
+#graphs .pageHeader::before{content:"Trends";}
+#guides .pageHeader::before{content:"Guides";}
+
+/* Home becomes the command centre */
+#home .homeBrandHeader{
+  padding:18px 18px 16px;
+  border:1px solid rgba(73,201,255,.18);
+  border-radius:28px;
+  background:radial-gradient(circle at top, rgba(0,200,255,.18), transparent 52%), linear-gradient(145deg, rgba(8,24,39,.86), rgba(4,12,22,.72));
+  box-shadow:0 20px 46px rgba(0,0,0,.30), 0 0 28px rgba(0,200,255,.10);
+  margin-bottom:0 !important;
+}
+#home .homeBrandHeader h1{
+  font-size:clamp(28px,8vw,38px);
+  letter-spacing:-.05em;
+}
+#home .homeBrandHeader p{
+  font-size:14px;
+}
+#home .parameterHero{
+  border-color:rgba(73,201,255,.34) !important;
+  background:radial-gradient(circle at 50% 0%, rgba(0,200,255,.13), transparent 48%), linear-gradient(145deg, rgba(8,24,39,.97), rgba(4,12,22,.94)) !important;
+}
+#home .parameterHero h2::after{
+  content:" Priority";
+  margin-left:8px;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:10px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#00111f;
+  background:linear-gradient(135deg,var(--blue2),var(--aqxAccent,#00c8ff));
+  vertical-align:middle;
+}
+.paramLiveGrid{
+  margin-top:14px;
+}
+#homeParameterLiveGrid .paramLiveCard{
+  border-width:1px !important;
+  transform-origin:center;
+}
+#homeSmartInsightsCard,
+#homeJobsCard,
+#home .scoreCard{
+  min-height:128px;
+}
+#homeJobsCard{
+  background:radial-gradient(circle at top right, rgba(255,211,106,.13), transparent 42%), linear-gradient(145deg, rgba(8,24,39,.96), rgba(4,12,22,.94)) !important;
+}
+#home .scoreCard{
+  background:radial-gradient(circle at top right, rgba(99,247,163,.12), transparent 45%), linear-gradient(145deg, rgba(8,24,39,.96), rgba(4,12,22,.94)) !important;
+}
+.simpleTile{
+  transition:transform .14s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.simpleTile:active,
+.primaryBtn:active,
+.secondaryBtn:active,
+.dangerBtn:active,
+.lockedBtn:active,
+.homeStyleBtn:active{
+  transform:scale(.985);
+}
+.primaryBtn,.secondaryBtn,.dangerBtn,.lockedBtn,.homeStyleBtn{
+  transition:transform .14s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+}
+.primaryBtn{
+  box-shadow:0 0 24px rgba(0,200,255,.20), inset 0 1px 0 rgba(255,255,255,.22);
+}
+.secondaryBtn:hover,.homeStyleBtn:hover{
+  border-color:rgba(73,201,255,.32);
+  box-shadow:0 0 18px rgba(0,200,255,.08);
+}
+
+/* Jobs page gets clearer dashboard structure */
+#jobs .jobsOverview{
+  gap:12px;
+}
+#jobs .jobsStat{
+  background:radial-gradient(circle at top, rgba(0,200,255,.12), rgba(7,21,35,.78));
+  border-color:rgba(73,201,255,.20);
+  min-height:82px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+#jobs .jobsStat strong{
+  font-size:clamp(25px,7vw,34px);
+  letter-spacing:-.04em;
+}
+#jobs .jobsFilterRow{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+}
+#jobs .jobsFilterRow button{
+  width:100%;
+  min-width:0;
+}
+#jobs .jobsFormGrid{
+  gap:12px;
+}
+#jobs .jobCard{
+  transition:transform .14s ease, border-color .2s ease, box-shadow .2s ease;
+}
+#jobs .jobCard:active{
+  transform:scale(.992);
+}
+#jobs .jobsQuickGrid button{
+  text-align:left;
+}
+
+/* Section identities without touching logic */
+#growth .card{border-color:rgba(192,132,252,.17);}
+#growth .pageHeader::before{border-color:rgba(192,132,252,.28);background:rgba(192,132,252,.08);color:#dcc2ff;}
+#cycle .card{border-color:rgba(0,200,255,.20);}
+#dosing .card{border-color:rgba(99,247,163,.16);}
+#dosing .pageHeader::before{border-color:rgba(99,247,163,.28);background:rgba(99,247,163,.08);color:#b8ffd4;}
+#profile .customDrop.card{
+  padding:0 !important;
+}
+#profile .customDrop summary{
+  padding:17px 18px;
+}
+#profile .customDropBody{
+  padding:0 18px 18px;
+}
+#profile .customMenuIntro{
+  background:radial-gradient(circle at top, rgba(0,200,255,.14), transparent 55%), linear-gradient(145deg, rgba(8,24,39,.95), rgba(4,12,22,.92));
+}
+
+@media(min-width:760px){
+  .page.active{
+    gap:18px;
+  }
+  #home{
+    display:none;
+  }
+  #home.active{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    align-items:start;
+  }
+  #home .homeBrandHeader,
+  #home #homeCycleGateCard,
+  #home .parameterHero,
+  #home #homeSmartInsightsCard{
+    grid-column:1 / -1;
+  }
+  #home .parameterHero{
+    grid-column:1 / -1;
+  }
+  #home #homeJobsCard,
+  #home .scoreCard{
+    grid-column:auto;
+  }
+  #jobs .jobsFormGrid{
+    grid-template-columns:1fr 1fr;
+  }
+  #jobs .jobsFormGrid > div:last-child{
+    grid-column:1 / -1;
+  }
+}
+@media(max-width:420px){
+  :root{--aqxPageGap:14px;--aqxCardPad:16px;}
+  #home .homeBrandHeader{border-radius:24px;padding:16px;}
+  #jobs .jobsFilterRow{gap:7px;}
+  #jobs .jobsFilterRow button{padding-left:6px;padding-right:6px;font-size:13px;}
+}
+
+
+
+/* AquoraX AI Guidance Brain - offline guidance layer */
+.aiGuidanceCard{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(73,201,255,.24) !important;
+  background:linear-gradient(145deg,rgba(7,21,35,.88),rgba(4,12,22,.72)) !important;
+  box-shadow:0 18px 42px rgba(0,0,0,.34),0 0 32px rgba(73,201,255,.12) !important;
+}
+.aiGuidanceCard::before{
+  content:"";
+  position:absolute;
+  inset:-80px -80px auto auto;
+  width:180px;
+  height:180px;
+  background:radial-gradient(circle,rgba(73,201,255,.24),transparent 68%);
+  pointer-events:none;
+}
+.aiGuidanceTop{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;position:relative;z-index:1;}
+.aiGuidanceEyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--aqxValueColour,#49c9ff);font-weight:900;margin-bottom:5px;}
+.aiGuidanceCard h2{margin:0;color:white;}
+.aiGuidanceRisk{border-radius:999px;padding:8px 11px;font-size:11px;font-weight:900;border:1px solid rgba(255,255,255,.12);white-space:nowrap;background:rgba(255,255,255,.055);}
+.aiGuidanceRisk.low{color:#9fffc5;border-color:rgba(92,255,161,.28);background:rgba(92,255,161,.08);}
+.aiGuidanceRisk.medium{color:#ffe08a;border-color:rgba(255,203,92,.32);background:rgba(255,203,92,.09);}
+.aiGuidanceRisk.high{color:#ff9f9f;border-color:rgba(255,100,100,.34);background:rgba(255,100,100,.10);}
+.aiGuidanceGrid{display:grid;grid-template-columns:1fr;gap:10px;position:relative;z-index:1;}
+.aiGuidanceBlock{padding:13px;border-radius:18px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);}
+.aiGuidanceBlock strong{display:block;color:white;margin-bottom:4px;font-size:13px;}
+.aiGuidanceBlock span{display:block;color:var(--muted);line-height:1.45;font-size:13px;}
+.aiGuidanceMeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;position:relative;z-index:1;}
+.aiGuidancePill{font-size:11px;font-weight:800;color:#cfefff;background:rgba(73,201,255,.08);border:1px solid rgba(73,201,255,.16);border-radius:999px;padding:7px 9px;}
+.aiGuidanceActionRow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;position:relative;z-index:1;}
+@media(max-width:430px){.aiGuidanceActionRow{grid-template-columns:1fr}.aiGuidanceTop{align-items:flex-start}.aiGuidanceRisk{font-size:10px;padding:7px 9px}}
+
+
+
+/* AquoraX reorder + live preview polish */
+#homeParameterLiveGrid .homeCardPin{display:none !important;}
+.aqxCustomPreviewWrap{margin:14px 0 18px;padding:14px;border-radius:22px;background:rgba(0,200,255,.045);border:1px solid rgba(0,200,255,.16);box-shadow:inset 0 0 18px rgba(255,255,255,.025);}
+.aqxCustomPreviewTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;color:#fff;font-weight:900;}
+.aqxCustomPreviewTitle span{font-size:12px;color:var(--muted);font-weight:700;}
+#aqxHomePanelPreviewGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--aqxHomePanelGap,12px);}
+#aqxHomePanelPreviewGrid .paramLiveCard{min-height:118px;pointer-events:none;}
+#aqxHomePanelPreviewGrid .paramValue{font-size:calc(var(--aqxHomeValueSize,36px) * .74) !important;}
+#aqxHomePanelPreviewGrid .paramTarget{font-size:10px;}
+.homePriorityList{display:grid;gap:10px;}
+.homePriorityItem{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 13px;border-radius:18px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);touch-action:none;}
+.homePriorityItem.dragging{opacity:.45;transform:scale(.985);border-color:rgba(0,200,255,.45);}
+.homeDragHandle{width:38px;height:38px;border-radius:14px;display:grid;place-items:center;background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.18);color:#00c8ff;font-weight:900;cursor:grab;flex:0 0 auto;}
+.homeDragText{flex:1;min-width:0;}
+.homeDragText strong{display:block;color:white;}
+.homeDragText span{display:block;color:var(--muted);font-size:12px;margin-top:3px;}
+.homeOrderBadge{font-size:12px;color:#00c8ff;font-weight:900;border:1px solid rgba(0,200,255,.2);background:rgba(0,200,255,.07);padding:7px 10px;border-radius:999px;}
+.homePriorityHelp{margin:8px 0 12px;color:var(--muted);font-size:13px;line-height:1.45;}
+
+
+
+/* --- Split from index.html: section break --- */
+
+
+#homeParameterLiveGrid .homeCardPin,#homeParameterLiveGrid .homePinBtn{display:none!important;visibility:hidden!important;}
+.homePriorityItem.aqxReorderItem{display:grid!important;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;touch-action:none;}
+.homeDragHandle{width:38px;height:38px;border-radius:14px;border:1px solid rgba(0,200,255,.28);background:rgba(0,200,255,.08);color:#00c8ff;font-weight:900;font-size:18px;cursor:grab;}
+.homePriorityItem.dragging{opacity:.55;transform:scale(.985);border-color:rgba(0,200,255,.65)!important;box-shadow:0 0 24px rgba(0,200,255,.22)!important;}
+.aqxReorderBtns{display:flex;gap:6px;}
+.aqxReorderBtns button{width:34px;height:34px;border-radius:12px;border:1px solid rgba(0,200,255,.28);background:rgba(255,255,255,.05);color:#dff7ff;font-weight:900;}
+.aqxReorderBtns button:disabled{opacity:.25;}
+#aqxHomePanelPreviewGrid .paramLiveCard{transition:none!important;}
+
+/* AquoraX Navigation Shell Patch */
+.aqxAppHeader{pointer-events:auto;}
+.aqxAppHeaderInner{
+  display:grid !important;
+  grid-template-columns:48px 1fr 48px;
+  align-items:center;
+  gap:8px;
+}
+.aqxHeaderMenuBtn,
+.aqxHeaderGhostBtn{
+  width:42px;
+  height:42px;
+  border-radius:16px;
+  border:1px solid rgba(73,201,255,.24);
+  background:linear-gradient(145deg, rgba(7,21,35,.92), rgba(2,7,13,.72));
+  color:#dff7ff;
+  font-size:22px;
+  font-weight:900;
+  box-shadow:0 0 18px rgba(0,200,255,.13), inset 0 0 12px rgba(255,255,255,.03);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+}
+.aqxHeaderMenuBtn:active{transform:scale(.94);box-shadow:0 0 24px rgba(0,200,255,.28);}
+.aqxHeaderGhostBtn{opacity:0;pointer-events:none;}
+.aqxAppHeaderLogo{justify-self:center;}
+
+.aqxSideMenuOverlay{
+  position:fixed;
+  inset:0;
+  z-index:120;
+  display:none;
+  background:rgba(0,5,12,.62);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.aqxSideMenuOverlay.show{display:block;}
+.aqxSideMenuPanel{
+  width:min(86vw,360px);
+  height:100%;
+  overflow-y:auto;
+  padding:18px;
+  background:
+    radial-gradient(circle at top left, rgba(0,200,255,.20), transparent 36%),
+    linear-gradient(155deg, rgba(8,24,39,.98), rgba(2,7,13,.995));
+  border-right:1px solid rgba(73,201,255,.24);
+  box-shadow:22px 0 46px rgba(0,0,0,.48), 0 0 30px rgba(0,200,255,.10);
+  transform:translateX(-102%);
+  animation:aqxSlideMenuIn .22s ease forwards;
+}
+@keyframes aqxSlideMenuIn{to{transform:translateX(0);}}
+.aqxSideMenuTop{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  align-items:flex-start;
+  padding-bottom:16px;
+  border-bottom:1px solid rgba(203,229,247,.10);
+  margin-bottom:14px;
+}
+.aqxSideMenuLogo{
+  width:170px;
+  max-width:100%;
+  filter:drop-shadow(0 0 14px rgba(0,200,255,.28));
+}
+.aqxSideMenuTop p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.35;
+}
+.aqxSideMenuClose{
+  width:40px;
+  height:40px;
+  border-radius:14px;
+  padding:0;
+  font-size:24px;
+  line-height:1;
+  color:#fff;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.10);
+}
+.aqxSideMenuGroup{
+  margin-top:14px;
+  padding:12px;
+  border-radius:22px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(73,201,255,.12);
+}
+.aqxSideMenuLabel{
+  display:block;
+  color:var(--aqxValueColour,#00c8ff);
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  margin:0 0 9px 2px;
+}
+.aqxSideMenuGroup button{
+  width:100%;
+  min-height:46px;
+  margin:7px 0 0;
+  padding:12px 14px;
+  border-radius:17px;
+  text-align:left;
+  color:#e8f8ff;
+  font-weight:850;
+  background:linear-gradient(145deg, rgba(6,18,29,.82), rgba(2,7,13,.66));
+  border:1px solid rgba(203,229,247,.095);
+  box-shadow:inset 0 0 14px rgba(255,255,255,.025);
+}
+.aqxSideMenuGroup button.active,
+.aqxSideMenuGroup button:active{
+  border-color:rgba(73,201,255,.42);
+  background:radial-gradient(circle at top left, rgba(0,200,255,.20), rgba(0,200,255,.055));
+  color:#fff;
+  box-shadow:0 0 20px rgba(0,200,255,.14);
+}
+body:not(.aqxLoggedIn) .aqxSideMenuOverlay{display:none !important;}
+body.aqxMenuOpen{overflow:hidden;}
+
+.nav{justify-content:center !important;gap:9px;}
+.nav button{flex:1;max-width:170px;min-width:0 !important;font-size:11px;}
+#nav-home,#nav-growth,#nav-jobs,#nav-dosing{display:block !important;}
+@media(max-width:420px){
+  .aqxAppHeaderInner{grid-template-columns:44px 1fr 44px;padding:8px 10px;}
+  .aqxHeaderMenuBtn,.aqxHeaderGhostBtn{width:38px;height:38px;border-radius:14px;font-size:20px;}
+  .nav{gap:7px;padding-left:8px;padding-right:8px;}
+  .nav button{font-size:10px;padding-left:4px;padding-right:4px;}
+}
+
+/* AQUORAX HARD FIX: parameter shape preview must match selected shape */
+#aqxHomePanelPreviewGrid.aqxPanelStyle-circle .paramLiveCard,
+#homeParameterLiveGrid.aqxPanelStyle-circle .paramLiveCard,
+body.aqxHomeStyleCircle #aqxHomePanelPreviewGrid .paramLiveCard{
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 50% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  overflow: hidden !important;
+  justify-self: center !important;
+}
+#aqxHomePanelPreviewGrid.aqxPanelStyle-square .paramLiveCard,
+#homeParameterLiveGrid.aqxPanelStyle-square .paramLiveCard{
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 10px !important;
+  min-height: 0 !important;
+  height: auto !important;
+}
+#aqxHomePanelPreviewGrid.aqxPanelStyle-rectangle .paramLiveCard,
+#homeParameterLiveGrid.aqxPanelStyle-rectangle .paramLiveCard{
+  aspect-ratio: auto !important;
+  border-radius: var(--aqxHomePanelRadius,20px) !important;
+}
+#aqxHomePanelPreviewGrid.aqxPanelStyle-circle .paramLiveTop,
+#homeParameterLiveGrid.aqxPanelStyle-circle .paramLiveTop{
+  justify-content: center !important;
+  align-items: center !important;
+  flex-direction: column !important;
+  padding-right: 0 !important;
+  gap: 6px !important;
+}
+#aqxHomePanelPreviewGrid.aqxPanelStyle-circle .paramTarget,
+#homeParameterLiveGrid.aqxPanelStyle-circle .paramTarget{
+  max-width: 78% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* AQUORAX RESPONSIVE PARAMETER CARD SYSTEM — rectangle / square / circle only */
+#homeParameterLiveGrid.aqxResponsiveParamGrid,
+#aqxHomePanelPreviewGrid.aqxResponsiveParamGrid{
+  align-items:start !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeRectangle .paramLiveCard,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeRectangle .paramLiveCard{
+  aspect-ratio:auto !important;
+  min-height:148px !important;
+  width:100% !important;
+  height:auto !important;
+  border-radius:var(--aqxHomePanelRadius,20px) !important;
+  display:block !important;
+  text-align:left !important;
+  padding:16px !important;
+  overflow:hidden !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeSquare .paramLiveCard,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeSquare .paramLiveCard{
+  aspect-ratio:1/1 !important;
+  min-height:0 !important;
+  width:100% !important;
+  height:auto !important;
+  border-radius:18px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  align-items:flex-start !important;
+  text-align:left !important;
+  padding:14px !important;
+  overflow:hidden !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeCircle .paramLiveCard,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle .paramLiveCard{
+  aspect-ratio:1/1 !important;
+  min-height:0 !important;
+  width:min(100%,156px) !important;
+  height:auto !important;
+  border-radius:50% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  align-items:center !important;
+  text-align:center !important;
+  justify-self:center !important;
+  padding:16px !important;
+  overflow:hidden !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeCircle,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle{
+  justify-items:center !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeCircle .paramLiveTop,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle .paramLiveTop{
+  flex-direction:column !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:6px !important;
+  padding-right:0 !important;
+  margin:0 0 6px !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeSquare .paramLiveTop,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeSquare .paramLiveTop{
+  padding-right:0 !important;
+  margin-bottom:8px !important;
+  gap:8px !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeCircle .paramIcon,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle .paramIcon{
+  width:32px !important;
+  height:32px !important;
+  font-size:12px !important;
+  flex:0 0 32px !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeSquare .paramIcon,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeSquare .paramIcon{
+  width:34px !important;
+  height:34px !important;
+  font-size:12px !important;
+  flex:0 0 34px !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeCircle h3,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle h3{
+  font-size:11px !important;
+  line-height:1.08 !important;
+  max-width:100px !important;
+  margin:0 !important;
+  text-transform:none !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeSquare h3,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeSquare h3{
+  font-size:12px !important;
+  line-height:1.12 !important;
+  margin:0 !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeCircle .paramValue,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle .paramValue{
+  font-size:24px !important;
+  line-height:1 !important;
+  margin:4px 0 4px !important;
+  white-space:nowrap !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeCircle .paramValue small,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle .paramValue small{
+  display:block !important;
+  font-size:10px !important;
+  line-height:1.1 !important;
+  margin-top:4px !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeSquare .paramValue,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeSquare .paramValue{
+  font-size:28px !important;
+  line-height:1 !important;
+  margin:2px 0 8px !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeSquare .paramValue small,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeSquare .paramValue small{
+  font-size:12px !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeCircle .paramTarget,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle .paramTarget{
+  display:none !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeSquare .paramTarget,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeSquare .paramTarget{
+  font-size:10px !important;
+  line-height:1.18 !important;
+  max-height:36px !important;
+  overflow:hidden !important;
+  opacity:.88 !important;
+}
+#homeParameterLiveGrid .aqxParamMiniStatus,
+#aqxHomePanelPreviewGrid .aqxParamMiniStatus{
+  display:none;
+  font-size:10px;
+  font-weight:900;
+  line-height:1;
+  padding:5px 7px;
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  color:var(--aqxHomeParamBoxTextColour,#fff);
+  max-width:92%;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeCircle .aqxParamMiniStatus,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle .aqxParamMiniStatus{
+  display:block !important;
+  margin-top:4px !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeSquare .aqxParamMiniStatus,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeSquare .aqxParamMiniStatus{
+  display:block !important;
+  margin-top:auto !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeCircle .homeCardPin,
+#homeParameterLiveGrid.aqxResponsiveShapeSquare .homeCardPin,
+#homeParameterLiveGrid.aqxResponsiveShapeRectangle .homeCardPin,
+#aqxHomePanelPreviewGrid .homeCardPin{
+  display:none !important;
+}
+#homeParameterLiveGrid.aqxResponsiveShapeCircle .paramLiveCard * ,
+#aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle .paramLiveCard *{
+  min-width:0 !important;
+}
+@media(max-width:520px){
+  #homeParameterLiveGrid.aqxResponsiveShapeCircle.aqxPanelCols-3,
+  #aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle.aqxPanelCols-3{
+    grid-template-columns:repeat(2,1fr) !important;
+  }
+  #homeParameterLiveGrid.aqxResponsiveShapeCircle .paramLiveCard,
+  #aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle .paramLiveCard{
+    width:min(100%,142px) !important;
+  }
+}
+@media(max-width:370px){
+  #homeParameterLiveGrid.aqxResponsiveShapeCircle .paramLiveCard,
+  #aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle .paramLiveCard{
+    width:min(100%,132px) !important;
+    padding:12px !important;
+  }
+  #homeParameterLiveGrid.aqxResponsiveShapeCircle .paramValue,
+  #aqxHomePanelPreviewGrid.aqxResponsiveShapeCircle .paramValue{font-size:21px !important;}
+}
+
+/* AquoraX Multi-Tank Home Overview */
+.aqxMultiTankHome{border:1px solid rgba(0,200,255,.22);box-shadow:0 0 28px rgba(0,180,255,.08)}
+.aqxTankTopline{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.aqxTankTopline h2{margin:0 0 4px;font-size:1.25rem}.aqxTankTopline p{margin:0;color:var(--muted,#9fb4c7);font-size:.92rem}.aqxTankMiniBtn{width:auto!important;min-width:112px!important;padding:10px 12px!important;white-space:nowrap}
+.aqxActiveTankSelector{display:grid;gap:6px;margin:10px 0 14px}.aqxActiveTankSelector label{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62)}.aqxActiveTankSelector select{width:100%;border:1px solid rgba(0,200,255,.25);border-radius:16px;background:rgba(2,12,22,.85);color:#fff;padding:13px 14px;font-weight:800;outline:none}
+.aqxTankOverviewGrid{display:grid;grid-template-columns:1fr;gap:12px}.aqxTankCard{width:100%;text-align:left;border:1px solid rgba(255,255,255,.1);border-radius:22px;background:linear-gradient(145deg,rgba(8,24,39,.96),rgba(2,8,15,.94));color:#fff;padding:14px;box-shadow:0 10px 28px rgba(0,0,0,.22);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.aqxTankCard.active{border-color:rgba(0,210,255,.62);box-shadow:0 0 26px rgba(0,200,255,.16),0 10px 28px rgba(0,0,0,.28)}.aqxTankCard:active{transform:scale(.985)}
+.aqxTankCardHead{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:3px}.aqxTankCardHead strong{font-size:1.02rem}.aqxTankCardHead span{font-size:.72rem;border-radius:999px;padding:5px 8px;font-weight:900}.aqxTankCardHead .good{background:rgba(28,213,130,.12);color:#6dffbd}.aqxTankCardHead .watch{background:rgba(255,199,74,.12);color:#ffd36a}.aqxTankCardHead .bad{background:rgba(255,80,80,.12);color:#ff8585}.aqxTankCard small{display:block;color:rgba(255,255,255,.62);margin-bottom:10px}.aqxTankParams{display:flex;flex-wrap:wrap;gap:7px;line-height:1.5;margin:8px 0;color:rgba(255,255,255,.9)}.aqxTankParams b{color:#8eeaff}.aqxTankSep{opacity:.35}.aqxTankMuted{color:rgba(255,255,255,.5)}.aqxTankCard em{display:block;color:rgba(255,255,255,.45);font-style:normal;font-size:.78rem;margin-top:8px}
+@media (min-width:680px){.aqxTankOverviewGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* AquoraX Tank Life tidy layout patch */
+.aqxTankLifeSummaryCard{border:1px solid rgba(90,180,255,.24);background:linear-gradient(180deg,rgba(18,38,58,.78),rgba(6,14,24,.72));box-shadow:0 18px 55px rgba(0,145,255,.12);}
+.aqxTankLifeHead{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;}
+.aqxTankLifeHead h2{margin:3px 0 4px;font-size:26px;}
+.aqxTankLifeHead p{margin:0;color:var(--muted);}
+.aqxMiniKicker{display:inline-flex;padding:5px 9px;border-radius:999px;background:rgba(54,155,255,.14);border:1px solid rgba(90,180,255,.24);font-size:12px;color:#9ed7ff;font-weight:800;letter-spacing:.02em;}
+.aqxTankLifeMiniBtn{white-space:nowrap;padding:10px 12px!important;}
+.aqxTankLifeCounts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;}
+.aqxTankLifeCounts button{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.055);border-radius:18px;color:inherit;padding:12px 8px;text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);}
+.aqxTankLifeCounts strong{display:block;font-size:25px;line-height:1;font-weight:900;}
+.aqxTankLifeCounts span{display:block;margin-top:6px;font-size:11px;color:var(--muted);font-weight:750;}
+@media(max-width:560px){.aqxTankLifeHead{display:block}.aqxTankLifeMiniBtn{margin-top:12px;width:100%}.aqxTankLifeCounts{grid-template-columns:repeat(3,minmax(0,1fr));}.aqxTankLifeCounts button{padding:11px 6px;border-radius:16px}.aqxTankLifeCounts strong{font-size:22px}}
+
+/* AquoraX Tank-Specific Jobs Patch */
+.aqxJobsTankContext{margin:12px 0 16px;position:relative;overflow:hidden}
+.aqxJobsTankContext:before{content:"";position:absolute;inset:-40px -60px auto auto;width:150px;height:150px;border-radius:999px;background:rgba(54,163,255,.16);filter:blur(26px);pointer-events:none}
+.aqxJobsTankTop{display:flex;align-items:center;justify-content:space-between;gap:14px;position:relative;z-index:1}
+.aqxJobsTankTop h2{margin:3px 0 4px;color:#fff;font-size:1.15rem}
+.aqxJobsTankTop p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.35}
+@media(max-width:520px){.aqxJobsTankTop{align-items:flex-start;flex-direction:column}.aqxJobsTankTop .secondaryBtn{width:100%}}
+
+/* AquoraX Tank Care Patch */
+.tankCareHubGrid .trackerOpenCard{min-height:142px;}
+.aqxEquipmentItem{display:flex;flex-direction:column;gap:12px;padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.045);margin-bottom:12px;}
+.aqxEquipmentItem p{margin:6px 0;color:var(--muted);}
+.aqxEquipmentItem small,.aqxEquipmentItem em{display:block;color:var(--muted);font-style:normal;margin-top:4px;}
+.aqxCareWarning{margin-top:12px;padding:12px;border-radius:16px;background:rgba(255,190,90,.12);border:1px solid rgba(255,190,90,.25);color:#ffd36a;}
+.aqxCareCounts button strong{font-size:1rem;}
+@media(max-width:430px){.nav button{font-size:11px;padding-left:4px;padding-right:4px;}.tankCareHubGrid{grid-template-columns:1fr;}}
+
+/* AquoraX custom background white-screen fix */
+html{
+  min-height:100%;
+  background:#02070d !important;
+}
+body{
+  min-height:100vh;
+  background-color:#02070d !important;
+  background-repeat:no-repeat !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-attachment:fixed !important;
+}
+body.aqxCustomBgActive{
+  background-color:#02070d !important;
+  background-image:
+    linear-gradient(rgba(1,4,9,var(--aqxBgDim,.58)), rgba(1,4,9,var(--aqxBgDim,.58))),
+    var(--aqxCustomBg) !important;
+  background-repeat:no-repeat,no-repeat !important;
+  background-size:cover,cover !important;
+  background-position:center center,center center !important;
+  background-attachment:fixed,fixed !important;
+}
+body.aqxCustomBgActive #welcomeScreen{
+  background-image:
+    linear-gradient(rgba(1,4,9,var(--aqxBgDim,.58)), rgba(1,4,9,var(--aqxBgDim,.58))),
+    var(--aqxCustomBg) !important;
+  background-repeat:no-repeat,no-repeat !important;
+  background-size:cover,cover !important;
+  background-position:center center,center center !important;
+  background-attachment:fixed,fixed !important;
+}
+
+/* AquoraX dual-mode dosing countdown */
+.aqxDoseCard{gap:10px;}
+.aqxDoseCardHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;width:100%;}
+.aqxDoseCardHead strong{display:block;font-size:1.02rem;}
+.aqxDoseCardHead span{display:block;color:var(--muted);font-size:.82rem;margin-top:3px;}
+.aqxDoseCountdown{width:100%;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:12px;background:rgba(255,255,255,.045);margin-top:4px;}
+.aqxDoseCountdownTop,.aqxDoseMeta{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.aqxDoseCountdownTop strong{font-size:.9rem;}
+.aqxDoseCountdownTop span,.aqxDoseMeta span{font-size:.78rem;color:var(--muted);}
+.aqxDoseCountdown.good .aqxDoseCountdownTop span{color:#76f2be;}
+.aqxDoseCountdown.warn .aqxDoseCountdownTop span{color:#ffd36b;}
+.aqxDoseCountdown.bad .aqxDoseCountdownTop span{color:#ff8d8d;}
+.aqxDoseBar{height:10px;width:100%;background:rgba(255,255,255,.09);border-radius:999px;overflow:hidden;margin:10px 0 8px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);}
+.aqxDoseBar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,rgba(30,170,255,.95),rgba(90,240,210,.95));box-shadow:0 0 18px rgba(30,170,255,.35);transition:width .25s ease;}
+.aqxDoseCountdown.warn .aqxDoseBar i{background:linear-gradient(90deg,rgba(255,188,72,.95),rgba(255,222,122,.95));box-shadow:0 0 18px rgba(255,188,72,.25);}
+.aqxDoseCountdown.bad .aqxDoseBar i{background:linear-gradient(90deg,rgba(255,92,92,.95),rgba(255,130,130,.95));box-shadow:0 0 18px rgba(255,92,92,.25);}
+
+
+/* AquoraX dosing multi-tank context */
+.aqxDosingTankContext{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;border:1px solid rgba(84,184,255,.28);box-shadow:0 0 28px rgba(38,169,255,.12);}
+.aqxDosingTankContext h2{margin:4px 0 6px;}
+.aqxDosingTankContext p{margin:0;color:var(--muted);}
+.aqxDosingTankActions{min-width:220px;flex:1;max-width:360px;}
+.aqxDosingTankActions label{display:block;margin-bottom:7px;font-size:12px;color:var(--muted);}
+.aqxDosingTankActions select{width:100%;}
+@media(max-width:720px){.aqxDosingTankContext{display:block}.aqxDosingTankActions{max-width:none;margin-top:14px}}
+
+/* AquoraX Smart Tank Care Dashboard Patch */
+.aqxSmartCareDash{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:14px;}
+.aqxSmartCareDash:before{content:"";position:absolute;right:-70px;top:-70px;width:210px;height:210px;border-radius:999px;background:rgba(54,163,255,.18);filter:blur(32px);pointer-events:none;}
+.aqxSmartCareHero{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:14px;}
+.aqxSmartCareHero h2{margin:3px 0 5px;color:#fff;font-size:1.25rem;}
+.aqxSmartCareHero p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.35;}
+.aqxCareHealthGrid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+.aqxCareHealth{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.055);border-radius:18px;padding:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);}
+.aqxCareHealth span{display:block;color:var(--muted);font-size:.76rem;font-weight:800;}
+.aqxCareHealth strong{display:block;margin-top:6px;color:#fff;font-size:.98rem;}
+.aqxCareHealth.good strong{color:#76f2be;}.aqxCareHealth.warn strong{color:#ffd36b;}.aqxCareHealth.bad strong{color:#ff8f8f;}
+.aqxCareDashGrid{position:relative;z-index:1;display:grid;grid-template-columns:1.15fr .85fr;gap:12px;}
+.aqxCareDashGrid section{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);border-radius:20px;padding:13px;}
+.aqxCareDashGrid h3{margin:0 0 10px;color:#fff;font-size:1rem;}
+.aqxCareAlert{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);margin-bottom:9px;}
+.aqxCareAlert strong,.aqxCareTask strong,.aqxCareAllGood strong{display:block;color:#fff;font-size:.9rem;}
+.aqxCareAlert span,.aqxCareTask span,.aqxCareAllGood span{display:block;color:var(--muted);font-size:.78rem;margin-top:3px;line-height:1.3;}
+.aqxCareAlert button{border:0;border-radius:999px;padding:8px 10px;background:rgba(54,163,255,.18);color:#dff3ff;font-weight:850;white-space:nowrap;}
+.aqxCareAlert.warning{border-color:rgba(255,211,107,.25);background:rgba(255,211,107,.08);}.aqxCareAlert.critical{border-color:rgba(255,119,119,.25);background:rgba(255,119,119,.08);}.aqxCareAlert.info{border-color:rgba(54,163,255,.25);background:rgba(54,163,255,.08);}
+.aqxCareTask{width:100%;text-align:left;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);border-radius:16px;padding:11px;margin-bottom:9px;color:inherit;}
+.aqxCareAllGood{padding:13px;border-radius:16px;background:rgba(118,242,190,.08);border:1px solid rgba(118,242,190,.18);}.aqxCareAllGood.compact{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);}
+.aqxCareQuickRow{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;}
+.aqxCareQuickRow button{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;border-radius:16px;padding:12px 8px;font-weight:900;}
+@media(max-width:680px){.aqxCareDashGrid{grid-template-columns:1fr}.aqxCareHealthGrid{grid-template-columns:repeat(2,minmax(0,1fr));}.aqxSmartCareHero{flex-direction:column;align-items:flex-start}.aqxSmartCareHero .secondaryBtn{width:100%;}.aqxCareQuickRow{grid-template-columns:repeat(2,minmax(0,1fr));}}
+
+
+/* AquoraX first-run guided onboarding */
+.aqxOnboardingOverlay{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(1,7,14,.76);backdrop-filter:blur(18px)}
+.aqxOnboardingOverlay.show{display:flex}
+.aqxOnboardingModal{width:min(430px,100%);border:1px solid rgba(0,200,255,.32);background:linear-gradient(180deg,rgba(7,24,39,.98),rgba(2,9,17,.98));box-shadow:0 24px 70px rgba(0,0,0,.58),0 0 42px rgba(0,200,255,.16);border-radius:28px;padding:22px;color:#fff;text-align:left}
+.aqxOnboardingTop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.aqxOnboardingSkip{width:auto;min-width:0;padding:9px 13px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.8);font-size:12px}
+.aqxOnboardingIcon{width:64px;height:64px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:32px;background:radial-gradient(circle at 30% 20%,rgba(0,200,255,.34),rgba(0,80,160,.1));border:1px solid rgba(0,200,255,.24);box-shadow:0 0 24px rgba(0,200,255,.13);margin:8px 0 14px}
+.aqxOnboardingModal h2{font-size:25px;letter-spacing:-.03em;margin:0 0 8px}
+.aqxOnboardingModal p{margin:0;color:rgba(231,245,255,.78);line-height:1.48;font-size:15px}
+.aqxOnboardingProgress{height:8px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden;margin:22px 0 16px;border:1px solid rgba(255,255,255,.07)}
+.aqxOnboardingProgress span{display:block;height:100%;width:0%;border-radius:inherit;background:linear-gradient(90deg,#00c8ff,#74e7ff);box-shadow:0 0 18px rgba(0,200,255,.38);transition:width .25s ease}
+.aqxOnboardingActions{display:grid;grid-template-columns:1fr 1.5fr;gap:10px}
+.aqxOnboardingActions button{margin:0}
+body.aqxTourOpen{overflow:hidden}
+.profileTourReplayCard{border:1px solid rgba(0,200,255,.22);background:linear-gradient(180deg,rgba(0,200,255,.09),rgba(255,255,255,.035));}
+
+/* AquoraX clickable guides patch */
+.aqxGuideGrid{display:grid;gap:14px;margin:14px 0 18px;}
+.aqxGuideCard{width:100%;text-align:left;border:1px solid rgba(114,214,255,.18);cursor:pointer;color:inherit;font:inherit;transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease;}
+.aqxGuideCard:hover,.aqxGuideCard:focus{transform:translateY(-1px);border-color:rgba(114,214,255,.42);box-shadow:0 0 22px rgba(42,169,255,.12);outline:none;}
+.aqxGuideCard span,.aqxGuideDetailTop span{display:inline-flex;margin-bottom:8px;padding:5px 9px;border-radius:999px;background:rgba(42,169,255,.12);border:1px solid rgba(114,214,255,.18);color:var(--aqxHeadingColour,#e9fbff);font-size:.78rem;font-weight:800;letter-spacing:.02em;}
+.aqxGuideDetail{border-color:rgba(114,214,255,.28)!important;}
+.aqxGuideDetailTop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;}
+.aqxGuideSection{padding:12px 0;border-top:1px solid rgba(255,255,255,.08);}
+.aqxGuideSection h3{margin:0 0 6px;color:var(--aqxHeadingColour,#e9fbff);font-size:1rem;}
+.aqxGuideSection p{margin:0;}
+
+
+/* AquoraX smart guide recommendations */
+.aqxSmartGuideRecommendations{
+  margin-bottom:18px;
+}
+.aqxSmartGuideList{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:14px;
+}
+.aqxSmartGuideCard{
+  text-align:left;
+  border:1px solid rgba(0,200,255,.18);
+  background:rgba(8,24,39,.82);
+}
+.aqxSmartGuideTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:8px;
+}
+.aqxSmartGuideTop span{
+  color:var(--accent,#00c8ff);
+  font-size:.82rem;
+}
+.aqxSmartGuideCard p{
+  margin:0;
+  opacity:.92;
+}
+
+/* AquoraX water type switcher */
+.aqxWaterTypeCard,
+.aqxHomeWaterTypeSwitcher{
+  margin: 0 0 16px;
+  padding: 16px;
+  border: 1px solid rgba(0,200,255,.22);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(7,22,36,.96), rgba(3,10,18,.96));
+  box-shadow: 0 14px 38px rgba(0,0,0,.26), inset 0 0 28px rgba(0,200,255,.045);
+}
+.aqxWaterTypeHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;}
+.aqxWaterTypeHead h2{margin:2px 0 6px;font-size:20px;}
+.aqxWaterTypeHead p{margin:0;color:var(--muted);line-height:1.45;}
+.aqxWaterTypeSwitch{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+.aqxWaterTypeSwitch button{
+  min-height:48px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.045);
+  color:var(--text);
+  font-weight:800;
+  letter-spacing:.2px;
+}
+.aqxWaterTypeSwitch button.active{
+  border-color:rgba(0,200,255,.7);
+  background:linear-gradient(145deg, rgba(0,200,255,.24), rgba(0,87,255,.12));
+  box-shadow:0 0 24px rgba(0,200,255,.16), inset 0 0 18px rgba(0,200,255,.08);
+}
+.aqxWaterTypeNote{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+  padding:10px 12px;
+  border-radius:16px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.06);
+}
+.aqxFreshwaterMode .aqxReefOnlyField{display:none!important;}
+.aqxReefOnlyField{transition:opacity .18s ease, transform .18s ease;}
+
+
+/* === AquoraX Simplified UX Patch === */
+.aqxCommandCentre{border:1px solid rgba(82,190,255,.26);background:linear-gradient(145deg,rgba(8,20,33,.96),rgba(5,11,20,.92));box-shadow:0 18px 42px rgba(0,0,0,.34),0 0 34px rgba(34,170,255,.12)}
+.aqxCommandTop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.aqxCommandTop h2{margin:3px 0 6px;font-size:1.35rem}
+.aqxCommandTop p{margin:0;color:var(--muted);line-height:1.45}
+.aqxCommandGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.aqxCommandGrid button{border:1px solid rgba(82,190,255,.18);background:rgba(255,255,255,.045);color:var(--text);border-radius:18px;padding:14px 12px;text-align:left;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.aqxCommandGrid button strong{display:block;font-size:.98rem;margin-bottom:4px}
+.aqxCommandGrid button span{display:block;color:var(--muted);font-size:.78rem;line-height:1.3}
+.aqxCommandGrid button:active{transform:scale(.985)}
+.aqxPageHelper{border:1px solid rgba(82,190,255,.18);background:rgba(15,38,60,.58);border-radius:18px;padding:13px 14px;margin:0 0 14px;color:var(--muted);line-height:1.45}
+.aqxPageHelper strong{display:block;color:var(--text);margin-bottom:3px}
+.aqxSimpleMode .scoreCard,
+.aqxSimpleMode [data-panel="history"],
+.aqxSimpleMode .paramDragHint{display:none!important}
+.aqxSimpleMode .homeParamActions{display:none!important}
+.aqxSimpleMode .pageHeader p{font-size:.92rem;line-height:1.4}
+.aqxSimpleMode .customDropMiniNote{display:none!important}
+.aqxModePill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;border:1px solid rgba(82,190,255,.22);padding:6px 10px;color:var(--muted);font-size:.78rem;margin-top:8px}
+@media(max-width:420px){.aqxCommandGrid{grid-template-columns:1fr}.aqxCommandTop{flex-direction:column}.aqxCommandTop .secondaryBtn{width:100%}}
+
+/* AquoraX strong minimal home rebuild - visible clutter reduction */
+#home{
+  --aqx-home-gap:14px;
+}
+#home .homeBrandHeader{
+  padding:18px 16px 10px !important;
+  margin-bottom:10px !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+#home .homeBrandHeader h1{
+  font-size:24px !important;
+  margin-bottom:4px !important;
+}
+#home .homeBrandHeader p{
+  font-size:13px !important;
+  opacity:.72 !important;
+}
+#home .card{
+  margin:0 0 var(--aqx-home-gap) !important;
+  border-radius:24px !important;
+}
+#home #aqxMultiTankHome{
+  padding:0 !important;
+  overflow:hidden !important;
+  border:1px solid rgba(94,190,255,.20) !important;
+  background:linear-gradient(155deg,rgba(8,25,42,.96),rgba(4,9,17,.96)) !important;
+  box-shadow:0 18px 45px rgba(0,0,0,.30),0 0 38px rgba(28,157,255,.12) !important;
+}
+.aqxMinimalTankHero{
+  padding:18px;
+  display:grid;
+  gap:14px;
+}
+.aqxMinimalTankMain h2{
+  font-size:28px;
+  margin:5px 0 3px;
+  letter-spacing:-.04em;
+}
+.aqxMinimalTankMain p{
+  margin:0;
+  color:var(--muted);
+}
+.aqxMinimalStatus{
+  display:inline-flex;
+  margin-top:12px;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+}
+.aqxMinimalStatus.good{color:#82f4bd;border-color:rgba(130,244,189,.30);background:rgba(130,244,189,.08)}
+.aqxMinimalStatus.watch{color:#ffd37a;border-color:rgba(255,211,122,.30);background:rgba(255,211,122,.08)}
+.aqxMinimalStatus.bad{color:#ff9a9a;border-color:rgba(255,154,154,.32);background:rgba(255,154,154,.09)}
+.aqxMinimalTankReading{
+  padding:13px 14px;
+  border-radius:18px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.08);
+  line-height:1.7;
+  font-size:13px;
+}
+.aqxMinimalTankActions,
+.aqxMinimalActionRow{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.aqxMinimalActions{
+  padding:16px !important;
+  background:rgba(255,255,255,.035) !important;
+  border-color:rgba(255,255,255,.08) !important;
+  box-shadow:none !important;
+}
+.aqxMinimalActions .aqxCommandTop{margin-bottom:12px !important}
+.aqxMinimalActions h2{font-size:20px !important;margin:3px 0 4px !important;letter-spacing:-.03em}
+.aqxMinimalActions p{font-size:13px !important;line-height:1.4 !important}
+.aqxMinimalActionRow .primaryBtn,
+.aqxMinimalActionRow .secondaryBtn,
+.aqxMinimalTankActions .primaryBtn,
+.aqxMinimalTankActions .secondaryBtn{
+  width:100%;
+  min-height:46px;
+  border-radius:16px;
+  padding:12px 10px;
+}
+.aqxHomeDisclosure{
+  border:1px solid rgba(255,255,255,.08) !important;
+  background:rgba(255,255,255,.025) !important;
+  border-radius:18px !important;
+  padding:0 !important;
+  overflow:hidden;
+}
+.aqxHomeDisclosure summary{
+  cursor:pointer;
+  list-style:none;
+  padding:14px 15px;
+  font-weight:800;
+  color:var(--text);
+}
+.aqxHomeDisclosure summary::-webkit-details-marker{display:none}
+.aqxHomeDisclosure summary:after{
+  content:'+';
+  float:right;
+  color:var(--muted);
+}
+.aqxHomeDisclosure[open] summary:after{content:'–'}
+.aqxHomeDisclosure[open]{padding-bottom:14px !important}
+.aqxHomeDisclosure[open] > *:not(summary){margin-left:14px;margin-right:14px}
+.aqxTankSwitcherMini{
+  margin:0 14px 14px !important;
+}
+.aqxCompactTankGrid{
+  grid-template-columns:1fr !important;
+  gap:8px !important;
+  margin-top:10px;
+}
+.aqxCompactTankGrid .aqxTankCard{
+  padding:12px !important;
+  box-shadow:none !important;
+}
+.aqxMinimalParameterCard{
+  padding:16px !important;
+}
+.aqxMinimalSectionHead{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+.aqxMinimalSectionHead h2{
+  margin:3px 0 5px !important;
+  font-size:21px !important;
+}
+.aqxMinimalSectionHead p{
+  margin:0 0 12px !important;
+  font-size:13px !important;
+}
+.aqxMinimalSectionHead .primaryBtn{
+  white-space:nowrap;
+  border-radius:15px;
+  padding:11px 13px;
+}
+#home .paramLiveGrid{
+  grid-template-columns:1fr 1fr !important;
+  gap:8px !important;
+  margin-top:6px !important;
+}
+#home .paramLiveCard{
+  padding:11px !important;
+  border-radius:16px !important;
+  min-height:82px !important;
+  box-shadow:none !important;
+}
+#homeSmartInsightsCard,
+#homeAiGuidanceCard,
+#homeJobsCard,
+#home .scoreCard,
+#home [data-panel="history"]{
+  padding:14px 15px !important;
+  box-shadow:none !important;
+  background:rgba(255,255,255,.035) !important;
+  border-color:rgba(255,255,255,.08) !important;
+}
+#home .scoreCard,
+#home [data-panel="history"]{
+  display:none !important;
+}
+#homeJobsCard h2,
+#homeSmartInsightsCard h2,
+#homeAiGuidanceCard h2{
+  font-size:18px !important;
+  margin-bottom:4px !important;
+}
+#homeJobsCard p,
+#homeSmartInsightsCard p,
+#homeAiGuidanceCard p{
+  font-size:13px !important;
+  line-height:1.35 !important;
+}
+.aqxMoreHomeTools{
+  padding:0 !important;
+}
+.aqxMoreHomeTools .simpleTile{
+  box-shadow:none !important;
+  margin-bottom:8px !important;
+}
+@media(max-width:430px){
+  .aqxMinimalTankActions,
+  .aqxMinimalActionRow{grid-template-columns:1fr 1fr;gap:8px}
+  .aqxMinimalActionRow .primaryBtn,
+  .aqxMinimalActionRow .secondaryBtn{font-size:12px;padding:11px 8px}
+  .aqxMinimalSectionHead{display:block}
+  .aqxMinimalSectionHead .primaryBtn{width:100%;margin:4px 0 10px}
+  #home .paramLiveGrid{grid-template-columns:1fr 1fr !important}
+}
+
+
+/* AquoraX PARAMETER-FIRST PREMIUM HOME PATCH */
+#home{
+  max-width:720px !important;
+  padding-left:16px !important;
+  padding-right:16px !important;
+}
+#home .homeBrandHeader{
+  margin:0 0 14px !important;
+  padding-top:4px !important;
+}
+#home .homeBrandLogo{
+  max-width:240px !important;
+  max-height:70px !important;
+  margin-bottom:8px !important;
+}
+#home .homeBrandHeader h1{
+  font-size:22px !important;
+  margin-bottom:2px !important;
+  letter-spacing:-.04em !important;
+}
+#home .homeBrandHeader p{
+  font-size:12px !important;
+  opacity:.58 !important;
+}
+
+#home .parameterHero.aqxMinimalParameterCard{
+  position:relative !important;
+  padding:18px !important;
+  margin-top:8px !important;
+  margin-bottom:14px !important;
+  border-radius:30px !important;
+  border:1px solid rgba(0,200,255,.34) !important;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(0,200,255,.20), transparent 34%),
+    linear-gradient(180deg, rgba(7,31,49,.98), rgba(3,11,19,.98)) !important;
+  box-shadow:0 24px 70px rgba(0,0,0,.42), 0 0 50px rgba(0,200,255,.13) !important;
+  overflow:hidden !important;
+}
+#home .parameterHero:before{
+  content:'';
+  position:absolute;
+  left:18px;right:18px;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,200,255,.75),transparent);
+  opacity:.7;
+}
+#home .aqxMinimalSectionHead{
+  display:grid !important;
+  grid-template-columns:1fr auto !important;
+  align-items:start !important;
+  gap:14px !important;
+  margin-bottom:12px !important;
+}
+#home .aqxMinimalSectionHead .aqxMiniKicker{
+  background:rgba(0,200,255,.14) !important;
+  color:#bff2ff !important;
+  border:1px solid rgba(0,200,255,.25) !important;
+}
+#home .aqxMinimalSectionHead h2{
+  font-size:27px !important;
+  line-height:1.02 !important;
+  letter-spacing:-.055em !important;
+  margin:7px 0 7px !important;
+}
+#home .aqxMinimalSectionHead p{
+  max-width:430px !important;
+  font-size:13px !important;
+  line-height:1.45 !important;
+  color:rgba(210,232,246,.72) !important;
+  margin:0 !important;
+}
+#home .aqxMinimalSectionHead .primaryBtn{
+  width:auto !important;
+  min-width:122px !important;
+  min-height:44px !important;
+  padding:12px 18px !important;
+  border-radius:999px !important;
+  box-shadow:0 12px 30px rgba(0,200,255,.22) !important;
+}
+
+#home .aqxParamsAlwaysOpen{
+  border:none !important;
+  background:transparent !important;
+  padding:0 !important;
+  overflow:visible !important;
+}
+#home .aqxParamsAlwaysOpen summary{
+  display:none !important;
+}
+#home .aqxParamsAlwaysOpen[open] > *:not(summary){
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+#home #homeParameterLiveGrid{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:10px !important;
+  margin-top:10px !important;
+}
+#home #homeParameterLiveGrid .paramLiveCard{
+  position:relative !important;
+  min-height:134px !important;
+  padding:14px !important;
+  border-radius:22px !important;
+  background:linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.028)) !important;
+  border:1px solid rgba(255,255,255,.105) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+#home #homeParameterLiveGrid .paramLiveCard .homeCardPin{
+  display:none !important;
+}
+#home #homeParameterLiveGrid .paramLiveTop{
+  gap:8px !important;
+  margin-bottom:12px !important;
+}
+#home #homeParameterLiveGrid .paramIcon{
+  width:32px !important;height:32px !important;
+  border-radius:14px !important;
+  background:rgba(0,200,255,.08) !important;
+  border-color:rgba(0,200,255,.24) !important;
+  font-size:12px !important;
+}
+#home #homeParameterLiveGrid h3{
+  font-size:13px !important;
+  letter-spacing:-.02em !important;
+}
+#home #homeParameterLiveGrid .paramValue{
+  font-size:32px !important;
+  line-height:1 !important;
+  letter-spacing:-.055em !important;
+  margin:4px 0 11px !important;
+}
+#home #homeParameterLiveGrid .paramValue small{
+  font-size:12px !important;
+  opacity:.72 !important;
+  letter-spacing:0 !important;
+}
+#home #homeParameterLiveGrid .paramTarget{
+  font-size:11px !important;
+  line-height:1.28 !important;
+  color:rgba(210,232,246,.64) !important;
+}
+#home .parameterHero .secondaryBtn{
+  margin-top:12px !important;
+  border-radius:18px !important;
+  background:rgba(255,255,255,.045) !important;
+}
+
+#home #aqxMultiTankHome{
+  padding:0 !important;
+  margin-bottom:12px !important;
+  border-radius:24px !important;
+  background:rgba(255,255,255,.028) !important;
+  border:1px solid rgba(255,255,255,.075) !important;
+  box-shadow:none !important;
+}
+#home .aqxMinimalTankHero{
+  padding:14px !important;
+  grid-template-columns:1fr !important;
+  gap:10px !important;
+}
+#home .aqxMinimalTankMain h2{
+  font-size:21px !important;
+  letter-spacing:-.04em !important;
+}
+#home .aqxMinimalTankReading{
+  display:none !important;
+}
+#home .aqxMinimalTankActions{
+  grid-template-columns:1fr 1fr !important;
+  gap:8px !important;
+}
+#home .aqxMinimalTankActions .primaryBtn,
+#home .aqxMinimalTankActions .secondaryBtn{
+  min-height:40px !important;
+  border-radius:14px !important;
+  font-size:13px !important;
+  padding:10px !important;
+}
+
+#home .aqxWaterTypeMovedOffHome,
+#home #aqxHomeWaterTypeSwitcher,
+#home .aqxVisuallyReducedHomeTool,
+#home #aqxSimpleCommandCard{
+  display:none !important;
+}
+#home #homeSmartInsightsCard,
+#home #homeJobsCard,
+#home #homeAiGuidanceCard,
+#home .aqxMoreHomeTools{
+  padding:15px !important;
+  border-radius:24px !important;
+  background:rgba(255,255,255,.026) !important;
+  border:1px solid rgba(255,255,255,.07) !important;
+  box-shadow:none !important;
+  margin-bottom:12px !important;
+}
+#home #homeSmartInsightsCard h2,
+#home #homeJobsCard h2,
+#home #homeAiGuidanceCard h2{
+  font-size:17px !important;
+  letter-spacing:-.03em !important;
+}
+#home .scoreCard,
+#home [data-panel="history"]{
+  display:none !important;
+}
+@media(max-width:520px){
+  #home{padding-left:14px !important;padding-right:14px !important;}
+  #home .parameterHero.aqxMinimalParameterCard{padding:15px !important;border-radius:26px !important;}
+  #home .aqxMinimalSectionHead{grid-template-columns:1fr !important;}
+  #home .aqxMinimalSectionHead .primaryBtn{width:100% !important;}
+  #home #homeParameterLiveGrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:9px !important;}
+  #home #homeParameterLiveGrid .paramLiveCard{min-height:126px !important;padding:12px !important;border-radius:20px !important;}
+  #home #homeParameterLiveGrid .paramValue{font-size:29px !important;}
+}
+@media(max-width:360px){
+  #home #homeParameterLiveGrid .paramValue{font-size:25px !important;}
+  #home #homeParameterLiveGrid h3{font-size:12px !important;}
+}
+
+/* === AquoraX trustworthy status colours + parameter glow === */
+.paramStatusNone{color:#8fa1ad!important;font-weight:900;}
+.paramStatusActive{color:#49cfff!important;font-weight:900;}
+.paramStatusGood{color:#63f7a3!important;font-weight:900;}
+.paramStatusWatch{color:#ffd36a!important;font-weight:900;}
+.paramStatusBad{color:#ff6b6b!important;font-weight:900;}
+
+.paramLiveCard.paramCardNone,
+#homeParameterLiveGrid .paramLiveCard.paramCardNone,
+#parameterLiveGrid .paramLiveCard.paramCardNone{
+  border-color:rgba(155,170,185,.18)!important;
+  box-shadow:0 0 18px rgba(155,170,185,.04), inset 0 0 18px rgba(255,255,255,.015)!important;
+}
+.paramLiveCard.paramCardActive,
+#homeParameterLiveGrid .paramLiveCard.paramCardActive,
+#parameterLiveGrid .paramLiveCard.paramCardActive{
+  border-color:rgba(0,200,255,.38)!important;
+  box-shadow:0 0 24px rgba(0,200,255,.16), inset 0 0 20px rgba(0,200,255,.025)!important;
+}
+.paramLiveCard.paramCardGood,
+#homeParameterLiveGrid .paramLiveCard.paramCardGood,
+#parameterLiveGrid .paramLiveCard.paramCardGood{
+  border-color:rgba(99,247,163,.42)!important;
+  box-shadow:0 0 28px rgba(99,247,163,.18), inset 0 0 22px rgba(99,247,163,.035)!important;
+}
+.paramLiveCard.paramCardWatch,
+#homeParameterLiveGrid .paramLiveCard.paramCardWatch,
+#parameterLiveGrid .paramLiveCard.paramCardWatch{
+  border-color:rgba(255,211,106,.55)!important;
+  box-shadow:0 0 34px rgba(255,211,106,.22), inset 0 0 24px rgba(255,211,106,.04)!important;
+}
+.paramLiveCard.paramCardBad,
+#homeParameterLiveGrid .paramLiveCard.paramCardBad,
+#parameterLiveGrid .paramLiveCard.paramCardBad{
+  border-color:rgba(255,107,107,.60)!important;
+  box-shadow:0 0 38px rgba(255,107,107,.28), inset 0 0 26px rgba(255,107,107,.05)!important;
+}
+.paramLiveCard.paramCardGood .paramIcon{border-color:rgba(99,247,163,.55)!important;color:#63f7a3!important;background:rgba(99,247,163,.08)!important;}
+.paramLiveCard.paramCardWatch .paramIcon{border-color:rgba(255,211,106,.62)!important;color:#ffd36a!important;background:rgba(255,211,106,.08)!important;}
+.paramLiveCard.paramCardBad .paramIcon{border-color:rgba(255,107,107,.68)!important;color:#ff6b6b!important;background:rgba(255,107,107,.08)!important;}
+.paramLiveCard.paramCardNone .paramIcon{border-color:rgba(155,170,185,.32)!important;color:#9aa9b3!important;background:rgba(155,170,185,.045)!important;}
+
+.aqxCareHealth.none{
+  border-color:rgba(155,170,185,.16)!important;
+  background:rgba(255,255,255,.035)!important;
+  box-shadow:none!important;
+}
+.aqxCareHealth.none strong{color:#9fb0bb!important;}
+.aqxCareHealth.good{box-shadow:0 0 24px rgba(99,247,163,.12)!important;}
+.aqxCareHealth.warn{box-shadow:0 0 26px rgba(255,211,106,.14)!important;}
+.aqxCareHealth.bad{box-shadow:0 0 28px rgba(255,107,107,.18)!important;}
+
+/* === AQUORAX FINAL FIX: Home parameter custom shape + smart status glow layer ===
+   Customisation owns shape/size. Status owns border/glow/text colour. */
+#home #homeParameterLiveGrid.aqxFinalShapeCircle .paramLiveCard,
+#home #homeParameterLiveGrid .paramLiveCard[data-aqx-final-shape="circle"]{
+  aspect-ratio:1 / 1 !important;
+  width:min(100%,156px) !important;
+  height:auto !important;
+  min-height:0 !important;
+  border-radius:50% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  justify-self:center !important;
+  overflow:hidden !important;
+  padding:14px !important;
+}
+#home #homeParameterLiveGrid.aqxFinalShapeCircle{justify-items:center !important;}
+#home #homeParameterLiveGrid.aqxFinalShapeCircle .paramLiveTop,
+#home #homeParameterLiveGrid .paramLiveCard[data-aqx-final-shape="circle"] .paramLiveTop{
+  flex-direction:column !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:5px !important;
+  margin-bottom:6px !important;
+}
+#home #homeParameterLiveGrid.aqxFinalShapeCircle .paramIcon,
+#home #homeParameterLiveGrid .paramLiveCard[data-aqx-final-shape="circle"] .paramIcon{
+  width:32px !important;
+  height:32px !important;
+  font-size:11px !important;
+}
+#home #homeParameterLiveGrid.aqxFinalShapeCircle .paramValue,
+#home #homeParameterLiveGrid .paramLiveCard[data-aqx-final-shape="circle"] .paramValue{
+  font-size:24px !important;
+  line-height:1 !important;
+  margin-bottom:4px !important;
+}
+#home #homeParameterLiveGrid.aqxFinalShapeCircle .paramTarget,
+#home #homeParameterLiveGrid .paramLiveCard[data-aqx-final-shape="circle"] .paramTarget{
+  font-size:10px !important;
+  line-height:1.18 !important;
+  max-width:82% !important;
+}
+#home #homeParameterLiveGrid.aqxFinalShapeSquare .paramLiveCard,
+#home #homeParameterLiveGrid .paramLiveCard[data-aqx-final-shape="square"]{
+  aspect-ratio:1 / 1 !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  border-radius:16px !important;
+  overflow:hidden !important;
+}
+#home #homeParameterLiveGrid.aqxFinalShapeRectangle .paramLiveCard,
+#home #homeParameterLiveGrid .paramLiveCard[data-aqx-final-shape="rectangle"]{
+  aspect-ratio:auto !important;
+  width:100% !important;
+  min-height:126px !important;
+  border-radius:var(--aqxHomePanelRadius,20px) !important;
+}
+
+#home #homeParameterLiveGrid .paramLiveCard.paramCardNone{border-color:rgba(155,170,185,.24)!important;box-shadow:0 0 18px rgba(155,170,185,.08), inset 0 0 16px rgba(255,255,255,.018)!important;}
+#home #homeParameterLiveGrid .paramLiveCard.paramCardActive{border-color:rgba(73,207,255,.48)!important;box-shadow:0 0 26px rgba(73,207,255,.20), inset 0 0 20px rgba(73,207,255,.035)!important;}
+#home #homeParameterLiveGrid .paramLiveCard.paramCardGood{border-color:rgba(99,247,163,.52)!important;box-shadow:0 0 30px rgba(99,247,163,.24), inset 0 0 22px rgba(99,247,163,.045)!important;}
+#home #homeParameterLiveGrid .paramLiveCard.paramCardWatch{border-color:rgba(255,183,77,.68)!important;box-shadow:0 0 34px rgba(255,183,77,.30), inset 0 0 24px rgba(255,183,77,.055)!important;}
+#home #homeParameterLiveGrid .paramLiveCard.paramCardBad{border-color:rgba(255,80,95,.72)!important;box-shadow:0 0 40px rgba(255,80,95,.36), inset 0 0 26px rgba(255,80,95,.065)!important;}
