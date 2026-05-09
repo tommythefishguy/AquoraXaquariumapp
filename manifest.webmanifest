@@ -1,0 +1,48 @@
+{
+  "name": "AquoraX",
+  "short_name": "AquoraX",
+  "description": "AquoraX premium aquarium management with cloud backup and real-time care notifications.",
+  "start_url": "/AquoraXaquariumapp/?v=cloud-reminders-fixed-20260507f",
+  "scope": "/AquoraXaquariumapp/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#00131c",
+  "background_color": "#00070b",
+  "icons": [
+    {
+      "src": "/AquoraXaquariumapp/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/AquoraXaquariumapp/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/AquoraXaquariumapp/assets/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/AquoraXaquariumapp/assets/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "gcm_sender_id": "103953800507",
+  "id": "/AquoraXaquariumapp/",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "categories": [
+    "lifestyle",
+    "utilities"
+  ],
+  "lang": "en-GB"
+}
