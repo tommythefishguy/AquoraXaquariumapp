@@ -7164,7 +7164,7 @@ function aqxCloseCloudPanel(event){
   function dosingHistory(){try{return (typeof getDosingHistory==='function'?getDosingHistory():[])||[];}catch(e){return [];}}
   function currentBrand(){try{var id=localStorage.getItem('aquoraxActiveDosingBrand')||'coral';var packs=window.aqxBrandPacks||{};return packs[id]||packs.coral||{id:id,short:id};}catch(e){return {id:'coral',short:'Coral Essentials'};}}
   function classify(status){status=String(status||'ok').toLowerCase(); if(status==='high')return 'bad'; if(status==='low'||status==='watch')return 'warn'; return 'good';}
-  function getSignals(test){var out=[];((test&&test.parameters)||[]).forEach(function(p){var s=String(p.status||'ok').toLowerCase(); if(s && s!=='ok') out.push({name:p.name,value:p.value,unit:p.unit,status:s,cls:classify(s)});}); return out;}
+  function getSignals(test){var out=[];((test&&test.parameters)||[]).forEach(function(p){if(p && p.excludedFromReefHealth)return; var s=String(p.status||'ok').toLowerCase(); if(s && s!=='ok') out.push({name:p.name,value:p.value,unit:p.unit,status:s,cls:classify(s)});}); return out;}
   function icpAgeDays(test){if(!test||!test.date)return null;var d=new Date(test.date); if(isNaN(d))return null; return Math.max(0,Math.floor((Date.now()-d.getTime())/86400000));}
   function daysLeft(p){try{var amt=n(p.amount,0);var interval=Math.max(1,n(p.interval||(p.frequency==='weekly'?7:1),1));var perDay=amt/interval;var remaining=n(p.remainingAmount,Number.NaN); if(!Number.isFinite(remaining)) remaining=n(p.bottleSize,0); if((p.mode||'manual')==='auto'){var start=new Date(p.stockUpdatedIso||p.createdIso||Date.now()); if(!isNaN(start)){remaining-=Math.max(0,Math.floor((Date.now()-start.getTime())/86400000))*perDay;}} return perDay>0?Math.floor(Math.max(0,remaining)/perDay):null;}catch(e){return null;}}
 
@@ -7176,7 +7176,8 @@ function aqxCloseCloudPanel(event){
   function keyName(name){return String(name||'').toLowerCase().replace(/[^a-z]/g,'');}
   function importLooksSuspect(test, signals){
     if(!test) return false;
-    var params=(test.parameters||[]), bad=0, weird=[];
+    var params=(test.parameters||[]).filter(function(p){return !(p&&p.excludedFromReefHealth);}), bad=0, weird=[];
+    if(test.reviewedByAquoraX && bad===0 && !/Low confidence|OCR import/i.test(String(test.notes||''))) return false;
     params.forEach(function(p){
       var k=keyName(p.name), val=n(p.value,NaN); if(!Number.isFinite(val)) return;
       Object.keys(plausible).some(function(pk){
@@ -7187,6 +7188,7 @@ function aqxCloseCloudPanel(event){
     var manySignals = signals.length>=6;
     var manyHighs = signals.filter(function(s){return s.status==='high';}).length>=5;
     var imported = /imported|screenshot|ocr/i.test(String(test.notes||''));
+    if(test.reviewedByAquoraX && bad < 2) return false;
     return bad>=2 || (imported && manySignals && manyHighs);
   }
 
@@ -7224,8 +7226,17 @@ function aqxCloseCloudPanel(event){
     if(!h.suspect && h.signals.some(function(s){return /potassium|iodine|iron|strontium/i.test(s.name)})) prediction.push({cls:'warn',title:'Trace trend watch',text:'Trace markers are outside target. Track the next ICP to confirm if this is consumption or a one-off swing.'});
     if(!prediction.length) prediction.push({cls:'good',title:'No urgent prediction',text:'Nothing saved suggests an urgent chemistry or refill issue right now.'});
     var scoreStyle='style="--score:'+esc(h.numericScore||0)+'"';
-    card.innerHTML='<div class="aqxReefIntelTop"><div><span class="aqxMiniKicker">AquoraX Reef Intelligence</span><h2>Reef Health Engine</h2><p>'+esc(brandCopy(b,h))+'</p></div><div class="aqxReefScore '+esc(h.cls)+'" '+scoreStyle+'><b>'+esc(h.score)+'</b><span>'+esc(h.label)+'</span></div></div><div class="aqxReefIntelGrid"><div class="aqxReefIntelBlock"><strong>ICP Signals</strong><div class="aqxReefSignalChips">'+signalHtml+'</div><small>'+(h.test?esc((h.test.lab||'ICP')+' · '+(h.test.date||'latest')):'No ICP test saved')+'</small></div><div class="aqxReefIntelBlock"><strong>Predictions</strong>'+prediction.map(function(p){return '<div class="aqxPrediction '+esc(p.cls)+'"><b>'+esc(p.title)+'</b><span>'+esc(p.text)+'</span></div>';}).join('')+'</div></div><div class="aqxReefIntelFooter"><span>'+esc(b.short)+' ecosystem</span><span>'+h.products.length+' active product'+(h.products.length===1?'':'s')+'</span><span>'+h.hist.length+' dose/check log'+(h.hist.length===1?'':'s')+'</span></div>';
+    var reviewAction=h.test?'<button type="button" class="aqxReviewIcpBtn" onclick="aqxOpenIcpReview()">'+(h.suspect?'Review ICP':'Open ICP Review')+'</button>':'';
+    card.innerHTML='<div class="aqxReefIntelTop"><div><span class="aqxMiniKicker">AquoraX Reef Intelligence</span><h2>Reef Health Engine</h2><p>'+esc(brandCopy(b,h))+'</p>'+reviewAction+'</div><button type="button" class="aqxReefScore '+esc(h.cls)+'" '+scoreStyle+' onclick="aqxOpenIcpReview()" aria-label="Review latest ICP"><b>'+esc(h.score)+'</b><span>'+esc(h.label)+'</span></button></div><div class="aqxReefIntelGrid"><div class="aqxReefIntelBlock"><strong>ICP Signals</strong><div class="aqxReefSignalChips">'+signalHtml+'</div><small>'+(h.test?esc((h.test.lab||'ICP')+' · '+(h.test.date||'latest')):'No ICP test saved')+'</small></div><div class="aqxReefIntelBlock"><strong>Predictions</strong>'+prediction.map(function(p){return '<div class="aqxPrediction '+esc(p.cls)+'"><b>'+esc(p.title)+'</b><span>'+esc(p.text)+'</span></div>';}).join('')+'</div></div><div class="aqxReefIntelFooter"><span>'+esc(b.short)+' ecosystem</span><span>'+h.products.length+' active product'+(h.products.length===1?'':'s')+'</span><span>'+h.hist.length+' dose/check log'+(h.hist.length===1?'':'s')+'</span></div>';
   }
+  function reviewClassForParam(p){if(p&&p.excludedFromReefHealth)return 'excluded';var k=keyName(p&&p.name), val=n(p&&p.value,NaN);var suspicious=false;Object.keys(plausible).some(function(pk){if(k.indexOf(pk)===0||pk.indexOf(k)===0){var r=plausible[pk];suspicious=Number.isFinite(val)&&(val<r[0]||val>r[1]);return true;}return false;});return suspicious?'suspicious':classify(p&&p.status);}
+  function reviewHelpForParam(p){var c=reviewClassForParam(p);if(c==='excluded')return 'Excluded from Reef Health until corrected.';if(c==='suspicious')return 'Suspicious OCR value — check against the report.';if(c==='warn')return 'Outside target or marked watch/low.';if(c==='bad')return 'High marker — confirm before action.';return 'Looks usable.';}
+  function ensureReviewModal(){var m=$('aqxIcpReviewModal');if(m)return m;m=document.createElement('div');m.id='aqxIcpReviewModal';m.className='aqxIcpReviewModal';document.body.appendChild(m);return m;}
+  window.aqxCloseIcpReview=function(){var m=$('aqxIcpReviewModal');if(m)m.classList.remove('show');};
+  window.aqxOpenIcpReview=function(){var test=latestIcp();var rows=(test&&test.parameters)||[];if(!test||!rows.length){alert('No saved ICP test to review yet. Import or save an ICP first.');return;}var m=ensureReviewModal();var bad=rows.filter(function(p){return reviewClassForParam(p)==='suspicious';}).length;var html='<div class="aqxIcpReviewSheet"><div class="aqxIcpReviewHead"><div><span class="aqxMiniKicker">AquoraX OS Review</span><h2>Review ICP Import</h2><p>Confirm real values, delete OCR mistakes, or exclude suspicious rows from Reef Health. AquoraX will not score uncertain rows.</p></div><button type="button" onclick="aqxCloseIcpReview()">×</button></div><div class="aqxIcpReviewMeta"><span>'+(esc(test.lab||'ICP Lab'))+'</span><span>'+(esc(test.date||'Latest'))+'</span><span class="'+(bad?'warn':'good')+'">'+(bad?bad+' suspicious':'No obvious OCR corruption')+'</span></div><div id="aqxIcpReviewRows" class="aqxIcpReviewRows">';
+    html+=rows.map(function(p,i){var cls=reviewClassForParam(p);return '<div class="aqxIcpReviewRow '+esc(cls)+'" data-review-index="'+i+'"><div class="aqxIcpReviewBadge">'+esc(cls==='suspicious'?'Review':cls==='excluded'?'Excluded':(p.status||'OK'))+'</div><label>Parameter<input class="rvName" value="'+esc(p.name||'')+'"></label><label>Value<input class="rvValue" value="'+esc(p.value||'')+'"></label><label>Unit<input class="rvUnit" value="'+esc(p.unit||'')+'"></label><label>Status<select class="rvStatus"><option value="ok" '+(p.status==='ok'?'selected':'')+'>OK</option><option value="watch" '+(p.status==='watch'?'selected':'')+'>Watch</option><option value="low" '+(p.status==='low'?'selected':'')+'>Low</option><option value="high" '+(p.status==='high'?'selected':'')+'>High</option></select></label><label class="aqxExcludeToggle"><input type="checkbox" class="rvExclude" '+(p.excludedFromReefHealth||cls==='suspicious'?'checked':'')+'> Exclude from Reef Health</label><small>'+esc(reviewHelpForParam(p))+'</small><button type="button" class="aqxTinyDanger" onclick="this.closest(\'.aqxIcpReviewRow\').remove()">Delete row</button></div>';}).join('');
+    html+='</div><div class="aqxIcpReviewActions"><button type="button" class="secondaryBtn" onclick="aqxCloseIcpReview()">Cancel</button><button type="button" class="primaryBtn" onclick="aqxConfirmIcpReview()">Confirm Reviewed ICP</button></div><p class="aqxIcpReviewSafe">Safe mode: AquoraX gives review signals only. Confirm manufacturer guidance before changing dosing.</p></div>';m.innerHTML=html;m.classList.add('show');};
+  window.aqxConfirmIcpReview=function(){var test=latestIcp();if(!test)return;var m=$('aqxIcpReviewModal');var rows=Array.from((m||document).querySelectorAll('.aqxIcpReviewRow')).map(function(r){return {name:(r.querySelector('.rvName')||{}).value||'',value:(r.querySelector('.rvValue')||{}).value||'',unit:(r.querySelector('.rvUnit')||{}).value||'',status:(r.querySelector('.rvStatus')||{}).value||'ok',excludedFromReefHealth:!!(r.querySelector('.rvExclude')||{}).checked};}).filter(function(p){return p.name||p.value;});test.parameters=rows;test.reviewedByAquoraX=true;test.reviewedIso=new Date().toISOString();test.notes=(test.notes?test.notes+'\n':'')+'Reviewed in AquoraX OS. Excluded rows are ignored by Reef Health.';try{var all=(typeof getIcpTests==='function'?getIcpTests():[])||[];if(all.length){all[0]=test;localStorage.setItem(tankKey('icpTests'),JSON.stringify(all));}}catch(e){}aqxCloseIcpReview();setTimeout(renderReefIntelligence,80);if(typeof renderIcpHistory==='function')renderIcpHistory();};
   function enhanceProviderNotes(){var lab=$('icpLab'), notes=$('icpNotes'); if(!lab||!notes)return; var v=(lab.value||'').toLowerCase(); var add=''; if(/triton/.test(v)) add='Triton ICP imported — Core7 and trace stability should be reviewed against saved dosing.'; else if(/fauna/.test(v)) add='Fauna Marin ICP imported — review trace balance and Balling stability before corrections.'; else if(/coral/.test(v)) add='Coral Essentials ICP support imported — review core method dosing and trace demand.'; if(add && (!notes.value||/Imported from/.test(notes.value))) notes.value=add; }
   var oldParse=typeof aqxParseIcpText==='function'?aqxParseIcpText:null;
   if(oldParse && !oldParse.__aqxReefIntelWrapped){aqxParseIcpText=function(){var out=oldParse.apply(this,arguments); enhanceProviderNotes(); setTimeout(renderReefIntelligence,120); return out;}; aqxParseIcpText.__aqxReefIntelWrapped=true;}
@@ -7240,3 +7251,85 @@ function aqxCloseCloudPanel(event){
   window.aqxRenderReefIntelligence=renderReefIntelligence;
   document.addEventListener('DOMContentLoaded',function(){setTimeout(renderReefIntelligence,1200);});
 })();
+
+
+/* === AquoraX OS ICP Intelligence Patch === */
+function aqxEnhancedDetectLab(text=''){
+  const t=(text||'').toLowerCase();
+  if(t.includes('triton')) return 'Triton ICP-OES';
+  if(t.includes('fauna marin')) return 'Fauna Marin ICP';
+  if(t.includes('ati')) return 'ATI ICP';
+  if(t.includes('icp-oes')) return 'ICP-OES';
+  return 'Unknown ICP Lab';
+}
+function aqxEstimateIcpConfidence(text, params){
+  let score=0;
+  if((text||'').length>120) score+=20;
+  if(params.length>=4) score+=35;
+  if(params.length>=8) score+=15;
+  if(/triton|fauna marin|ati|icp/i.test(text||'')) score+=15;
+  if(/ppm|dkh|po4|no3/i.test(text||'')) score+=10;
+  if(params.some(p=>String(p.value).includes('..')||String(p.value).length>8)) score-=30;
+  if(params.length<=2) score-=25;
+  return Math.max(5,Math.min(98,score));
+}
+const __aqxOriginalParse = aqxParseIcpText;
+aqxParseIcpText = function(text, opts={}){
+  __aqxOriginalParse(text, opts);
+  const review = el('aqxIcpImportReview');
+  const chips = [...(review ? review.querySelectorAll('span') : [])];
+  const params = chips.map(c=>({label:c.textContent||''}));
+  const confidence = aqxEstimateIcpConfidence(text, params);
+  const lab = aqxEnhancedDetectLab(text);
+  setVal('icpLab', lab === 'Unknown ICP Lab' ? '' : lab);
+  const statusBox = el('aqxIcpImportStatus');
+  if(statusBox){
+    if(confidence < 45){
+      statusBox.className='aqxIcpImportStatus warn';
+      statusBox.innerHTML='Low confidence scan detected. Review ICP before saving. Reef Health scoring will stay cautious until values are confirmed.';
+    }else if(confidence < 70){
+      statusBox.className='aqxIcpImportStatus';
+      statusBox.innerHTML='Moderate confidence import. Review values and ranges before saving.';
+    }else{
+      statusBox.className='aqxIcpImportStatus ok';
+      statusBox.innerHTML='High confidence ICP import detected. Continue reviewing before saving.';
+    }
+  }
+  if(review){
+    review.innerHTML += `<div class="aqxConfidenceBarWrap"><div class="aqxConfidenceTop"><strong>Import Confidence</strong><span>${confidence}%</span></div><div class="aqxConfidenceBar"><i style="width:${confidence}%"></i></div><small>${confidence < 45 ? 'AquoraX OS recommends manual review before using this ICP in Reef Health.' : 'Confidence is based on recognised reef parameters, units and lab formatting.'}</small></div>`;
+  }
+  const notes=el('icpNotes');
+  if(notes && confidence < 45){
+    notes.value='Low confidence OCR import detected. Review all ICP values before saving or using for dosing decisions.';
+  }
+};
+const __aqxOriginalInsights = renderDosingInsights;
+renderDosingInsights = function(){
+  __aqxOriginalInsights();
+  const box=el('dosingInsightList');
+  if(!box) return;
+  const tests=getIcpTests();
+  if(!tests.length){
+    box.innerHTML += `<div class="dosingInsightItem tracking"><strong>No ICP baseline yet</strong><span>Import a Triton, Fauna Marin or ATI ICP report to begin Reef Health intelligence and ecosystem tracking.</span></div>`;
+    return;
+  }
+  const latest=tests[0];
+  const params=(latest.parameters||[]);
+  const nonOk=params.filter(p=>p.status && p.status!=='ok');
+  let state='tracking', title='Reef Health tracking';
+  let text='AquoraX OS is monitoring reef chemistry trends and dosing consistency.';
+  if(nonOk.length>=5){
+    state='warn';
+    title='Review ICP chemistry';
+    text='Several ICP parameters need review. AquoraX recommends confirming results before making major dosing adjustments.';
+  } else if(nonOk.length){
+    state='tracking';
+    title='Minor ICP adjustment signals';
+    text='A few parameters sit outside the expected range. Consider reviewing manufacturer guidance and retesting if needed.';
+  } else {
+    state='good';
+    title='Stable ICP snapshot';
+    text='Latest saved ICP results appear stable based on recognised values and saved dosing activity.';
+  }
+  box.innerHTML += `<div class="dosingInsightItem ${state}"><strong>${title}</strong><span>${text}</span></div>`;
+}
