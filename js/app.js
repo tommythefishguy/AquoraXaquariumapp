@@ -7334,3 +7334,68 @@ renderDosingInsights = function(){
   }
   box.innerHTML += `<div class="dosingInsightItem ${state}"><strong>${title}</strong><span>${text}</span></div>`;
 }
+
+/* === AquoraX ICP Review Signal Fix v3 ===
+   Fixes the post-review state where Dosing/ICP still said “No ICP signal yet”
+   even though an ICP report had been saved and reviewed. */
+(function(){
+  function byId(id){return document.getElementById(id);} 
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function latestIcp(){try{var a=(typeof getIcpTests==='function'?getIcpTests():[])||[];return a[0]||null;}catch(e){return null;}}
+  function paramsOf(t){return (t&&Array.isArray(t.parameters))?t.parameters:[];}
+  function isNonOk(p){return p && !p.excludedFromReefHealth && p.status && String(p.status).toLowerCase()!=='ok';}
+  window.getLatestIcpSignals=function(){
+    var t=latestIcp();
+    if(!t) return [];
+    return paramsOf(t).filter(isNonOk).map(function(p){return {name:p.name||'ICP value',status:String(p.status||'watch').toLowerCase(),value:[p.value,p.unit].filter(Boolean).join(' '),date:t.date||'',lab:t.lab||''};});
+  };
+  window.aqxLatestIcpSignals=window.getLatestIcpSignals;
+
+  function replaceWrongNoSignalMessage(){
+    var box=byId('dosingInsightList');
+    var t=latestIcp();
+    if(!box||!t) return;
+    var signals=window.getLatestIcpSignals();
+    var rows=paramsOf(t);
+    var excluded=rows.filter(function(p){return p&&p.excludedFromReefHealth;}).length;
+    var reviewed=!!(t.reviewedByAquoraX||t.aqxIcpReviewed||t.icpConfidence==='reviewed');
+    Array.from(box.querySelectorAll('.dosingInsightItem')).forEach(function(item){
+      var title=(item.querySelector('strong')||{}).textContent||'';
+      var text=item.querySelector('span');
+      if(/No ICP signal yet|No ICP baseline yet|Add ICP results/i.test(item.textContent||'')){
+        if(signals.length){
+          item.className='dosingInsightItem warn';
+          item.innerHTML='<strong>ICP adjustment signals</strong><span>Latest reviewed ICP shows '+signals.length+' non-OK item'+(signals.length===1?'':'s')+'. Review chemistry trends before changing dosing.</span>';
+        }else if(reviewed && rows.length){
+          item.className='dosingInsightItem tracking';
+          item.innerHTML='<strong>ICP reviewed</strong><span>AquoraX has a reviewed ICP report saved. '+(excluded?excluded+' suspicious OCR row'+(excluded===1?' was':'s were')+' excluded from Reef Health. ':'')+'No usable low/high signals are currently being scored.</span>';
+        }else if(rows.length){
+          item.className='dosingInsightItem tracking';
+          item.innerHTML='<strong>ICP report saved</strong><span>ICP values are saved. Open Review ICP to confirm any OCR/table values before Reef Health uses them fully.</span>';
+        }
+      }
+    });
+  }
+
+  var oldConfirm=window.aqxConfirmIcpReview;
+  if(typeof oldConfirm==='function'&&!oldConfirm.__aqxSignalFixWrapped){
+    window.aqxConfirmIcpReview=function(){
+      var out=oldConfirm.apply(this,arguments);
+      setTimeout(function(){try{replaceWrongNoSignalMessage();}catch(e){}},80);
+      setTimeout(function(){try{replaceWrongNoSignalMessage();}catch(e){}},300);
+      return out;
+    };
+    window.aqxConfirmIcpReview.__aqxSignalFixWrapped=true;
+  }
+  var oldRender=window.renderDosingPage;
+  if(typeof oldRender==='function'&&!oldRender.__aqxSignalFixWrapped){
+    window.renderDosingPage=function(){
+      var out=oldRender.apply(this,arguments);
+      try{replaceWrongNoSignalMessage();}catch(e){}
+      setTimeout(function(){try{replaceWrongNoSignalMessage();}catch(e){}},80);
+      return out;
+    };
+    window.renderDosingPage.__aqxSignalFixWrapped=true;
+  }
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(replaceWrongNoSignalMessage,1200);});
+})();
