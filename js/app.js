@@ -2561,7 +2561,8 @@ function aqxInitFirebase(){
     if(!aqxFirebaseAuthBooted){
       aqxFirebaseAuthBooted = true;
       aqxFirebaseAuth.onAuthStateChanged(function(user){
-        if(user){ aqxSetSessionFromFirebase(user); }
+        if(user){ aqxSetSessionFromFirebase(user);
+      try{ aqxUnlockCloudGate(); }catch(e){} }
         else { localStorage.removeItem(aqxCloudSessionKey); document.body.classList.remove("aqxLoggedIn"); aqxRefreshLoginState(); }
       });
     }
@@ -2648,6 +2649,7 @@ async function aqxSetSessionFromFirebase(user){
   document.body.classList.add("aqxLoggedIn");
   aqxUpdateCloudStatus("Signed in. Checking cloud backup…");
   aqxForceSignedInUiAfterLogin();
+  try{ aqxUnlockCloudGate(); }catch(e){}
   aqxAutoRestoreOnLogin();
   aqxQueueCloudBackup("login");
   aqxRefreshLoginState();
@@ -7382,6 +7384,130 @@ function aqxCloseCloudPanel(event){
     if(!t) return;
     if(t.closest && (t.closest("#icpUploadZone") || t.closest("#icpScanBtn"))) {
       aqxReconnectIcpImport();
+    }
+  }, true);
+})();
+
+
+/* AquoraX Cloud unlock recovery — dismisses cloud gate after successful Firebase sign-in */
+(function(){
+  function aqxCloudUnlockLog(msg){
+    try{ console.log("[AquoraX Cloud Unlock]", msg); }catch(e){}
+  }
+
+  function aqxLooksLikeCloudGate(el){
+    if(!el || !el.textContent) return false;
+    var t = String(el.textContent).toLowerCase();
+    var idc = String((el.id || "") + " " + (el.className || "")).toLowerCase();
+    return (
+      idc.indexOf("login") >= 0 ||
+      idc.indexOf("cloud") >= 0 ||
+      t.indexOf("aquorax cloud") >= 0 ||
+      t.indexOf("sign in") >= 0 ||
+      t.indexOf("create account") >= 0
+    );
+  }
+
+  window.aqxUnlockCloudGate = function(){
+    try{
+      document.body.classList.add("aqxLoggedIn");
+      document.documentElement.classList.add("aqxLoggedIn");
+
+      var ids = [
+        "aqxLoginScreen",
+        "loginScreen",
+        "cloudLoginScreen",
+        "aqxCloudScreen",
+        "aqxCloudGate",
+        "cloudGate",
+        "authScreen",
+        "signinScreen"
+      ];
+
+      ids.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el){
+          el.classList.remove("show", "active", "open", "visible");
+          el.classList.add("hidden", "aqx-auth-hidden");
+          el.style.display = "none";
+          el.style.pointerEvents = "none";
+        }
+      });
+
+      Array.prototype.forEach.call(document.querySelectorAll(".aqx-login-screen,.login-screen,.cloud-login,.cloud-gate,.auth-gate,.auth-screen,[data-auth-gate],[data-cloud-gate]"), function(el){
+        el.classList.remove("show", "active", "open", "visible");
+        el.classList.add("hidden", "aqx-auth-hidden");
+        el.style.display = "none";
+        el.style.pointerEvents = "none";
+      });
+
+      /* Safety catch: some builds used a styled full-screen card without a stable id. */
+      Array.prototype.forEach.call(document.body.children, function(el){
+        if(!aqxLooksLikeCloudGate(el)) return;
+        var cs = window.getComputedStyle(el);
+        var fullScreenish = (cs.position === "fixed" || cs.position === "absolute") && (parseInt(cs.zIndex || "0", 10) >= 10);
+        if(fullScreenish){
+          el.classList.remove("show", "active", "open", "visible");
+          el.classList.add("hidden", "aqx-auth-hidden");
+          el.style.display = "none";
+          el.style.pointerEvents = "none";
+        }
+      });
+
+      if(!localStorage.getItem("aquoraxTankType")) localStorage.setItem("aquoraxTankType", "reef");
+      localStorage.setItem("aquoraxWelcomeTank", "reef");
+      localStorage.setItem("aquoraxWelcomeSeen", "yes");
+
+      var welcome = document.getElementById("welcomeScreen");
+      if(welcome){
+        welcome.style.display = "none";
+        welcome.classList.remove("show", "active");
+      }
+
+      try{
+        if(typeof aqxRefreshLoginState === "function") aqxRefreshLoginState();
+      }catch(e){}
+
+      try{
+        if(typeof aqxUpdateCloudStatus === "function") aqxUpdateCloudStatus("Signed in to AquoraX Cloud.");
+      }catch(e){}
+
+      try{
+        if(typeof openPage === "function") openPage(localStorage.getItem("aquoraxCurrentPage") || "home");
+      }catch(e){}
+
+      aqxCloudUnlockLog("cloud gate dismissed");
+    }catch(e){
+      console.warn("AquoraX cloud unlock recovery failed", e);
+    }
+  };
+
+  function aqxTryUnlockFromFirebase(){
+    try{
+      if(window.firebase && firebase.auth && firebase.auth().currentUser){
+        window.aqxUnlockCloudGate();
+      }
+    }catch(e){}
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(aqxTryUnlockFromFirebase, 500);
+    setTimeout(aqxTryUnlockFromFirebase, 1500);
+  });
+
+  window.addEventListener("load", function(){
+    setTimeout(aqxTryUnlockFromFirebase, 250);
+    setTimeout(aqxTryUnlockFromFirebase, 1200);
+  });
+
+  document.addEventListener("click", function(e){
+    var t = e.target;
+    if(!t) return;
+    var label = String((t.textContent || "") + " " + (t.value || "")).toLowerCase();
+    if(label.indexOf("sign in") >= 0 || label.indexOf("log in") >= 0 || label.indexOf("create account") >= 0){
+      setTimeout(aqxTryUnlockFromFirebase, 600);
+      setTimeout(aqxTryUnlockFromFirebase, 1600);
+      setTimeout(aqxTryUnlockFromFirebase, 3000);
     }
   }, true);
 })();

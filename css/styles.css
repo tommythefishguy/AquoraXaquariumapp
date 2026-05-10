@@ -5827,3 +5827,24 @@ input:focus,select:focus,textarea:focus{
 .icp-import-card::after {
   pointer-events: none !important;
 }
+
+
+/* Cloud/auth unlock safety */
+body.aqxLoggedIn #aqxLoginScreen,
+body.aqxLoggedIn #loginScreen,
+body.aqxLoggedIn #cloudLoginScreen,
+body.aqxLoggedIn #aqxCloudScreen,
+body.aqxLoggedIn #aqxCloudGate,
+body.aqxLoggedIn #cloudGate,
+body.aqxLoggedIn .aqx-login-screen,
+body.aqxLoggedIn .login-screen,
+body.aqxLoggedIn .cloud-login,
+body.aqxLoggedIn .cloud-gate,
+body.aqxLoggedIn .auth-gate,
+body.aqxLoggedIn .auth-screen,
+.aqx-auth-hidden {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
