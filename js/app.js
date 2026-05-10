@@ -7240,3 +7240,193 @@ function aqxCloseCloudPanel(event){
   window.aqxRenderReefIntelligence=renderReefIntelligence;
   document.addEventListener('DOMContentLoaded',function(){setTimeout(renderReefIntelligence,1200);});
 })();
+
+/* =========================================================
+   AQUORAX OS HOME COMMAND CENTER V3
+   A visible UI overhaul inspired by the approved mockup.
+   It reads existing AquoraX data and does not replace storage.
+========================================================= */
+(function(){
+  if(window.__aqxOsHomeV3Installed) return;
+  window.__aqxOsHomeV3Installed = true;
+  const TANKS_KEY='aquoraxTanksV1';
+  const ACTIVE_KEY='aquoraxActiveTankIdV1';
+  function safeJson(raw,fallback){try{const v=JSON.parse(raw||''); return v==null?fallback:v;}catch(e){return fallback;}}
+  function esc(v){return String(v==null?'':v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+  function readTanks(){return safeJson(localStorage.getItem(TANKS_KEY),[]);}
+  function activeTank(){
+    const tanks=readTanks(); const id=localStorage.getItem(ACTIVE_KEY);
+    return tanks.find(t=>t.id===id) || tanks[0] || {name:'Main Tank',type:localStorage.getItem('aquoraxTankType')||'reef',volume:localStorage.getItem('aquoraxTankVolume')||''};
+  }
+  function typeLabel(type){return type==='reef'?'Saltwater Reef':type==='freshwater'?'Freshwater':'Aquarium';}
+  function latestData(){
+    if(typeof latestMergedParameters==='function') return latestMergedParameters();
+    return {values:{},dates:{},latest:null};
+  }
+  function defs(){
+    const type=(typeof selectedTankType==='function'?selectedTankType():localStorage.getItem('aquoraxTankType'))||'reef';
+    if(typeof aqxDefsForDisplay==='function' && typeof aqxOrderedDefs==='function') return aqxOrderedDefs(aqxDefsForDisplay(type));
+    return [];
+  }
+  const preferred=['alkalinity','calcium','magnesium','nitrate','phosphate','temperature','salinity','ph','ammonia','nitrite'];
+  const shortNames={alkalinity:'Alkalinity',calcium:'Calcium',magnesium:'Magnesium',nitrate:'Nitrate',phosphate:'Phosphate',temperature:'Temp',salinity:'Salinity',ph:'pH',ammonia:'Ammonia',nitrite:'Nitrite'};
+  const icons={alkalinity:'Alk',calcium:'Ca',magnesium:'Mg',nitrate:'NO₃',phosphate:'PO₄',temperature:'°C',salinity:'SG',ph:'pH',ammonia:'NH₃',nitrite:'NO₂'};
+  function statusFor(def,value){
+    if(value===undefined || value===null || value==='') return {cls:'none',label:'No data'};
+    if(typeof parameterStatus==='function'){
+      const s=parameterStatus(def,value)||{};
+      const txt=String(s.text||'Tracking').toLowerCase();
+      if(/urgent|high|danger|bad|unstable/.test(txt)) return {cls:'bad',label:s.text||'Elevated'};
+      if(/warn|watch|low|slight/.test(txt)) return {cls:'watch',label:s.text||'Watch'};
+      if(/healthy|optimal|stable|ok/.test(txt)) return {cls:'ok',label:s.text||'Stable'};
+      return {cls:'track',label:s.text||'Tracking'};
+    }
+    return {cls:'track',label:'Tracking'};
+  }
+  function selectedParamDefs(){
+    const all=defs();
+    const map={}; all.forEach(d=>map[d.key]=d);
+    return preferred.map(k=>map[k]).filter(Boolean).slice(0,5);
+  }
+  function valFor(def,data){
+    const raw=data.values[def.key+'__raw'];
+    const v=data.values[def.key];
+    if(raw) return raw;
+    if(v===undefined || v===null || v==='') return '--';
+    return String(v)+(def.unit?` <small>${esc(def.unit)}</small>`:'');
+  }
+  function scoreObj(){
+    if(typeof calculateAqxScore==='function'){
+      const r=calculateAqxScore();
+      if(r && r.score!==null && r.score!==undefined){
+        let cls=r.status==='Stable'?'good':(r.status==='Watch'?'watch':'bad');
+        return {score:Math.max(0,Math.min(100,Number(r.score)||0)),cls,status:r.status||'Tracking',worst:r.worst};
+      }
+    }
+    return {score:0,cls:'none',status:'No data',worst:null};
+  }
+  function heroCopy(score){
+    if(score.cls==='none') return {headline:'AquoraX is waiting for your first test.',sub:'Log a water test to activate your live reef state and intelligence layer.'};
+    if(score.cls==='good') return {headline:'Your reef looks calm and controlled.',sub:'AquoraX is tracking stability. Keep logging consistently and watch the trend.'};
+    if(score.cls==='watch') return {headline:'AquoraX sees something to review.',sub:'No panic. Check the latest outlier, confirm the result, then correct slowly using manufacturer guidance.'};
+    return {headline:'AquoraX sees a priority issue.',sub:'Confirm the result first. Avoid sudden corrections and review the safest next action.'};
+  }
+  function sparkSvg(cls){
+    const pts = cls==='bad' ? [[0,68],[18,50],[36,58],[54,36],[72,44],[90,72],[108,76],[126,84],[144,88],[162,92]] :
+      cls==='watch' ? [[0,55],[18,49],[36,62],[54,52],[72,70],[90,47],[108,66],[126,58],[144,76],[162,83]] :
+      [[0,68],[18,62],[36,64],[54,52],[72,46],[90,34],[108,48],[126,40],[144,32],[162,44]];
+    const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' ');
+    const circles=pts.filter((_,i)=>i%2===1).map(p=>`<circle class="dot" cx="${p[0]}" cy="${p[1]}" r="4"/>`).join('');
+    return `<svg viewBox="0 0 170 100" preserveAspectRatio="none"><path class="grid" d="M0 25H170M0 50H170M0 75H170"/><path class="line" d="${d}"/>${circles}</svg>`;
+  }
+  function paramCards(){
+    const data=latestData();
+    return selectedParamDefs().map(def=>{
+      const st=statusFor(def,data.values[def.key]);
+      return `<div class="aqx-param-mini ${st.cls}" onclick="openPage('graphs')">
+        <div class="aqx-param-head"><div class="aqx-param-icon">${esc(icons[def.key]||def.icon||'•')}</div><div class="aqx-param-name">${esc(shortNames[def.key]||def.label)}</div></div>
+        <div class="aqx-param-value">${valFor(def,data)}</div>
+        <div class="aqx-param-state">${esc(st.label)}</div>
+      </div>`;
+    }).join('') + `<div class="aqx-param-mini aqx-param-more" onclick="openPage('parameters')">›</div>`;
+  }
+  function jobs(){
+    const keys=['aquoraxJobsV1','aquoraxJobsV1__'+(localStorage.getItem(ACTIVE_KEY)||'tank_main')];
+    let arr=[]; keys.forEach(k=>{const v=safeJson(localStorage.getItem(k),[]); if(Array.isArray(v)) arr=arr.concat(v);});
+    return arr;
+  }
+  function nextActions(){
+    const js=jobs(); const now=new Date();
+    const due=js.filter(j=>j && j.dueDate).sort((a,b)=>String(a.dueDate).localeCompare(String(b.dueDate))).slice(0,4);
+    const fallback=[{title:'Water Test',when:'Tomorrow',icon:'💧',page:'log'},{title:'ICP Test',when:'Due in 9 days',icon:'⚗️',page:'dosing'},{title:'Clean Skimmer',when:'In 3 days',icon:'♻️',page:'jobs'},{title:'Water Change',when:'In 11 days',icon:'🗓️',page:'jobs'}];
+    const list=due.length?due.map(j=>({title:j.title||j.name||'Tank Job',when:j.dueDate||'Scheduled',icon:'✓',page:'jobs'})):fallback;
+    return list.slice(0,4).map(a=>`<div class="aqx-action-card"><div class="aqx-action-ico">${esc(a.icon)}</div><b>${esc(a.title)}</b><span>${esc(a.when)}</span><button onclick="openPage('${esc(a.page)}')">View</button></div>`).join('');
+  }
+  function insightRows(score){
+    const data=latestData();
+    const icp = Object.keys(data.values||{}).some(k=>k.indexOf('icp_')===0) ? 'ICP values are connected to this tank' : 'No ICP scan linked yet';
+    const worst=score.worst && score.worst.def ? `${score.worst.def.label} needs review` : 'All critical parameters normal';
+    const consumption=(data.values.alkalinity!==undefined)?'Alk consumption tracking is ready':'Log alkalinity to unlock consumption trends';
+    return `
+      <div class="aqx-insight-row" onclick="openPage('dosing')"><div class="aqx-insight-ico">⚗️</div><div><b>ICP Status</b><span>${esc(icp)}</span></div><div class="aqx-chevron">›</div></div>
+      <div class="aqx-insight-row" onclick="openPage('graphs')"><div class="aqx-insight-ico">〽️</div><div><b>Consumption</b><span>${esc(consumption)}</span></div><div class="aqx-chevron">›</div></div>
+      <div class="aqx-insight-row" onclick="openPage('log')"><div class="aqx-insight-ico">🛡️</div><div><b>${score.cls==='good'?'No Alerts':'Review Needed'}</b><span>${esc(worst)}</span></div><div class="aqx-chevron">›</div></div>`;
+  }
+  function activity(score){
+    const tests=(typeof getParameterTests==='function'?getParameterTests():[]).slice(-3).reverse();
+    if(!tests.length){
+      return `<div class="aqx-activity-row"><i class="aqx-activity-dot"></i><span>No test activity yet</span><small>Start now</small></div>`;
+    }
+    return tests.map((t,i)=>`<div class="aqx-activity-row"><i class="aqx-activity-dot"></i><span>${i===0?'Latest water test saved':'Previous test logged'}</span><small>${esc(t.date||'')}</small></div>`).join('');
+  }
+  function render(){
+    const home=document.getElementById('home'); if(!home) return;
+    const active=home.classList.contains('active');
+    document.body.classList.toggle('aqx-os-home-active', active);
+    let host=document.getElementById('aqxOsCommandCenterV3');
+    if(!host){ host=document.createElement('div'); host.id='aqxOsCommandCenterV3'; home.insertBefore(host, home.firstChild); }
+    if(!active) return;
+    const tank=activeTank();
+    const s=scoreObj();
+    const copy=heroCopy(s);
+    const scoreNum=s.score||0;
+    const scoreDisplay=s.cls==='none'?'—':scoreNum;
+    const heroMetric=selectedParamDefs()[0]; const data=latestData();
+    const heroMetricVal=heroMetric?valFor(heroMetric,data).replace(/<[^>]*>/g,''):'--';
+    const icpText=Object.keys(data.values||{}).some(k=>k.indexOf('icp_')===0)?'Verified':'No scan';
+    host.innerHTML=`<div class="aqx-os-shell">
+      <aside class="aqx-os-rail">
+        <div class="aqx-os-logo">Aquora<b>X</b></div>
+        <nav class="aqx-os-nav">
+          <button class="active" onclick="openPage('home')"><span>⌂</span><span>Home</span></button>
+          <button onclick="openPage('growth')"><span>🐠</span><span>Livestock</span></button>
+          <button onclick="openPage('dosing')"><span>♧</span><span>Dosing</span></button>
+          <button onclick="openPage('cycle')"><span>⌁</span><span>Journey</span></button>
+          <button onclick="openPage('graphs')"><span>▥</span><span>Analytics</span></button>
+          <button onclick="openPage('profile')"><span>⚙</span><span>Settings</span></button>
+        </nav>
+        <div class="aqx-os-profile"><div class="aqx-os-avatar"></div><div><b>Reef Keeper</b><br><span class="aqx-os-pro">Pro</span></div></div>
+      </aside>
+      <div class="aqx-os-content">
+        <div class="aqx-os-mobile-head"><button class="aqx-os-fab-menu" onclick="aqxOpenSideMenu()">☰</button><div class="aqx-os-logo">Aquora<b>X</b></div></div>
+        <div class="aqx-os-top">
+          <div><div class="aqx-os-greeting">Good evening, Reef Keeper 👋</div><div class="aqx-os-title"><h1>${esc(tank.name||'Main Tank')}</h1><p>${esc(typeLabel(tank.type||selectedTankType()))}</p></div></div>
+          <div class="aqx-os-status-pill"><i class="aqx-os-dot"></i><span>${s.cls==='good'?'All systems normal':s.cls==='none'?'Waiting for first test':'Review recommended'}</span></div>
+        </div>
+        <main class="aqx-os-left">
+          <section><div class="aqx-section-label">Live reef parameters</div><div class="aqx-param-row">${paramCards()}</div></section>
+          <section class="aqx-os-grid-2">
+            <div><div class="aqx-section-label">Reef stability overview</div><div class="aqx-os-card aqx-ring-card"><div class="aqx-ring" style="--score:${scoreNum};--ring:${s.cls==='bad'?'#ff4268':s.cls==='watch'?'#ffd15c':'#13ff66'}"><strong>${scoreDisplay}</strong></div><div class="aqx-ring-text"><h3>${s.cls==='good'?'Stability is good':s.cls==='none'?'Stability waiting':'Stability needs review'}</h3><p>${esc(copy.sub)}</p><span class="aqx-trend-pill">Trend ${s.cls==='bad'?'Reviewing':'Improving'} ↗</span></div></div></div>
+            <div><div class="aqx-section-label">Key insights <span style="float:right;color:#8feaff;font-size:12px;letter-spacing:0;text-transform:none;cursor:pointer" onclick="openPage('dosing')">View all</span></div><div class="aqx-os-card aqx-insight-list">${insightRows(s)}</div></div>
+          </section>
+          <section><div class="aqx-section-label">Upcoming & actions</div><div class="aqx-actions-row">${nextActions()}</div></section>
+          <section><div class="aqx-section-label">Recent activity <span style="float:right;color:#8feaff;font-size:12px;letter-spacing:0;text-transform:none;cursor:pointer" onclick="openPage('history')">View timeline</span></div><div class="aqx-os-card aqx-activity">${activity(s)}</div></section>
+        </main>
+        <aside class="aqx-reef-hero">
+          <div class="aqx-hero-top"><div><div class="aqx-hero-kicker">AQUORAX OS</div><div class="aqx-hero-title">My Reef</div></div><div class="aqx-live-pill"><i class="aqx-os-dot"></i>Live tank</div></div>
+          <div class="aqx-hero-orb"><div class="aqx-hero-score"><strong>${scoreDisplay}</strong><span>${esc(s.status||'Watch')}</span></div></div>
+          <div class="aqx-hero-message"><h2>${esc(copy.headline)}</h2><p>${esc(copy.sub)}</p></div>
+          <div class="aqx-hero-buttons"><button class="primary" onclick="openPage('log')">Log water test</button><button class="dark" onclick="openPage('dosing')">Open Reef Intelligence</button></div>
+          <div class="aqx-hero-micro"><div><span>${esc(heroMetric?heroMetric.label:'Parameter')}</span><b>${esc(heroMetricVal)}</b></div><div class="${icpText==='No scan'?'none':''}"><span>ICP</span><b>${esc(icpText)}</b></div><div class="warn"><span>Next Action</span><b>${s.cls==='good'?'Maintain':s.cls==='none'?'Log test':'Review test'}</b></div></div>
+        </aside>
+        <div class="aqx-os-sync">Data synced 2 min ago ↻</div>
+      </div>
+    </div>`;
+  }
+  function installWrap(){
+    const old=window.renderHomeDashboard;
+    if(typeof old==='function' && !old.__aqxOsV3Wrapped){
+      window.renderHomeDashboard=function(){const out=old.apply(this,arguments); setTimeout(render,20); return out;};
+      window.renderHomeDashboard.__aqxOsV3Wrapped=true;
+    }
+    const oldOpen=window.openPage;
+    if(typeof oldOpen==='function' && !oldOpen.__aqxOsV3Wrapped){
+      window.openPage=function(){const out=oldOpen.apply(this,arguments); setTimeout(render,40); return out;};
+      window.openPage.__aqxOsV3Wrapped=true;
+    }
+    ['storage','aqx:data-changed'].forEach(ev=>window.addEventListener(ev,()=>setTimeout(render,80)));
+  }
+  document.addEventListener('DOMContentLoaded',()=>{installWrap(); setTimeout(render,300); setTimeout(render,1200);});
+  setTimeout(()=>{installWrap(); render();},800);
+  window.aqxRenderOsHomeV3=render;
+})();
