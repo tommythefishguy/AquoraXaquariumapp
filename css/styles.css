@@ -5860,3 +5860,13 @@ body.aqxLoggedIn .auth-screen,
 #aqxCloudPanelOverlay {
   pointer-events: auto;
 }
+
+
+/* AquoraX login gate dismiss safety v7 */
+body.aqxLoggedIn #aqxLoginScreen,
+#aqxLoginScreen.aqxLoginDismissed {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

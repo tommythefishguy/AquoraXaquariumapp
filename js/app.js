@@ -2646,7 +2646,9 @@ async function aqxSetSessionFromFirebase(user){
   if(!user) return;
   await aqxEnsureFirestoreUser(user);
   localStorage.setItem(aqxCloudSessionKey, JSON.stringify({uid:user.uid,email:String(user.email||"").toLowerCase(),signedInAt:new Date().toISOString(),provider:"firebase"}));
-  document.body.classList.add("aqxLoggedIn");
+  
+  try{ aqxDismissLoginGateAfterConfirmedCloudUser(); }catch(e){}
+document.body.classList.add("aqxLoggedIn");
   aqxUpdateCloudStatus("Signed in. Checking cloud backup…");
   aqxForceSignedInUiAfterLogin();
   try{ aqxUnlockCloudGate(); }catch(e){}
@@ -2665,6 +2667,7 @@ async function aqxCreateAccount(){
     aqxShowSaving("Creating account…","Setting up your AquoraX cloud space.","Account ready ✅");
     const cred = await aqxFirebaseAuth.createUserWithEmailAndPassword(email,password);
     aqxSetSessionFromFirebase(cred.user);
+    try{ aqxDismissLoginGateAfterConfirmedCloudUser(); }catch(e){}
     await aqxDoCloudBackup("account created");
     aqxSetLoginMessage("Account created and cloud backup started.");
   }catch(e){
@@ -2681,6 +2684,7 @@ async function aqxSignIn(){
     aqxShowSaving("Signing in…","Connecting to AquoraX Cloud.","Signed in ✅");
     const cred = await aqxFirebaseAuth.signInWithEmailAndPassword(email,password);
     aqxSetSessionFromFirebase(cred.user);
+    try{ aqxDismissLoginGateAfterConfirmedCloudUser(); }catch(e){}
   }catch(e){
     console.warn(e);
     aqxSetLoginMessage((e && e.message) ? e.message : "Could not sign in.");
@@ -7391,3 +7395,67 @@ function aqxCloseCloudPanel(event){
     real.setAttribute("aria-hidden","true");
   }
 }
+
+
+/* AquoraX Cloud login dismiss fix v7
+   Firebase login was working, but #aqxLoginScreen stayed visible.
+   This only hides the real login gate after a confirmed user session. */
+function aqxDismissLoginGateAfterConfirmedCloudUser(){
+  try{
+    const screen = document.getElementById("aqxLoginScreen");
+    if(screen){
+      screen.classList.remove("show", "active", "open", "visible");
+      screen.classList.add("aqxLoginDismissed");
+      screen.style.display = "none";
+      screen.style.pointerEvents = "none";
+      screen.setAttribute("aria-hidden", "true");
+    }
+
+    document.body.classList.add("aqxLoggedIn");
+    document.documentElement.classList.add("aqxLoggedIn");
+
+    if(!localStorage.getItem("aquoraxTankType")) localStorage.setItem("aquoraxTankType", "reef");
+    localStorage.setItem("aquoraxWelcomeTank", "reef");
+    localStorage.setItem("aquoraxWelcomeSeen", "yes");
+
+    const welcome = document.getElementById("welcomeScreen");
+    if(welcome){
+      welcome.style.display = "none";
+      welcome.classList.remove("show", "active", "open");
+      welcome.setAttribute("aria-hidden", "true");
+    }
+
+    try{ if(typeof aqxRefreshLoginState === "function") aqxRefreshLoginState(); }catch(e){}
+    try{ if(typeof aqxUpdateCloudStatus === "function") aqxUpdateCloudStatus("Signed in to AquoraX Cloud."); }catch(e){}
+    try{ if(typeof openPage === "function") openPage("home"); }catch(e){}
+
+    setTimeout(function(){
+      try{ if(typeof renderParameterPage === "function") renderParameterPage(); }catch(e){}
+      try{ if(typeof renderHome === "function") renderHome(); }catch(e){}
+      try{ if(typeof renderLatestParams === "function") renderLatestParams(); }catch(e){}
+    }, 120);
+  }catch(e){
+    console.warn("AquoraX login dismiss skipped", e);
+  }
+}
+
+
+/* AquoraX Cloud current-user safety v7 */
+(function(){
+  function check(){
+    try{
+      if(window.firebase && firebase.auth && firebase.auth().currentUser){
+        aqxDismissLoginGateAfterConfirmedCloudUser();
+      }
+    }catch(e){}
+  }
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(check, 300);
+    setTimeout(check, 1200);
+    setTimeout(check, 2500);
+  });
+  window.addEventListener("load", function(){
+    setTimeout(check, 300);
+    setTimeout(check, 1500);
+  });
+})();
