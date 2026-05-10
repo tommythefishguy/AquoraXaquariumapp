@@ -248,13 +248,9 @@ function daysSince(iso){
 }
 
 function enterApp(){
-  let chosen = selectedTankType();
-  if(!chosen){
-    // Reef-only app: default safely to reef instead of blocking users with old freshwater-era wording.
-    chosen = "reef";
-  }
-  localStorage.setItem("aquoraxTankType", chosen);
-  localStorage.setItem("aquoraxWelcomeTank", chosen);
+  const chosen = selectedTankType() || "reef";
+  localStorage.setItem("aquoraxTankType", chosen || "reef");
+  localStorage.setItem("aquoraxWelcomeTank", chosen || "reef");
   localStorage.setItem("aquoraxWelcomeSeen", "yes");
   if(el("welcomeScreen")) el("welcomeScreen").style.display = "none";
   openPage("home");
@@ -389,7 +385,7 @@ function updateTankSummary(){
 
   let text = "No tank type selected yet.";
   if(type === "reef") text = "Reef / Marine tank selected.";
-  if(type === "freshwater") text = "Freshwater tank selected.";
+  if(type === "freshwater") text = "Saltwater reef selected.";
   if(volume) text += " System volume: " + volume + " L.";
 
   if(el("tankSummary")) el("tankSummary").innerText = text;
@@ -425,7 +421,7 @@ function numberValue(id){
 }
 
 function updateCycle(){
-  const tank = val("cycleTank") || "freshwater";
+  const tank = val("cycleTank") || "reef";
 
   const ammonia = numberValue("ammonia");
   const nitrite = numberValue("nitrite");
@@ -454,10 +450,10 @@ function updateCycle(){
 }
 
 function updateBlueSharkDosing(){
-  const tank = val("cycleTank") || "freshwater";
+  const tank = val("cycleTank") || "reef";
   const volume = parseNum(val("cycleVolume"));
 
-  const productName = tank === "reef" ? "Blue Shark Colony Marine" : "Blue Shark Colony Freshwater";
+  const productName = tank === "reef" ? "Blue Shark Colony Marine" : "Blue Shark Colony Marine";
   if(el("rapidProductName")) el("rapidProductName").innerText = productName;
 
   if(volume === null || volume <= 0){
@@ -527,7 +523,7 @@ function confirmRapidCycleDose(){
   log.rapid = {
     type:"rapid",
     label:"Rapid Cycle",
-    product: val("cycleTank") === "reef" ? "Blue Shark Colony Marine" : "Blue Shark Colony Freshwater",
+    product: val("cycleTank") === "reef" ? "Blue Shark Colony Marine" : "Blue Shark Colony Marine",
     volume: val("cycleVolume"),
     dose: el("rapidDose") ? el("rapidDose").innerText : "",
     iso:stamp.iso,
@@ -1328,20 +1324,20 @@ function parameterTargets(type){
 
 
 function renderParameterPage(){
-  const type = selectedTankType() || "freshwater";
+  const type = selectedTankType() || "reef";
   const isReef = type === "reef";
   const title = el("parameterTitle");
   const summary = el("parameterSummary");
   const intro = el("parameterPageIntro");
   const grid = el("parameterGrid");
 
-  if(title) title.innerText = isReef ? "Saltwater / Reef Parameter Targets" : "Freshwater Parameter Targets";
+  if(title) title.innerText = isReef ? "Saltwater / Reef Parameter Targets" : "Saltwater Reef Parameter Targets";
   if(summary) summary.innerText = isReef
     ? "Use these reef targets as your quick test-chart guide. Keep changes slow and stable."
-    : "Use these freshwater targets as your quick test-chart guide. Adjust slowly for your livestock and plants.";
+    : "Use these reef targets as your quick test-chart guide. Adjust slowly for your livestock and plants.";
   if(intro) intro.innerText = isReef
     ? "Saltwater selected — reef parameter targets shown below."
-    : "Freshwater selected — freshwater parameter targets shown below.";
+    : "Saltwater reef selected — reef parameter targets shown below.";
 
   if(grid){
     grid.innerHTML = parameterTargets(type).map(row => `
@@ -2561,8 +2557,7 @@ function aqxInitFirebase(){
     if(!aqxFirebaseAuthBooted){
       aqxFirebaseAuthBooted = true;
       aqxFirebaseAuth.onAuthStateChanged(function(user){
-        if(user){ aqxSetSessionFromFirebase(user);
-      try{ aqxUnlockCloudGate(); }catch(e){} }
+        if(user){ aqxSetSessionFromFirebase(user); }
         else { localStorage.removeItem(aqxCloudSessionKey); document.body.classList.remove("aqxLoggedIn"); aqxRefreshLoginState(); }
       });
     }
@@ -2605,55 +2600,15 @@ function aqxCloudDocRef(){
   if(!aqxFirebaseReady || !aqxFirebaseDb || !aqxCloudUid()) return null;
   return aqxFirebaseDb.collection("users").doc(aqxCloudUid()).collection("backups").doc("main");
 }
-function aqxForceSignedInUiAfterLogin(){
-  try{
-    document.body.classList.add("aqxLoggedIn");
-
-    const loginScreen = el("aqxLoginScreen");
-    if(loginScreen) loginScreen.classList.remove("show");
-
-    // AquoraX is reef-only now, so first sign-in should not stall on old tank-type choices.
-    if(!localStorage.getItem("aquoraxTankType")) localStorage.setItem("aquoraxTankType", "reef");
-    if(!localStorage.getItem("aquoraxWelcomeTank")) localStorage.setItem("aquoraxWelcomeTank", "reef");
-
-    // First login should behave like the app has unlocked, not like the account failed.
-    localStorage.setItem("aquoraxWelcomeSeen", "yes");
-    const welcome = el("welcomeScreen");
-    if(welcome) welcome.style.display = "none";
-
-    aqxRefreshLoginState();
-
-    try{ openPage(localStorage.getItem("aquoraxCurrentPage") || "home"); }catch(e){
-      try{ openPage("home"); }catch(err){}
-    }
-
-    const overlay = el("aqxSavingOverlay");
-    if(overlay){
-      setTimeout(function(){ overlay.classList.remove("show"); }, 950);
-    }
-
-    setTimeout(function(){
-      aqxRefreshLoginState();
-      aqxUpdateCloudStatus("Signed in to AquoraX Cloud.");
-      try{ openPage(localStorage.getItem("aquoraxCurrentPage") || "home"); }catch(e){}
-    }, 300);
-  }catch(e){
-    console.warn("AquoraX signed-in UI refresh skipped", e);
-  }
-}
-
 async function aqxSetSessionFromFirebase(user){
   if(!user) return;
   await aqxEnsureFirestoreUser(user);
   localStorage.setItem(aqxCloudSessionKey, JSON.stringify({uid:user.uid,email:String(user.email||"").toLowerCase(),signedInAt:new Date().toISOString(),provider:"firebase"}));
   document.body.classList.add("aqxLoggedIn");
   aqxUpdateCloudStatus("Signed in. Checking cloud backup…");
-  aqxForceSignedInUiAfterLogin();
-  try{ aqxUnlockCloudGate(); }catch(e){}
   aqxAutoRestoreOnLogin();
   aqxQueueCloudBackup("login");
   aqxRefreshLoginState();
-  aqxForceSignedInUiAfterLogin();
 }
 async function aqxCreateAccount(){
   const email=val("aqxLoginEmail").trim().toLowerCase();
@@ -3286,7 +3241,7 @@ function parameterStatus(def, value){
 }
 
 function renderLiveParameters(){
-  const type = selectedTankType() || "freshwater";
+  const type = selectedTankType() || "reef";
   const defs = aqxOrderedDefs(aqxDefsForDisplay(type));
   const data = latestMergedParameters();
   const grid = el("parameterLiveGrid");
@@ -3312,7 +3267,7 @@ function renderLiveParameters(){
 }
 
 function calculateAqxScore(){
-  const type = selectedTankType() || "freshwater";
+  const type = selectedTankType() || "reef";
   const defs = aqxOrderedDefs(aqxDefsForDisplay(type));
   const data = latestMergedParameters();
   let scored = 0;
@@ -3676,7 +3631,7 @@ function aqxRenderAIGuidance(){
 }
 
 function renderHomeDashboard(){
-  const type = selectedTankType() || "freshwater";
+  const type = selectedTankType() || "reef";
   const isReef = type === "reef";
   const defs = aqxOrderedDefs(aqxDefsForDisplay(type));
   const data = latestMergedParameters();
@@ -3785,7 +3740,7 @@ function drawParameterTrendGraph(){
   const ctx = canvas.getContext("2d");
   const tests = getParameterTests();
 
-  const type = selectedTankType() || "freshwater";
+  const type = selectedTankType() || "reef";
   const defs = parameterDefs[type] || parameterDefs.freshwater;
   const activeDefs = defs.filter(def => tests.some(t => typeof t[def.key] === "number"));
 
@@ -5276,7 +5231,7 @@ function drawParameterTrendGraph(){
   };
   window.aqxAddTank=function(){
     const name=prompt('Tank name? Example: Reef 425, Frag Tank, Nano Reef'); if(!name||!name.trim()) return;
-    let type=prompt('Tank type? Type reef or freshwater','reef'); type=String(type||'reef').toLowerCase().trim(); if(type!=='freshwater') type='reef';
+    let type='reef';
     const volume=prompt('Tank volume in litres? Optional','')||'';
     const tanks=ensureTanks(); const id=uid(); tanks.push({id:id,name:name.trim(),type:type,volume:String(volume).trim(),createdAt:new Date().toISOString()}); writeTanks(tanks); localStorage.setItem(ACTIVE_KEY,id); syncActiveLegacyFields(); refreshAll();
   };
@@ -5295,7 +5250,7 @@ function drawParameterTrendGraph(){
   const oldSaveTank=window.saveTank;
   window.saveTank=function(){
     const tanks=ensureTanks(); const a=activeTank(); const t=tanks.find(x=>x.id===a.id);
-    if(t){t.type=(document.getElementById('tankTypeSelect')||{}).value || t.type || 'reef'; t.volume=(document.getElementById('tankVolumeMain')||{}).value || ''; writeTanks(tanks);}
+    if(t){t.type='reef'; t.volume=(document.getElementById('tankVolumeMain')||{}).value || ''; writeTanks(tanks);}
     syncActiveLegacyFields();
     if(typeof oldSaveTank==='function') oldSaveTank.apply(this,arguments);
     refreshAll();
@@ -7284,230 +7239,10 @@ function aqxCloseCloudPanel(event){
 })();
 
 
-/* AquoraX ICP import click recovery — keeps existing ICP parser/review logic intact */
+/* AquoraX OS reef-only safe defaults — no auth/cloud overrides */
 (function(){
-  function aqxById(id){ return document.getElementById(id); }
-
-  window.aqxSetIcpImportStatus = window.aqxSetIcpImportStatus || function(msg){
-    var ids = ["icpImportStatus","icpStatus","icpUploadStatus","icpOcrStatus"];
-    ids.forEach(function(id){
-      var el = aqxById(id);
-      if(el) el.textContent = msg;
-    });
-  };
-
-  window.aqxOpenIcpFilePicker = function(){
-    var input = aqxById("icpFileInput") || aqxById("icpScreenshotInput") || aqxById("icpUploadInput") || aqxById("icpFile");
-    if(!input){
-      input = document.createElement("input");
-      input.id = "icpFileInput";
-      input.type = "file";
-      input.accept = "image/*,.pdf";
-      input.style.display = "none";
-      document.body.appendChild(input);
-      aqxBindIcpFileInput(input);
-    }
-    input.click();
-  };
-
-  window.aqxParseIcpTextBridge = function(){
-    var txt = aqxById("icpRawText") || aqxById("icpDetectedText") || aqxById("icpTextArea") || aqxById("icpPasteText");
-    if(!txt || !String(txt.value || "").trim()){
-      aqxSetIcpImportStatus("Paste ICP text first, then tap Parse Pasted Text.");
-      return;
-    }
-
-    if(typeof parseIcpText === "function") return parseIcpText(txt.value);
-    if(typeof aqxParseIcpText === "function") return aqxParseIcpText(txt.value);
-    if(typeof parseIcpReportText === "function") return parseIcpReportText(txt.value);
-    if(typeof handleIcpParsedText === "function") return handleIcpParsedText(txt.value);
-
-    aqxSetIcpImportStatus("ICP text captured. Review parser is unavailable in this build.");
-  };
-
-  function aqxReadFileToText(file, cb){
-    var reader = new FileReader();
-    reader.onload = function(){ cb(reader.result || ""); };
-    reader.onerror = function(){ aqxSetIcpImportStatus("Could not read ICP file. Try another screenshot or paste the text."); };
-    reader.readAsText(file);
-  }
-
-  window.aqxBindIcpFileInput = function(input){
-    if(!input || input.dataset.aqxIcpBound === "yes") return;
-    input.dataset.aqxIcpBound = "yes";
-    input.addEventListener("change", function(ev){
-      var file = ev.target.files && ev.target.files[0];
-      if(!file) return;
-      aqxSetIcpImportStatus("ICP file selected. Scanning…");
-
-      if(typeof handleIcpFileUpload === "function") return handleIcpFileUpload(file);
-      if(typeof aqxHandleIcpFileUpload === "function") return aqxHandleIcpFileUpload(file);
-      if(typeof scanIcpScreenshot === "function") return scanIcpScreenshot(file);
-      if(typeof aqxScanIcpScreenshot === "function") return aqxScanIcpScreenshot(file);
-      if(typeof handleIcpScreenshotFile === "function") return handleIcpScreenshotFile(file);
-
-      // Fallback for text/PDF-like uploads where browser can read embedded text.
-      aqxReadFileToText(file, function(text){
-        var txt = aqxById("icpRawText") || aqxById("icpDetectedText") || aqxById("icpTextArea") || aqxById("icpPasteText");
-        if(txt) txt.value = text;
-        aqxSetIcpImportStatus("File loaded. Tap Parse Pasted Text to review.");
-      });
-    });
-  };
-
-  function aqxReconnectIcpImport(){
-    var upload = aqxById("icpUploadZone");
-    var scan = aqxById("icpScanBtn");
-    var parse = aqxById("icpParseTextBtn");
-    var input = aqxById("icpFileInput") || aqxById("icpScreenshotInput") || aqxById("icpUploadInput") || aqxById("icpFile");
-
-    if(upload && upload.dataset.aqxIcpClick !== "yes"){
-      upload.dataset.aqxIcpClick = "yes";
-      upload.style.cursor = "pointer";
-      upload.addEventListener("click", window.aqxOpenIcpFilePicker);
-    }
-    if(scan && scan.dataset.aqxIcpClick !== "yes"){
-      scan.dataset.aqxIcpClick = "yes";
-      scan.addEventListener("click", window.aqxOpenIcpFilePicker);
-    }
-    if(parse && parse.dataset.aqxIcpClick !== "yes"){
-      parse.dataset.aqxIcpClick = "yes";
-      parse.addEventListener("click", window.aqxParseIcpTextBridge);
-    }
-    if(input) aqxBindIcpFileInput(input);
-  }
-
-  document.addEventListener("DOMContentLoaded", aqxReconnectIcpImport);
-  window.addEventListener("load", aqxReconnectIcpImport);
-  document.addEventListener("click", function(e){
-    var t = e.target;
-    if(!t) return;
-    if(t.closest && (t.closest("#icpUploadZone") || t.closest("#icpScanBtn"))) {
-      aqxReconnectIcpImport();
-    }
-  }, true);
-})();
-
-
-/* AquoraX Cloud unlock recovery — dismisses cloud gate after successful Firebase sign-in */
-(function(){
-  function aqxCloudUnlockLog(msg){
-    try{ console.log("[AquoraX Cloud Unlock]", msg); }catch(e){}
-  }
-
-  function aqxLooksLikeCloudGate(el){
-    if(!el || !el.textContent) return false;
-    var t = String(el.textContent).toLowerCase();
-    var idc = String((el.id || "") + " " + (el.className || "")).toLowerCase();
-    return (
-      idc.indexOf("login") >= 0 ||
-      idc.indexOf("cloud") >= 0 ||
-      t.indexOf("aquorax cloud") >= 0 ||
-      t.indexOf("sign in") >= 0 ||
-      t.indexOf("create account") >= 0
-    );
-  }
-
-  window.aqxUnlockCloudGate = function(){
-    try{
-      document.body.classList.add("aqxLoggedIn");
-      document.documentElement.classList.add("aqxLoggedIn");
-
-      var ids = [
-        "aqxLoginScreen",
-        "loginScreen",
-        "cloudLoginScreen",
-        "aqxCloudScreen",
-        "aqxCloudGate",
-        "cloudGate",
-        "authScreen",
-        "signinScreen"
-      ];
-
-      ids.forEach(function(id){
-        var el = document.getElementById(id);
-        if(el){
-          el.classList.remove("show", "active", "open", "visible");
-          el.classList.add("hidden", "aqx-auth-hidden");
-          el.style.display = "none";
-          el.style.pointerEvents = "none";
-        }
-      });
-
-      Array.prototype.forEach.call(document.querySelectorAll(".aqx-login-screen,.login-screen,.cloud-login,.cloud-gate,.auth-gate,.auth-screen,[data-auth-gate],[data-cloud-gate]"), function(el){
-        el.classList.remove("show", "active", "open", "visible");
-        el.classList.add("hidden", "aqx-auth-hidden");
-        el.style.display = "none";
-        el.style.pointerEvents = "none";
-      });
-
-      /* Safety catch: some builds used a styled full-screen card without a stable id. */
-      Array.prototype.forEach.call(document.body.children, function(el){
-        if(!aqxLooksLikeCloudGate(el)) return;
-        var cs = window.getComputedStyle(el);
-        var fullScreenish = (cs.position === "fixed" || cs.position === "absolute") && (parseInt(cs.zIndex || "0", 10) >= 10);
-        if(fullScreenish){
-          el.classList.remove("show", "active", "open", "visible");
-          el.classList.add("hidden", "aqx-auth-hidden");
-          el.style.display = "none";
-          el.style.pointerEvents = "none";
-        }
-      });
-
-      if(!localStorage.getItem("aquoraxTankType")) localStorage.setItem("aquoraxTankType", "reef");
-      localStorage.setItem("aquoraxWelcomeTank", "reef");
-      localStorage.setItem("aquoraxWelcomeSeen", "yes");
-
-      var welcome = document.getElementById("welcomeScreen");
-      if(welcome){
-        welcome.style.display = "none";
-        welcome.classList.remove("show", "active");
-      }
-
-      try{
-        if(typeof aqxRefreshLoginState === "function") aqxRefreshLoginState();
-      }catch(e){}
-
-      try{
-        if(typeof aqxUpdateCloudStatus === "function") aqxUpdateCloudStatus("Signed in to AquoraX Cloud.");
-      }catch(e){}
-
-      try{
-        if(typeof openPage === "function") openPage(localStorage.getItem("aquoraxCurrentPage") || "home");
-      }catch(e){}
-
-      aqxCloudUnlockLog("cloud gate dismissed");
-    }catch(e){
-      console.warn("AquoraX cloud unlock recovery failed", e);
-    }
-  };
-
-  function aqxTryUnlockFromFirebase(){
-    try{
-      if(window.firebase && firebase.auth && firebase.auth().currentUser){
-        window.aqxUnlockCloudGate();
-      }
-    }catch(e){}
-  }
-
-  document.addEventListener("DOMContentLoaded", function(){
-    setTimeout(aqxTryUnlockFromFirebase, 500);
-    setTimeout(aqxTryUnlockFromFirebase, 1500);
-  });
-
-  window.addEventListener("load", function(){
-    setTimeout(aqxTryUnlockFromFirebase, 250);
-    setTimeout(aqxTryUnlockFromFirebase, 1200);
-  });
-
-  document.addEventListener("click", function(e){
-    var t = e.target;
-    if(!t) return;
-    var label = String((t.textContent || "") + " " + (t.value || "")).toLowerCase();
-    if(label.indexOf("sign in") >= 0 || label.indexOf("log in") >= 0 || label.indexOf("create account") >= 0){
-      setTimeout(aqxTryUnlockFromFirebase, 600);
-      setTimeout(aqxTryUnlockFromFirebase, 1600);
-      setTimeout(aqxTryUnlockFromFirebase, 3000);
-    }
-  }, true);
+  try{
+    if(!localStorage.getItem("aquoraxTankType")) localStorage.setItem("aquoraxTankType", "reef");
+    if(!localStorage.getItem("aquoraxWelcomeTank")) localStorage.setItem("aquoraxWelcomeTank", "reef");
+  }catch(e){}
 })();

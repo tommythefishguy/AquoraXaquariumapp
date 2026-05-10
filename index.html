@@ -69,11 +69,11 @@
   <h1>Welcome to AquoraX</h1>
   <p>AquoraX OS — intelligent reef management. Track reef chemistry, ICP, dosing, livestock and stability in one premium reef system.</p>
 
-  <div class="welcomeChoiceGrid reefOnlyWelcome">
+  <div class="welcomeChoiceGrid">
     <button id="welcomeSalt" class="welcomeChoice active" onclick="selectWelcomeTank('reef')">Saltwater Reef</button>
   </div>
 
-  <button class="primaryBtn" style="max-width:320px;" onclick="enterApp()">Enter AquoraX OS</button>
+  <button class="primaryBtn" style="max-width:320px;" onclick="enterApp()">Get Started</button>
 </div>
 
 <div id="cycleStartedModal" class="modalOverlay">
@@ -676,7 +676,49 @@
       <div id="coralTrackerList" class="trackerList"></div>
     </div>
   </div>
-<div id="fishTrackerPanel" class="trackerPanel">
+
+  <div id="plantTrackerPanel" class="trackerPanel">
+    <button class="secondaryBtn backBtn" onclick="closeTrackerPanels()">← Back to Livestock</button>
+
+    <div class="card">
+      <h2>Plant Tracker</h2>
+      <p>Add a plant, save its first image, then add update images later to compare growth side by side.</p>
+
+      <label>Plant Name</label>
+      <input id="plantName" placeholder="Example: Java Fern">
+
+      <label>Type / Placement</label>
+      <input id="plantType" placeholder="Example: Low light · Attached to wood">
+
+      <label>Date Added</label>
+      <input id="plantDateAdded" type="date">
+
+      <label>Growth Notes</label>
+      <input id="plantGrowth" placeholder="Example: New leaves, trimmed runners">
+
+      <label>First Photo</label>
+      <input id="plantImage" class="imageInput" type="file" accept="image/*" capture="environment">
+
+      <div class="cameraQuickBox">
+        <strong>Camera</strong>
+        <span>Open your camera directly from Growth and photograph this plant now.</span>
+        <button type="button" class="cameraBtn" onclick="triggerCameraInput('plantImage')">📸 Open Camera / Add Plant Photo</button>
+      </div>
+
+      <button class="primaryBtn" onclick="addTrackerItem('plant')">Save Plant</button>
+    </div>
+
+    <div class="card">
+      <h2>Saved Plants</h2>
+      <div class="trackerCollectionTools">
+        <input id="plantTrackerSearch" class="trackerSearchInput" placeholder="Search plants..." oninput="renderTrackerList('plant')">
+        <div id="plantTrackerCount" class="trackerCountBadge">0 plants saved</div>
+      </div>
+      <div id="plantTrackerList" class="trackerList"></div>
+    </div>
+  </div>
+
+  <div id="fishTrackerPanel" class="trackerPanel">
     <button class="secondaryBtn backBtn" onclick="closeTrackerPanels()">← Back to Livestock</button>
     <div class="card">
       <h2>Fish Tracker</h2>
@@ -854,10 +896,10 @@
       <p>Learn how to test your water and keep parameters stable.</p>
     </button>
 
-    <button class="card aqxGuideCard" onclick="aqxOpenGuide('coral-care')">
+    <button class="card aqxGuideCard" onclick="aqxOpenGuide('coral-plant-care')">
       <span>Livestock</span>
-      <h2>Coral Care</h2>
-      <p>Tips for keeping corals thriving with stable reef chemistry, lighting and flow.</p>
+      <h2>Coral & Plant Care</h2>
+      <p>Tips for keeping corals thriving or plants growing strong.</p>
     </button>
   </div>
 
@@ -1050,7 +1092,7 @@
         <input id="aqxIcpImageInput" type="file" accept="image/*,.pdf" onchange="aqxHandleIcpFile(this.files && this.files[0])">
       </label>
       <div class="aqxIcpImportActions">
-        <button class="primaryBtn" type="button" onclick="aqxStartIcpOcr()" onclick="aqxOpenIcpFilePicker()">Scan Screenshot</button>
+        <button class="primaryBtn" type="button" onclick="aqxStartIcpOcr()">Scan Screenshot</button>
         <button class="secondaryBtn" type="button" onclick="aqxParseIcpTextFromBox()">Parse Pasted Text</button>
         <button class="secondaryBtn" type="button" onclick="aqxFillDemoIcpImport()">Load Demo ICP</button>
       </div>
@@ -1490,7 +1532,5 @@
 </div>
 
 
-
-<input id="icpFileInput" type="file" accept="image/*,.pdf" style="display:none" />
 </body>
 </html>

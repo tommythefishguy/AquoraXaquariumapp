@@ -5810,41 +5810,8 @@ input:focus,select:focus,textarea:focus{
 }
 
 
-/* ICP import click safety */
-#icpUploadZone,
-#icpScanBtn,
-#icpParseTextBtn,
-#icpFileInput {
-  pointer-events: auto !important;
-}
-#icpUploadZone,
-.icp-upload-zone,
-.icp-import-card button {
-  position: relative;
-  z-index: 5;
-}
-.icp-import-card::before,
-.icp-import-card::after {
-  pointer-events: none !important;
-}
-
-
-/* Cloud/auth unlock safety */
-body.aqxLoggedIn #aqxLoginScreen,
-body.aqxLoggedIn #loginScreen,
-body.aqxLoggedIn #cloudLoginScreen,
-body.aqxLoggedIn #aqxCloudScreen,
-body.aqxLoggedIn #aqxCloudGate,
-body.aqxLoggedIn #cloudGate,
-body.aqxLoggedIn .aqx-login-screen,
-body.aqxLoggedIn .login-screen,
-body.aqxLoggedIn .cloud-login,
-body.aqxLoggedIn .cloud-gate,
-body.aqxLoggedIn .auth-gate,
-body.aqxLoggedIn .auth-screen,
-.aqx-auth-hidden {
-  display: none !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  visibility: hidden !important;
-}
+/* AquoraX stabilization safety: premium visuals must never block core actions */
+#aqxLoginScreen, #loginScreen, #cloudLoginScreen, #aqxCloudScreen, #aqxCloudGate, #cloudGate, .auth-screen, .cloud-gate, .login-screen,
+#icpUploadZone, #icpScanBtn, #icpParseTextBtn, #icpFileInput, button, input, select, textarea, a { pointer-events:auto; }
+.card::before,.card::after,.panel::before,.panel::after,.aqxIcpImportCard::before,.aqxIcpImportCard::after,.reefHealthCard::before,.reefHealthCard::after{ pointer-events:none!important; }
+.aqxReefOnlyPill{display:inline-flex;align-items:center;gap:8px;padding:12px 14px;border-radius:16px;border:1px solid rgba(0,210,255,.22);background:rgba(0,210,255,.08);color:#dff8ff;font-weight:800;}
