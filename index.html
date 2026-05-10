@@ -77,7 +77,7 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
 
   <div class="welcomeChoiceGrid">
     <button id="welcomeSalt" class="welcomeChoice" onclick="selectWelcomeTank('reef')">Salt Water</button>
-    <button id="welcomeFresh" class="welcomeChoice" onclick="selectWelcomeTank('freshwater')">Fresh Water</button>
+    <button id="welcomeFresh" class="welcomeChoice" onclick="selectWelcomeTank('reef')">Reef</button>
   </div>
 
   <button class="primaryBtn" style="max-width:320px;" onclick="enterApp()">Get Started</button>
@@ -288,7 +288,7 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
     <div style="margin-top:14px;">
       <label>Tank Type</label>
       <select id="cycleTank" onchange="saveCycle()">
-        <option value="freshwater">Freshwater</option>
+        <option value="reef">Saltwater Reef</option>
         <option value="reef">Reef / Marine</option>
       </select>
 
@@ -298,7 +298,7 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
 
     <div class="doseGrid">
       <div class="doseBox">
-        <strong id="rapidProductName">Blue Shark Colony Freshwater</strong>
+        <strong id="rapidProductName">Blue Shark Colony Marine</strong>
         <div id="rapidDose" class="doseValue">Enter volume</div>
         <div id="rapidNote" class="doseNote">Rapid Cycle single dose. Add once per tank/system.</div>
 
@@ -626,9 +626,9 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
         </button>
 
         <button id="growthPlantTrackerOpen" class="trackerOpenCard" onclick="openGrowthTrackerPanel('plant')">
-          <strong>Plant Tracker</strong>
+          <strong>Coral Growth</strong>
           <span>Add plant images, date added, placement, growth notes and side-by-side progress photos.</span>
-          <small>Open Plant Tracker</small>
+          <small>Open Coral Growth</small>
         </button>
 
         <button id="growthFishTrackerOpen" class="trackerOpenCard" onclick="openGrowthTrackerPanel('fish')">
@@ -645,7 +645,7 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
 
         <button id="growthInvertTrackerOpen" class="trackerOpenCard" onclick="openGrowthTrackerPanel('invert')">
           <strong>Invert Tracker</strong>
-          <span>Track shrimp, snails, crabs, anemones and other inverts with notes and photos.</span>
+          <span>Track corals, inverts and reef livestock with notes and photos.</span>
           <small>Open Invert Tracker</small>
         </button>
       </div>
@@ -697,7 +697,7 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
     <button class="secondaryBtn backBtn" onclick="closeTrackerPanels()">← Back to Livestock</button>
 
     <div class="card">
-      <h2>Plant Tracker</h2>
+      <h2>Coral Growth</h2>
       <p>Add a plant, save its first image, then add update images later to compare growth side by side.</p>
 
       <label>Plant Name</label>
@@ -770,9 +770,9 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
     <button class="secondaryBtn backBtn" onclick="closeTrackerPanels()">← Back to Livestock</button>
     <div class="card">
       <h2>Invert Tracker</h2>
-      <p>Track shrimp, snails, crabs, anemones and other inverts with photos and notes.</p>
-      <label>Invert Name</label><input id="invertName" placeholder="Example: Cleaner Shrimp">
-      <label>Species / Placement</label><input id="invertType" placeholder="Example: Skunk cleaner shrimp · cave area">
+      <p>Track corals and reef inverts with photos and notes.</p>
+      <label>Coral / Invert Name</label><input id="invertName" placeholder="Example: Torch Coral">
+      <label>Species / Placement</label><input id="invertType" placeholder="Example: Gold Torch · left island">
       <label>Date Added</label><input id="invertDateAdded" type="date">
       <label>Growth / Behaviour Notes</label><input id="invertGrowth" placeholder="Example: Molted successfully, active at feeding">
       <label>First Photo</label><input id="invertImage" class="imageInput" type="file" accept="image/*" capture="environment">
