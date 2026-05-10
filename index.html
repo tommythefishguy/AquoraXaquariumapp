@@ -13,7 +13,7 @@
 
 <!-- AQUORAX ALL-IN-ONE VERIFIED: cloud-login saving-overlay pro-dosing-consumption-icp -->
 
-<link rel="stylesheet" href="css/styles.css?v=coral-essentials-wow-20260509a">
+<link rel="stylesheet" href="css/styles.css?v=beginner-help-bot-20260510a">
 
 
 
@@ -71,7 +71,7 @@
 
   <div class="welcomeChoiceGrid">
     <button id="welcomeSalt" class="welcomeChoice" onclick="selectWelcomeTank('reef')">Salt Water</button>
-    <button id="welcomeFresh" class="welcomeChoice" onclick="selectWelcomeTank('freshwater')">Fresh Water</button>
+    
   </div>
 
   <button class="primaryBtn" style="max-width:320px;" onclick="enterApp()">Get Started</button>
@@ -172,24 +172,67 @@
   <button id="aqxCloudHomeBtn" class="aqxCloudHomeBtn" type="button" onclick="aqxOpenCloudPanel()" aria-label="Open AquoraX Cloud">☁ Cloud</button>
   <div class="homeBrandHeader">
     <img src="aquorax-logo.png" class="homeBrandLogo" alt="AquoraX Logo">
-    <h1>Home</h1>
-    <p>Your simple control centre for the active aquarium.</p>
+    <h1>AquoraX OS</h1>
+    <p>Reef overview first. Advanced tools stay underneath when you need them.</p>
   </div>
 
   <div id="aqxSimpleCommandCard" class="card aqxCommandCentre aqxMinimalActions" data-panel="quicktools">
     <div class="aqxCommandTop">
       <div>
-        <span class="aqxMiniKicker">Quick actions</span>
-        <h2>Choose one job</h2>
-        <p>The active tank controls everything below. No digging through menus.</p>
+        <span class="aqxMiniKicker">Start here</span>
+        <h2>What do you want to do?</h2>
+        <p>Beginner-friendly shortcuts for the most common reef jobs.</p>
       </div>
     </div>
-    <div class="aqxMinimalActionRow">
+    <div class="aqxMinimalActionRow aqxBeginnerActionRow">
       <button class="primaryBtn" onclick="openPage('log')">Log water test</button>
-      <button class="secondaryBtn" onclick="openPage('care')">Care tasks</button>
-      <button class="secondaryBtn" onclick="openPage('growth')">Livestock</button>
-      <button class="secondaryBtn" onclick="openPage('guides')">Guides</button>
+      <button class="secondaryBtn" onclick="openPage('jobs')">Check tasks</button>
+      <button class="secondaryBtn" onclick="openPage('cycle')">Guidance</button>
+      <button class="secondaryBtn" onclick="openPage('growth')">Coral care</button>
     </div>
+  </div>
+
+
+
+  <div id="aqxExperienceModeCard" class="card aqxExperienceModeCard" data-panel="quicktools">
+    <div class="aqxExperienceTop">
+      <div>
+        <span class="aqxMiniKicker">AquoraX Experience</span>
+        <h2>Choose your reef mode</h2>
+        <p id="aqxExperienceModeText">Beginner mode keeps AquoraX calm and focused. Intermediate unlocks the full reef OS.</p>
+      </div>
+      <span id="aqxExperienceBadge" class="aqxExperienceBadge">Beginner</span>
+    </div>
+    <div class="aqxExperienceToggle" role="group" aria-label="AquoraX experience mode">
+      <button id="aqxModeBeginnerBtn" class="primaryBtn" type="button" onclick="aqxSetExperienceMode('beginner')">Beginner</button>
+      <button id="aqxModeIntermediateBtn" class="secondaryBtn" type="button" onclick="aqxSetExperienceMode('intermediate')">Intermediate</button>
+    </div>
+    <p class="smallPrint">Beginner shows Journey, water tests, livestock tracking and jobs. Intermediate opens dosing, ICP, graphs, Reef Health analytics, guides and settings.</p>
+  </div>
+
+  <div id="aqxReefTodayCard" class="card aqxReefTodayCard requiresCycleComplete" data-panel="insights">
+    <div class="aqxReefTodayTop">
+      <div>
+        <span class="aqxMiniKicker">Today</span>
+        <h2>Reef Health</h2>
+        <p id="aqxReefTodaySub">Log a water test to unlock your simple reef overview.</p>
+      </div>
+      <div id="aqxReefTodayBadge" class="aqxReefTodayBadge none">No data</div>
+    </div>
+    <div class="aqxReefTodayGrid">
+      <div class="aqxReefTodayItem"><span>Is my reef okay?</span><strong id="aqxReefOkayText">Waiting for data</strong></div>
+      <div class="aqxReefTodayItem"><span>Needs attention</span><strong id="aqxReefAttentionText">None yet</strong></div>
+      <div class="aqxReefTodayItem"><span>Next step</span><strong id="aqxReefNextText">Log your first test</strong></div>
+      <div class="aqxReefTodayItem"><span>Recently changed</span><strong id="aqxReefChangedText">No recent test</strong></div>
+    </div>
+    <details class="aqxAdvancedReveal">
+      <summary>Advanced reef tools</summary>
+      <div class="aqxAdvancedToolGrid">
+        <button class="secondaryBtn" onclick="openPage('dosing')">Dosing & ICP</button>
+        <button class="secondaryBtn" onclick="openPage('graphs')">Advanced graphs</button>
+        <button class="secondaryBtn" onclick="openPage('parameters')">Full parameters</button>
+      </div>
+    </details>
   </div>
 
   <div id="homeCycleGateCard" class="card cycleGateCard">
@@ -1490,10 +1533,10 @@
 
 <div class="nav" aria-label="Daily navigation">
   <button id="nav-home" onclick="aqxHapticTap(this); openPage('home')">Home</button>
-  <button id="nav-growth" onclick="aqxHapticTap(this); openPage('growth')">Livestock</button>
-  <button id="nav-dosing" onclick="aqxHapticTap(this); openPage('dosing')">Dosing</button>
+  <button id="nav-growth" onclick="aqxHapticTap(this); openPage('growth')">Corals</button>
+  <button id="nav-dosing" onclick="aqxHapticTap(this); openPage('dosing')">Advanced</button>
   <button id="nav-cycle" onclick="aqxHapticTap(this); openPage('cycle')">Journey</button>
-  <button id="nav-profile" onclick="aqxHapticTap(this); openPage('profile')">Settings</button>
+  <button id="nav-profile" onclick="aqxHapticTap(this); openPage('profile')">More</button>
 </div>
 
 
@@ -1502,7 +1545,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-messaging-compat.js"></script>
-<script src="js/app.js?v=coral-essentials-wow-20260509a"></script>
+<script src="js/app.js?v=beginner-help-bot-20260510a"></script>
 
 <div id="cycleCompleteOverlay" class="cycleCompleteOverlay">
   <div class="cycleCompleteModal">
