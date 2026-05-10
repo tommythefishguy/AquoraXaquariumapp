@@ -5051,3 +5051,34 @@ button.aqxReefScore:active,.aqxReviewIcpBtn:active{transform:scale(.98)}
 .aqxInlineReviewBtn:active{transform:scale(.98)}
 .aqxIcpReviewRow.excluded{opacity:.72;border-color:rgba(148,163,184,.22)}
 .aqxIcpReviewRow.excluded .aqxIcpReviewBadge{background:rgba(148,163,184,.14);border-color:rgba(148,163,184,.28);color:#cbd5e1}
+
+/* === AquoraX OS Dosing / ICP Showcase Polish v1 === */
+.aqxBrandSelector{grid-template-columns:repeat(3,minmax(0,1fr));}
+.aqxBrandSelector button{display:grid;gap:2px;align-content:center;min-height:54px;text-align:left;padding:10px 12px!important;border-radius:18px!important;text-transform:none!important;}
+.aqxBrandSelector button strong{display:block;color:#fff;font-size:.76rem;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.aqxBrandSelector button small{display:block;color:#91acc0;font-size:.61rem;font-weight:800;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.aqxBrandSelector button.active small{color:#bff3ff;}
+.aqxOsShowcasePanel{position:relative;overflow:hidden;border-radius:30px!important;margin-top:-4px!important;background:radial-gradient(circle at 84% 0%,rgba(0,210,255,.16),transparent 34%),radial-gradient(circle at 8% 100%,rgba(55,255,130,.08),transparent 36%),linear-gradient(155deg,rgba(4,14,24,.96),rgba(2,7,13,.97))!important;border:1px solid rgba(0,210,255,.18)!important;box-shadow:0 24px 70px rgba(0,0,0,.36),0 0 34px rgba(0,210,255,.10)!important;}
+.aqxOsShowcasePanel.triton{background:radial-gradient(circle at 84% 0%,rgba(0,210,255,.18),transparent 34%),radial-gradient(circle at 10% 100%,rgba(80,130,255,.10),transparent 36%),linear-gradient(155deg,rgba(4,14,24,.96),rgba(2,7,13,.97))!important;}
+.aqxOsShowcasePanel.fauna{background:radial-gradient(circle at 84% 0%,rgba(0,210,255,.14),transparent 34%),radial-gradient(circle at 10% 100%,rgba(255,190,70,.10),transparent 36%),linear-gradient(155deg,rgba(4,14,24,.96),rgba(2,7,13,.97))!important;}
+.aqxOsShowcasePanel:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08),transparent 42%);pointer-events:none;}
+.aqxOsShowcasePanel>*{position:relative;z-index:1;}
+.aqxOsShowcaseTop{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:14px;}
+.aqxOsShowcaseTop h2{margin:5px 0 5px;font-size:1.32rem;letter-spacing:-.045em;color:#fff;}
+.aqxOsShowcaseTop p{margin:0;color:#a9bfd1;font-size:.86rem;line-height:1.42;}
+.aqxOsVerifiedPill{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;text-align:center;flex:0 0 auto;background:linear-gradient(145deg,rgba(0,210,255,.14),rgba(255,255,255,.045));border:1px solid rgba(0,210,255,.24);box-shadow:inset 0 0 25px rgba(0,210,255,.07),0 0 28px rgba(0,210,255,.10);}
+.aqxOsVerifiedPill b{font-size:1.3rem;color:#fff;line-height:.95;}
+.aqxOsVerifiedPill span{font-size:.58rem;color:#dff8ff;text-transform:uppercase;font-weight:950;letter-spacing:.07em;}
+.aqxOsVerifiedPill.good{border-color:rgba(55,255,105,.30);background:linear-gradient(145deg,rgba(55,255,105,.14),rgba(255,255,255,.045));}
+.aqxOsVerifiedPill.warn,.aqxOsVerifiedPill.review{border-color:rgba(255,174,40,.32);background:linear-gradient(145deg,rgba(255,174,40,.13),rgba(255,255,255,.045));}
+.aqxOsVerifiedPill.nodata{opacity:.82;filter:saturate(.65);}
+.aqxOsShowcaseGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+.aqxOsShowcaseTile{min-height:128px;padding:14px;border-radius:22px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.085);box-shadow:inset 0 0 24px rgba(0,200,255,.035);}
+.aqxOsShowcaseTile strong{display:block;color:#fff;font-size:.9rem;margin-bottom:7px;letter-spacing:-.02em;}
+.aqxOsShowcaseTile span{display:block;color:#a4b9ca;font-size:.76rem;line-height:1.45;}
+.aqxOsShowcaseTile.good{border-color:rgba(55,255,105,.20);background:rgba(55,255,105,.065);}
+.aqxOsShowcaseTile.warn,.aqxOsShowcaseTile.review{border-color:rgba(255,174,40,.24);background:rgba(255,174,40,.075);}
+.aqxOsShowcaseFooter{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.aqxOsShowcaseFooter span{border-radius:999px;padding:7px 10px;background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.14);color:#bfefff;font-size:.67rem;font-weight:950;text-transform:uppercase;letter-spacing:.055em;}
+.aqxInlineReviewBtn{margin-top:10px;border-radius:999px;border:1px solid rgba(0,220,255,.35);background:rgba(0,190,255,.12);color:#dff8ff;font-weight:950;padding:9px 12px;text-transform:uppercase;letter-spacing:.05em;font-size:.69rem;}
+@media(max-width:760px){.aqxOsShowcaseTop{align-items:flex-start}.aqxOsVerifiedPill{width:78px;height:78px}.aqxOsVerifiedPill b{font-size:1.05rem}.aqxOsShowcaseGrid{grid-template-columns:1fr}.aqxOsShowcaseTile{min-height:auto}.aqxBrandSelector button{padding:9px 7px!important}.aqxBrandSelector button strong{font-size:.66rem}.aqxBrandSelector button small{font-size:.55rem}.aqxOsShowcaseTop h2{font-size:1.13rem}}
