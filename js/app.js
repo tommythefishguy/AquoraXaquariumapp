@@ -2605,13 +2605,25 @@ function aqxCloudDocRef(){
 }
 async function aqxSetSessionFromFirebase(user){
   if(!user) return;
-  await aqxEnsureFirestoreUser(user);
-  localStorage.setItem(aqxCloudSessionKey, JSON.stringify({uid:user.uid,email:String(user.email||"").toLowerCase(),signedInAt:new Date().toISOString(),provider:"firebase"}));
+
+  // Login must unlock the app as soon as Firebase Auth succeeds.
+  // Firestore setup, restore and backup are kept underneath, but they must never block routing.
+  localStorage.setItem(aqxCloudSessionKey, JSON.stringify({
+    uid:user.uid,
+    email:String(user.email||"").toLowerCase(),
+    signedInAt:new Date().toISOString(),
+    provider:"firebase"
+  }));
   document.body.classList.add("aqxLoggedIn");
-  aqxUpdateCloudStatus("Signed in. Checking cloud backup…");
-  aqxAutoRestoreOnLogin();
-  aqxQueueCloudBackup("login");
+  aqxSetLoginMessage("Signed in. Opening AquoraX…");
   aqxRefreshLoginState();
+  aqxUpdateCloudStatus("Signed in. Checking cloud backup…");
+
+  setTimeout(function(){
+    aqxEnsureFirestoreUser(user).catch(function(e){ console.warn("Firestore user setup skipped", e); });
+    aqxAutoRestoreOnLogin();
+    aqxQueueCloudBackup("login");
+  }, 250);
 }
 async function aqxCreateAccount(){
   const email=val("aqxLoginEmail").trim().toLowerCase();
@@ -2627,7 +2639,8 @@ async function aqxCreateAccount(){
     aqxSetLoginMessage("Account created and cloud backup started.");
   }catch(e){
     console.warn(e);
-    aqxSetLoginMessage((e && e.message) ? e.message : "Could not create account.");
+    const msg=(e && e.message) ? e.message : "Could not create account.";
+    aqxSetLoginMessage(msg + (String(msg).toLowerCase().includes("unauthorized") ? " Check Firebase Authentication > Authorized domains for this GitHub Pages domain." : ""));
   }
 }
 async function aqxSignIn(){
@@ -2641,7 +2654,8 @@ async function aqxSignIn(){
     aqxSetSessionFromFirebase(cred.user);
   }catch(e){
     console.warn(e);
-    aqxSetLoginMessage((e && e.message) ? e.message : "Could not sign in.");
+    const msg=(e && e.message) ? e.message : "Could not sign in.";
+    aqxSetLoginMessage(msg + (String(msg).toLowerCase().includes("unauthorized") ? " Check Firebase Authentication > Authorized domains for this GitHub Pages domain." : ""));
   }
 }
 async function aqxSignOut(){
@@ -2656,8 +2670,14 @@ function aqxRefreshLoginState(){
   const logged=!!aqxCloudUser();
   document.body.classList.toggle("aqxLoggedIn", logged);
   const screen=el("aqxLoginScreen");
-  if(screen) screen.classList.toggle("show", !logged);
-  if(el("welcomeScreen")) el("welcomeScreen").style.display = logged && localStorage.getItem("aquoraxWelcomeSeen")==="yes" ? "none" : (logged ? "flex" : "none");
+  if(screen){
+    screen.classList.toggle("show", !logged);
+    screen.style.display = logged ? "none" : "flex";
+  }
+  const welcome=el("welcomeScreen");
+  if(welcome){
+    welcome.style.display = logged && localStorage.getItem("aquoraxWelcomeSeen")==="yes" ? "none" : (logged ? "flex" : "none");
+  }
   aqxUpdateCloudStatus();
 }
 function aqxOpenCloudHub(){ aqxUpdateCloudStatus(); const o=el("aqxCloudPanelOverlay"); if(o) o.classList.add("show"); }
