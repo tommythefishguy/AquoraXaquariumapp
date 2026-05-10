@@ -18,12 +18,6 @@
 
 
 
-
-<style id="aquorax-os-overhaul">
-body{
-background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !important;
-}
-</style>
 </head>
 
 <body>
@@ -72,11 +66,12 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
 
 <div id="welcomeScreen">
   <img src="aquorax-logo.png" class="welcomeLogo" alt="AquoraX Logo">
-  <h1>Welcome to AquoraX OS</h1>
-  <p>Intelligent reef management for saltwater reef systems.</p>
+  <h1>Welcome to AquoraX</h1>
+  <p>The home of aquarium keeping. Build, track, and perfect your aquarium.</p>
 
   <div class="welcomeChoiceGrid">
-    <button id="welcomeSalt" class="welcomeChoice" onclick="selectWelcomeTank('reef')">Saltwater Reef</button>
+    <button id="welcomeSalt" class="welcomeChoice" onclick="selectWelcomeTank('reef')">Salt Water</button>
+    <button id="welcomeFresh" class="welcomeChoice" onclick="selectWelcomeTank('freshwater')">Fresh Water</button>
   </div>
 
   <button class="primaryBtn" style="max-width:320px;" onclick="enterApp()">Get Started</button>
@@ -175,19 +170,25 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
 
 <div id="home" class="page active">
   <button id="aqxCloudHomeBtn" class="aqxCloudHomeBtn" type="button" onclick="aqxOpenCloudPanel()" aria-label="Open AquoraX Cloud">☁ Cloud</button>
-  <div class="homeBrandHeader aqxReefHomeHero">
-    <div class="aqxReefHomeHeroTop">
-      <img src="aquorax-logo.png" class="homeBrandLogo" alt="AquoraX Logo">
+  <div class="homeBrandHeader">
+    <img src="aquorax-logo.png" class="homeBrandLogo" alt="AquoraX Logo">
+    <h1>Home</h1>
+    <p>Your simple control centre for the active aquarium.</p>
+  </div>
+
+  <div id="aqxSimpleCommandCard" class="card aqxCommandCentre aqxMinimalActions" data-panel="quicktools">
+    <div class="aqxCommandTop">
       <div>
-        <span class="aqxMiniKicker">AquoraX OS</span>
-        <h1>Reef Dashboard</h1>
-        <p>Intelligent reef management for testing, dosing, ICP, jobs and coral stability.</p>
+        <span class="aqxMiniKicker">Quick actions</span>
+        <h2>Choose one job</h2>
+        <p>The active tank controls everything below. No digging through menus.</p>
       </div>
     </div>
-    <div class="aqxReefHomeActions">
+    <div class="aqxMinimalActionRow">
       <button class="primaryBtn" onclick="openPage('log')">Log water test</button>
-      <button class="secondaryBtn" onclick="openPage('dosing')">Dosing</button>
-      <button class="secondaryBtn" onclick="openPage('jobs')">Jobs</button>
+      <button class="secondaryBtn" onclick="openPage('care')">Care tasks</button>
+      <button class="secondaryBtn" onclick="openPage('growth')">Livestock</button>
+      <button class="secondaryBtn" onclick="openPage('guides')">Guides</button>
     </div>
   </div>
 
@@ -216,7 +217,10 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
       </div>
       <button class="primaryBtn" onclick="openPage('log')">Log Test</button>
     </div>
-    <div id="homeParameterLiveGrid" class="paramLiveGrid aqxReefParameterGrid"></div>
+    <details class="aqxHomeDisclosure">
+      <summary>View full parameter cards</summary>
+      <div id="homeParameterLiveGrid" class="paramLiveGrid"></div>
+    </details>
   </div>
 
   <div id="homeSmartInsightsCard" class="card smartInsightCard requiresCycleComplete" data-panel="insights"></div>
@@ -278,6 +282,7 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
     <div style="margin-top:14px;">
       <label>Tank Type</label>
       <select id="cycleTank" onchange="saveCycle()">
+        <option value="freshwater">Freshwater</option>
         <option value="reef">Reef / Marine</option>
       </select>
 
@@ -287,7 +292,7 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
 
     <div class="doseGrid">
       <div class="doseBox">
-        <strong id="rapidProductName">Blue Shark Colony Marine</strong>
+        <strong id="rapidProductName">Blue Shark Colony Freshwater</strong>
         <div id="rapidDose" class="doseValue">Enter volume</div>
         <div id="rapidNote" class="doseNote">Rapid Cycle single dose. Add once per tank/system.</div>
 
@@ -600,18 +605,24 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
   <div id="growthMain">
     <div class="pageHeader">
       <h1>Livestock</h1>
-      <p id="growthPageIntro">Track fish, corals, inverts and reef algae for the active tank.</p>
+      <p id="growthPageIntro">Track fish, corals, inverts, plants and algae for the active tank.</p>
     </div>
 
     <div class="card">
       <h2>Life Trackers</h2>
-      <p>Open the part of your tank life you want to manage. Each active reef keeps its own fish, corals, inverts and reef algae logs.</p>
+      <p>Open the part of your tank life you want to manage. Each active tank keeps its own fish, corals, inverts, plants and algae logs.</p>
 
       <div class="trackerHubGrid">
         <button id="growthCoralTrackerOpen" class="trackerOpenCard" onclick="openGrowthTrackerPanel('coral')">
           <strong>Coral Tracker</strong>
           <span>Add coral images, date added, placement, growth notes and side-by-side progress photos.</span>
           <small>Open Coral Tracker</small>
+        </button>
+
+        <button id="growthPlantTrackerOpen" class="trackerOpenCard" onclick="openGrowthTrackerPanel('plant')">
+          <strong>Plant Tracker</strong>
+          <span>Add plant images, date added, placement, growth notes and side-by-side progress photos.</span>
+          <small>Open Plant Tracker</small>
         </button>
 
         <button id="growthFishTrackerOpen" class="trackerOpenCard" onclick="openGrowthTrackerPanel('fish')">
@@ -675,6 +686,48 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
       <div id="coralTrackerList" class="trackerList"></div>
     </div>
   </div>
+
+  <div id="plantTrackerPanel" class="trackerPanel">
+    <button class="secondaryBtn backBtn" onclick="closeTrackerPanels()">← Back to Livestock</button>
+
+    <div class="card">
+      <h2>Plant Tracker</h2>
+      <p>Add a plant, save its first image, then add update images later to compare growth side by side.</p>
+
+      <label>Plant Name</label>
+      <input id="plantName" placeholder="Example: Java Fern">
+
+      <label>Type / Placement</label>
+      <input id="plantType" placeholder="Example: Low light · Attached to wood">
+
+      <label>Date Added</label>
+      <input id="plantDateAdded" type="date">
+
+      <label>Growth Notes</label>
+      <input id="plantGrowth" placeholder="Example: New leaves, trimmed runners">
+
+      <label>First Photo</label>
+      <input id="plantImage" class="imageInput" type="file" accept="image/*" capture="environment">
+
+      <div class="cameraQuickBox">
+        <strong>Camera</strong>
+        <span>Open your camera directly from Growth and photograph this plant now.</span>
+        <button type="button" class="cameraBtn" onclick="triggerCameraInput('plantImage')">📸 Open Camera / Add Plant Photo</button>
+      </div>
+
+      <button class="primaryBtn" onclick="addTrackerItem('plant')">Save Plant</button>
+    </div>
+
+    <div class="card">
+      <h2>Saved Plants</h2>
+      <div class="trackerCollectionTools">
+        <input id="plantTrackerSearch" class="trackerSearchInput" placeholder="Search plants..." oninput="renderTrackerList('plant')">
+        <div id="plantTrackerCount" class="trackerCountBadge">0 plants saved</div>
+      </div>
+      <div id="plantTrackerList" class="trackerList"></div>
+    </div>
+  </div>
+
   <div id="fishTrackerPanel" class="trackerPanel">
     <button class="secondaryBtn backBtn" onclick="closeTrackerPanels()">← Back to Livestock</button>
     <div class="card">
@@ -853,10 +906,10 @@ background: radial-gradient(circle at top, #06203a 0%, #010814 55%, #000 100%) !
       <p>Learn how to test your water and keep parameters stable.</p>
     </button>
 
-    <button class="card aqxGuideCard" onclick="aqxOpenGuide('coral-care')">
+    <button class="card aqxGuideCard" onclick="aqxOpenGuide('coral-plant-care')">
       <span>Livestock</span>
-      <h2>Coral Care</h2>
-      <p>Tips for keeping corals healthy, stable and growing.</p>
+      <h2>Coral & Plant Care</h2>
+      <p>Tips for keeping corals thriving or plants growing strong.</p>
     </button>
   </div>
 
