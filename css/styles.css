@@ -1410,7 +1410,7 @@ body > .cycleResetCard{
 }
 
 
-/* Large coral / plant collection support */
+/* Large coral collection support */
 .trackerCollectionTools{
   display:grid;
   grid-template-columns:1fr;
@@ -4021,7 +4021,7 @@ body.aqxTourOpen{overflow:hidden}
   background:rgba(255,255,255,.045);
   border:1px solid rgba(255,255,255,.06);
 }
-.aqxReefMode .aqxReefOnlyField{display:none!important;}
+body .aqxReefOnlyField{display:block;}
 .aqxReefOnlyField{transition:opacity .18s ease, transform .18s ease;}
 
 
@@ -5024,3 +5024,184 @@ body.aqxLoggedIn .page,
 .aqxPrediction{padding:10px 11px;border-radius:15px;margin-top:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.045)}.aqxPrediction b{display:block;color:#fff;font-size:.82rem;margin-bottom:3px}.aqxPrediction span{display:block;color:#9eb5c8;font-size:.74rem;line-height:1.38}.aqxPrediction.good{border-color:rgba(55,255,105,.22);background:rgba(55,255,105,.07)}.aqxPrediction.warn{border-color:rgba(255,174,40,.25);background:rgba(255,174,40,.08)}.aqxPrediction.bad{border-color:rgba(255,65,80,.28);background:rgba(255,65,80,.08)}
 .aqxReefIntelFooter{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.aqxReefIntelFooter span{border-radius:999px;padding:7px 10px;background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.14);color:#bfefff;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}.aqxReefIntelLoading{color:#bfefff;font-weight:900}
 @media(max-width:720px){.aqxReefIntelTop{align-items:flex-start}.aqxReefScore{width:82px;height:82px}.aqxReefScore b{font-size:1.25rem}.aqxReefIntelGrid{grid-template-columns:1fr}.aqxReefIntelTop h2{font-size:1.22rem}}
+
+
+/* AquoraX reef-only Home polish recovery */
+#home{
+  gap:16px !important;
+}
+#home .aqxReefHomeHero{
+  position:relative;
+  overflow:hidden;
+  padding:18px !important;
+  border-radius:28px !important;
+  border:1px solid rgba(73,201,255,.24) !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(0,200,255,.22), transparent 38%),
+    radial-gradient(circle at 90% 10%, rgba(99,247,163,.12), transparent 34%),
+    linear-gradient(145deg, rgba(7,22,36,.96), rgba(3,10,19,.96)) !important;
+  box-shadow:0 22px 55px rgba(0,0,0,.38), 0 0 34px rgba(0,200,255,.10) !important;
+}
+#home .aqxReefHomeHero::after{
+  content:"";
+  position:absolute;
+  inset:auto -20% -55% -20%;
+  height:80%;
+  background:radial-gradient(circle, rgba(0,200,255,.14), transparent 60%);
+  pointer-events:none;
+}
+.aqxReefHomeHeroTop{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+#home .aqxReefHomeHero .homeBrandLogo{
+  width:72px !important;
+  height:72px !important;
+  object-fit:contain;
+  flex:0 0 auto;
+  filter:drop-shadow(0 0 20px rgba(0,200,255,.30));
+}
+#home .aqxReefHomeHero h1{
+  margin:2px 0 4px !important;
+  font-size:clamp(30px,8vw,42px) !important;
+  line-height:.95 !important;
+  letter-spacing:-.055em !important;
+}
+#home .aqxReefHomeHero p{
+  max-width:620px;
+  margin:0 !important;
+  color:rgba(232,247,255,.76) !important;
+  font-size:14px !important;
+  line-height:1.45 !important;
+}
+.aqxReefHomeActions{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:1.25fr 1fr 1fr;
+  gap:10px;
+  margin-top:16px;
+}
+.aqxReefHomeActions button{
+  width:100%;
+  min-height:46px;
+}
+#home .parameterHero.aqxMinimalParameterCard{
+  padding:18px !important;
+  border-radius:28px !important;
+  border:1px solid rgba(73,201,255,.28) !important;
+  background:
+    radial-gradient(circle at top left, rgba(0,200,255,.15), transparent 38%),
+    linear-gradient(145deg, rgba(7,22,36,.98), rgba(4,12,22,.96)) !important;
+  box-shadow:0 18px 48px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+#home .parameterHero h2::after{content:none !important;}
+#home .aqxMinimalSectionHead{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+#home .aqxMinimalSectionHead h2{
+  margin:2px 0 4px !important;
+  font-size:24px !important;
+  letter-spacing:-.03em;
+}
+#home .aqxMinimalSectionHead p{
+  margin:0 !important;
+  color:rgba(232,247,255,.70) !important;
+  font-size:13px;
+  line-height:1.4;
+}
+#homeParameterLiveGrid.aqxReefParameterGrid,
+#homeParameterLiveGrid{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px !important;
+  margin-top:0 !important;
+}
+#homeParameterLiveGrid .paramLiveCard{
+  min-height:136px !important;
+  padding:14px !important;
+  border-radius:22px !important;
+  border:1px solid rgba(73,201,255,.18) !important;
+  background:
+    radial-gradient(circle at top left, rgba(0,200,255,.10), transparent 44%),
+    linear-gradient(145deg, rgba(9,27,43,.92), rgba(4,12,22,.92)) !important;
+  box-shadow:0 14px 34px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+#homeParameterLiveGrid .paramLiveTop{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-bottom:12px !important;
+  padding-right:0 !important;
+}
+#homeParameterLiveGrid .paramIcon{
+  width:34px !important;
+  height:34px !important;
+  min-width:34px !important;
+  border-radius:14px !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+}
+#homeParameterLiveGrid .paramLiveCard h3{
+  margin:0 !important;
+  font-size:13px !important;
+  line-height:1.15;
+  color:rgba(232,247,255,.86) !important;
+}
+#homeParameterLiveGrid .paramValue{
+  font-size:clamp(25px,8vw,36px) !important;
+  line-height:1 !important;
+  letter-spacing:-.045em;
+  margin:0 0 10px !important;
+}
+#homeParameterLiveGrid .paramValue small{
+  font-size:12px !important;
+  opacity:.68;
+  letter-spacing:0;
+}
+#homeParameterLiveGrid .paramTarget{
+  font-size:11px !important;
+  line-height:1.35 !important;
+  color:rgba(232,247,255,.62) !important;
+}
+#homeParameterLiveGrid .homeCardPin{
+  display:none !important;
+}
+#homeSmartInsightsCard,
+#homeAiGuidanceCard,
+#homeJobsCard,
+#home .scoreCard,
+#home [data-panel="history"],
+#home .aqxMoreHomeTools{
+  border-radius:24px !important;
+  border-color:rgba(73,201,255,.16) !important;
+  background:linear-gradient(145deg, rgba(7,22,36,.90), rgba(4,12,22,.92)) !important;
+  box-shadow:0 14px 38px rgba(0,0,0,.24) !important;
+}
+#homeAiGuidanceCard:empty{display:none !important;}
+@media(max-width:430px){
+  #home .aqxReefHomeHero{padding:16px !important;border-radius:24px !important;}
+  .aqxReefHomeHeroTop{align-items:flex-start;gap:12px;}
+  #home .aqxReefHomeHero .homeBrandLogo{width:58px !important;height:58px !important;}
+  .aqxReefHomeActions{grid-template-columns:1fr;gap:9px;}
+  #home .aqxMinimalSectionHead{display:block;}
+  #home .aqxMinimalSectionHead .primaryBtn{width:100%;margin-top:12px;}
+  #homeParameterLiveGrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:9px !important;}
+  #homeParameterLiveGrid .paramLiveCard{min-height:128px !important;padding:12px !important;border-radius:20px !important;}
+  #homeParameterLiveGrid .paramValue{font-size:27px !important;}
+}
+@media(min-width:760px){
+  #home.active{grid-template-columns:1fr 1fr !important;}
+  #home .aqxReefHomeHero,
+  #home .parameterHero{grid-column:1 / -1 !important;}
+  #homeParameterLiveGrid{grid-template-columns:repeat(5,minmax(0,1fr)) !important;}
+}
