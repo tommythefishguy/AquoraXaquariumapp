@@ -5488,3 +5488,323 @@ input:focus,select:focus,textarea:focus{border-color:rgba(94,244,255,.64)!import
 @media(max-width:350px){.paramLiveGrid,.paramGrid{grid-template-columns:1fr!important;}.nav button{font-size:9px!important;}}
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+
+/* =========================================================
+   AquoraX OS — Reef Ultra Premium Visual Pass v3
+   Controlled CSS-only upgrade: keeps app logic/auth/data intact.
+   ========================================================= */
+:root{
+  --aqx-bg-deep:#01040a;
+  --aqx-bg-reef:#04111f;
+  --aqx-glass:rgba(7,20,34,.72);
+  --aqx-glass-strong:rgba(9,29,48,.86);
+  --aqx-line-hot:rgba(76,211,255,.34);
+  --aqx-line-soft:rgba(255,255,255,.09);
+  --aqx-reef-cyan:#4dd8ff;
+  --aqx-reef-blue:#0b8cff;
+  --aqx-reef-violet:#7567ff;
+  --aqx-reef-mint:#63f7c0;
+  --aqx-reef-gold:#ffd36a;
+  --aqx-shadow-card:0 22px 58px rgba(0,0,0,.38), 0 0 34px rgba(0,174,255,.08);
+  --aqx-shadow-glow:0 0 34px rgba(77,216,255,.20), 0 0 84px rgba(11,140,255,.08);
+}
+html{scroll-behavior:smooth;}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 18% -8%, rgba(77,216,255,.20) 0%, rgba(77,216,255,.05) 25%, transparent 46%),
+    radial-gradient(circle at 92% 12%, rgba(117,103,255,.18) 0%, transparent 38%),
+    radial-gradient(circle at 50% 104%, rgba(0,200,255,.10) 0%, transparent 42%),
+    linear-gradient(180deg, #020914 0%, #01040a 58%, #000207 100%) !important;
+  background-attachment:fixed;
+  letter-spacing:-.012em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    linear-gradient(115deg, transparent 0%, rgba(255,255,255,.025) 44%, transparent 56%),
+    radial-gradient(circle at 35% 22%, rgba(99,247,192,.05), transparent 28%);
+  opacity:.9;
+}
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.58), transparent 70%);
+  opacity:.28;
+}
+.page{
+  max-width:820px !important;
+  padding-left:clamp(16px,4vw,26px) !important;
+  padding-right:clamp(16px,4vw,26px) !important;
+  animation:aqxPageIn .32s ease both;
+}
+@keyframes aqxPageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.homeBrandHeader,.pageHeader{
+  position:relative;
+  padding:18px 8px 12px;
+}
+.homeBrandHeader:after,.pageHeader:after{
+  content:"";
+  display:block;
+  width:86px;
+  height:3px;
+  margin:14px auto 0;
+  border-radius:999px;
+  background:linear-gradient(90deg, transparent, var(--aqx-reef-cyan), transparent);
+  box-shadow:0 0 18px rgba(77,216,255,.45);
+}
+.pageHeader:after{margin-left:0;}
+.homeBrandLogo{
+  width:min(78%,360px) !important;
+  filter:drop-shadow(0 0 26px rgba(77,216,255,.38)) drop-shadow(0 18px 28px rgba(0,0,0,.42)) !important;
+}
+.homeBrandHeader h1,.pageHeader h1{
+  font-size:clamp(30px,7vw,44px) !important;
+  line-height:.96;
+  font-weight:950;
+  letter-spacing:-.055em;
+  background:linear-gradient(180deg,#ffffff 0%,#dff7ff 46%,#7bdfff 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent !important;
+  text-shadow:0 0 32px rgba(77,216,255,.12);
+}
+.homeBrandHeader p,.pageHeader p{
+  color:rgba(216,241,255,.72) !important;
+  font-size:15.5px;
+}
+.card,.partnerCard,.statusBox,.cycleStateCard,.smartInsightCard,.parameterHero,.customiserHero,.trackerItem,.simpleTile,.doseBox,.timestampBox,.productAssist,.shopNeed,.shopLinkCard,.testHistoryItem{
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(145deg, rgba(10,31,51,.86), rgba(3,10,20,.82)) !important;
+  border:1px solid rgba(112,219,255,.18) !important;
+  border-top-color:rgba(185,242,255,.28) !important;
+  box-shadow:var(--aqx-shadow-card) !important;
+  backdrop-filter:blur(18px) saturate(1.18);
+  -webkit-backdrop-filter:blur(18px) saturate(1.18);
+}
+.card:before,.partnerCard:before,.statusBox:before,.cycleStateCard:before,.smartInsightCard:before,.parameterHero:before,.customiserHero:before,.trackerItem:before,.simpleTile:before,.doseBox:before,.timestampBox:before,.productAssist:before,.shopNeed:before,.shopLinkCard:before,.testHistoryItem:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(120deg, rgba(255,255,255,.075), transparent 34%),
+    radial-gradient(circle at 88% 0%, rgba(77,216,255,.12), transparent 28%);
+  opacity:.75;
+}
+.card > *,.partnerCard > *,.statusBox > *,.cycleStateCard > *,.smartInsightCard > *,.parameterHero > *,.customiserHero > *,.trackerItem > *,.simpleTile > *,.doseBox > *,.timestampBox > *,.productAssist > *,.shopNeed > *,.shopLinkCard > *,.testHistoryItem > *{position:relative;z-index:1;}
+.card:hover,.simpleTile:hover,.trackerItem:hover,.shopLinkCard:hover{
+  border-color:rgba(77,216,255,.34) !important;
+  box-shadow:0 26px 70px rgba(0,0,0,.44), var(--aqx-shadow-glow) !important;
+}
+.card h2,.card h3,.trackerItem strong,.historyItem strong,.testHistoryItem strong,.paramLiveCard h3,#parameterTitle,#reefScoreTitle{
+  letter-spacing:-.03em;
+  font-weight:900;
+}
+.primaryBtn,.secondaryBtn,.dangerBtn,.lockedBtn,button{
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease, opacity .18s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.primaryBtn{
+  background:linear-gradient(135deg, #0b8cff 0%, #4dd8ff 52%, #63f7c0 100%) !important;
+  color:#00101c !important;
+  box-shadow:0 14px 30px rgba(0,169,255,.24), 0 0 24px rgba(77,216,255,.18) !important;
+}
+.secondaryBtn,.lockedBtn{
+  background:linear-gradient(145deg, rgba(255,255,255,.085), rgba(255,255,255,.035)) !important;
+  border:1px solid rgba(185,242,255,.16) !important;
+  color:#e8f8ff !important;
+}
+.primaryBtn:active,.secondaryBtn:active,.dangerBtn:active,.lockedBtn:active,button:active{transform:scale(.975)}
+input,select,textarea{
+  background:linear-gradient(145deg, rgba(1,6,13,.92), rgba(8,22,36,.86)) !important;
+  border:1px solid rgba(111,220,255,.23) !important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.025), 0 10px 24px rgba(0,0,0,.16);
+}
+input:focus,select:focus,textarea:focus{
+  border-color:rgba(77,216,255,.72) !important;
+  box-shadow:0 0 0 4px rgba(77,216,255,.09), 0 0 22px rgba(77,216,255,.13) !important;
+}
+.nav{
+  left:50% !important;
+  transform:translateX(-50%);
+  width:min(94vw,780px) !important;
+  bottom:12px !important;
+  border-radius:28px !important;
+  padding:9px 10px calc(9px + env(safe-area-inset-bottom)) !important;
+  background:linear-gradient(180deg, rgba(6,18,31,.86), rgba(1,6,13,.92)) !important;
+  border:1px solid rgba(130,226,255,.22) !important;
+  box-shadow:0 18px 55px rgba(0,0,0,.55), 0 0 34px rgba(0,200,255,.10) !important;
+  backdrop-filter:blur(22px) saturate(1.25);
+  -webkit-backdrop-filter:blur(22px) saturate(1.25);
+}
+.nav button{
+  border-radius:20px !important;
+  color:rgba(225,246,255,.70) !important;
+  min-height:46px;
+}
+.nav button.active{
+  background:linear-gradient(145deg, rgba(77,216,255,.22), rgba(11,140,255,.13)) !important;
+  color:#ffffff !important;
+  box-shadow:inset 0 0 0 1px rgba(185,242,255,.18), 0 0 26px rgba(77,216,255,.18) !important;
+}
+.aqxCloudHomeBtn,.aqxMenuBtn,.aqxCloudButton{
+  border-radius:999px !important;
+  background:rgba(6,20,34,.72) !important;
+  border:1px solid rgba(130,226,255,.22) !important;
+  box-shadow:0 12px 30px rgba(0,0,0,.32), 0 0 20px rgba(77,216,255,.10) !important;
+  backdrop-filter:blur(18px);
+}
+.aqxSideMenuPanel,.navMenuPanel,.aqxCloudPanel{
+  background:linear-gradient(160deg, rgba(6,19,33,.94), rgba(1,6,13,.96)) !important;
+  border:1px solid rgba(130,226,255,.22) !important;
+  box-shadow:0 28px 90px rgba(0,0,0,.66), 0 0 42px rgba(77,216,255,.12) !important;
+  backdrop-filter:blur(24px) saturate(1.2);
+  -webkit-backdrop-filter:blur(24px) saturate(1.2);
+}
+.aqxSideMenuPanel button,.navCustomItem{
+  background:linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.025)) !important;
+  border:1px solid rgba(255,255,255,.095) !important;
+  border-radius:18px !important;
+}
+.aqxCommandCentre,.parameterHero{
+  border-color:rgba(77,216,255,.32) !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(77,216,255,.18), transparent 34%),
+    linear-gradient(145deg, rgba(9,31,52,.90), rgba(2,8,18,.88)) !important;
+}
+.aqxMiniKicker,.cycleGateBadge,.partnerBadge,.aqxReefOnlyPill{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  max-width:100%;
+  border-radius:999px !important;
+  padding:6px 10px !important;
+  background:rgba(77,216,255,.10) !important;
+  border:1px solid rgba(77,216,255,.24) !important;
+  color:#bff2ff !important;
+  box-shadow:0 0 18px rgba(77,216,255,.10);
+}
+.aqxMinimalActionRow{
+  gap:10px !important;
+}
+.aqxMinimalActionRow button{
+  min-height:48px;
+}
+.aqxHomeDisclosure{
+  border-radius:20px;
+}
+.aqxHomeDisclosure summary{
+  cursor:pointer;
+  list-style:none;
+  padding:13px 14px;
+  margin:12px 0 0;
+  border-radius:18px;
+  background:linear-gradient(145deg, rgba(77,216,255,.10), rgba(255,255,255,.035));
+  border:1px solid rgba(77,216,255,.18);
+  color:#e8f8ff;
+  font-weight:900;
+}
+.aqxHomeDisclosure summary::-webkit-details-marker{display:none;}
+.aqxHomeDisclosure[open] summary{margin-bottom:14px;box-shadow:0 0 22px rgba(77,216,255,.10);}
+.paramLiveGrid{
+  gap:12px !important;
+}
+.paramLiveCard,#homeParameterLiveGrid .paramLiveCard{
+  background:
+    radial-gradient(circle at 18% 0%, rgba(77,216,255,.14), transparent 38%),
+    linear-gradient(145deg, rgba(9,28,47,.86), rgba(2,8,17,.86)) !important;
+  border:1px solid rgba(117,221,255,.20) !important;
+  border-top-color:rgba(220,250,255,.28) !important;
+  box-shadow:0 18px 44px rgba(0,0,0,.34), 0 0 22px rgba(0,200,255,.075) !important;
+}
+.paramLiveCard .paramIcon{
+  background:linear-gradient(135deg, rgba(77,216,255,.23), rgba(117,103,255,.15)) !important;
+  border:1px solid rgba(77,216,255,.22);
+  box-shadow:0 0 18px rgba(77,216,255,.12);
+}
+.paramValue,.scoreNumber,.doseValue{
+  font-weight:950 !important;
+  letter-spacing:-.055em;
+  text-shadow:0 0 24px rgba(77,216,255,.18);
+}
+.paramLiveCard.ok,.paramLiveCard.good,.paramLiveCard.safe,.status-ok{
+  border-color:rgba(99,247,192,.34) !important;
+  box-shadow:0 18px 44px rgba(0,0,0,.34), 0 0 24px rgba(99,247,192,.13) !important;
+}
+.paramLiveCard.warning,.paramLiveCard.watch,.status-watch{
+  border-color:rgba(255,211,106,.38) !important;
+  box-shadow:0 18px 44px rgba(0,0,0,.34), 0 0 24px rgba(255,211,106,.13) !important;
+}
+.paramLiveCard.urgent,.paramLiveCard.danger,.status-danger{
+  border-color:rgba(255,107,107,.42) !important;
+  box-shadow:0 18px 44px rgba(0,0,0,.34), 0 0 24px rgba(255,107,107,.14) !important;
+}
+.scoreCard{
+  text-align:center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(99,247,192,.14), transparent 38%),
+    linear-gradient(145deg, rgba(9,28,47,.88), rgba(2,8,17,.86)) !important;
+}
+.scoreNumber{
+  font-size:clamp(54px,18vw,96px) !important;
+  line-height:.95;
+  background:linear-gradient(180deg,#fff,#7ee7ff 60%,#63f7c0);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent !important;
+}
+.cycleHeroBrandCard img,.cycleGateHero img,.partnerLogo,.homeBrandLogo{
+  transition:transform .28s ease, filter .28s ease;
+}
+.cycleHeroBrandCard:hover img,.cycleGateHero:hover img{transform:scale(1.015);filter:saturate(1.1) contrast(1.04) drop-shadow(0 0 22px rgba(77,216,255,.24));}
+.cycleHeroBrandCard,.cycleGateCard{
+  border-color:rgba(77,216,255,.34) !important;
+}
+.doseGrid,.beginnerStepGrid,.customGrid,.ecosystemProductGrid,.brandSystemGrid,.icpReviewGrid{
+  gap:12px !important;
+}
+.doseBox,.timestampBox{
+  border-radius:22px !important;
+}
+.testHistoryItem,.historyItem,.jobItem,.careTaskItem{
+  border-left:3px solid rgba(77,216,255,.38) !important;
+}
+.simpleTile{
+  transform:translateZ(0);
+}
+.simpleTile:active,.trackerItem:active,.paramLiveCard:active{transform:scale(.985) !important;}
+.modal,.modalContent,.icpReviewModal,.aqxModalContent{
+  background:linear-gradient(160deg, rgba(6,19,33,.96), rgba(1,6,13,.98)) !important;
+  border:1px solid rgba(130,226,255,.22) !important;
+  box-shadow:0 30px 100px rgba(0,0,0,.72), 0 0 50px rgba(77,216,255,.14) !important;
+  backdrop-filter:blur(26px) saturate(1.2);
+}
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-track{background:rgba(0,0,0,.18);}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg, rgba(77,216,255,.48), rgba(11,140,255,.34));border-radius:999px;border:2px solid rgba(0,0,0,.25);}
+@media(max-width:560px){
+  .page{padding-bottom:112px !important;}
+  .card,.partnerCard,.statusBox,.cycleStateCard,.smartInsightCard,.parameterHero,.customiserHero{border-radius:24px !important;padding:17px !important;}
+  .homeBrandHeader{padding-top:10px;}
+  .aqxMinimalActionRow{grid-template-columns:1fr 1fr !important;}
+  .nav{width:calc(100vw - 18px) !important;bottom:8px !important;border-radius:24px !important;}
+  .nav button{font-size:10px !important;}
+  #homeParameterLiveGrid{grid-template-columns:1fr 1fr !important;}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important;}
+}
