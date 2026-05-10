@@ -7517,7 +7517,7 @@ renderDosingInsights = function(){
 /* AquoraX OS Experience Mode Layer - visibility only, does not remove systems */
 (function(){
   const MODE_KEY = 'aquoraxExperienceMode';
-  const beginnerAllowedPages = new Set(['home','cycle','parameters','log','growth','jobs']);
+  const beginnerAllowedPages = new Set(['home','cycle','parameters','log','growth','jobs','profile']);
   const intermediatePages = new Set(['dosing','graphs','history','guides','care','profile']);
 
   function byId(id){ return document.getElementById(id); }
@@ -7552,7 +7552,7 @@ renderDosingInsights = function(){
         const onclick = btn.getAttribute('onclick') || '';
         const match = onclick.match(/aqxSideMenuGo\('([^']+)'\)/);
         const page = match ? match[1] : '';
-        const isIntermediate = intermediatePages.has(page) || page === 'dosing' || page === 'graphs' || page === 'history' || page === 'guides' || page === 'care' || page === 'profile';
+        const isIntermediate = intermediatePages.has(page) || page === 'dosing' || page === 'graphs' || page === 'history' || page === 'guides' || page === 'care';
         const show = mode === 'intermediate' || !isIntermediate;
         btn.style.display = show ? '' : 'none';
         if(show) hasVisible = true;
@@ -7577,7 +7577,7 @@ renderDosingInsights = function(){
     }else{
       setButton('nav-home','Home','home');
       setButton('nav-growth','Corals','growth');
-      setButton('nav-dosing','Advanced','dosing');
+      setButton('nav-dosing','Dosing','dosing');
       setButton('nav-cycle','Journey','cycle');
       setButton('nav-profile','More','profile');
     }
@@ -7594,6 +7594,7 @@ renderDosingInsights = function(){
     if(mode === 'beginner' && !beginnerAllowedPages.has(current)){
       if(typeof window.openPage === 'function') window.openPage('home');
     }
+    if(mode === 'intermediate' && typeof window.openPage === 'function'){ window.openPage('home'); }
   };
 
   const originalOpenPage = window.openPage;
@@ -7602,7 +7603,7 @@ renderDosingInsights = function(){
       const mode = currentMode();
       if(mode === 'beginner' && !beginnerAllowedPages.has(page)){
         applyMode();
-        alert('Intermediate mode unlocks that area. Switch to Intermediate on Home when you want the full AquoraX OS.');
+        alert('Intermediate mode unlocks that area. Open Settings > Reef experience mode when you want the full AquoraX OS.');
         return originalOpenPage.call(this, 'home');
       }
       const result = originalOpenPage.apply(this, arguments);

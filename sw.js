@@ -1,6 +1,6 @@
-const AQX_CACHE = 'aquorax-beginner-help-bot-20260510a';
+const AQX_CACHE = 'aquorax-mode-fix-20260510b';
 const AQX_BASE = '/AquoraXaquariumapp/';
-const AQX_ASSETS = [AQX_BASE, AQX_BASE+'index.html', AQX_BASE+'manifest.webmanifest', AQX_BASE+'css/styles.css?v=beginner-help-bot-20260510a', AQX_BASE+'js/app.js?v=beginner-help-bot-20260510a', AQX_BASE+'aquorax-logo.png', AQX_BASE+'assets/coral-essentials-logo.jpg', AQX_BASE+'assets/icon-192.png', AQX_BASE+'assets/icon-512.png', AQX_BASE+'assets/icon-maskable-192.png', AQX_BASE+'assets/icon-maskable-512.png'];
+const AQX_ASSETS = [AQX_BASE, AQX_BASE+'index.html', AQX_BASE+'manifest.webmanifest', AQX_BASE+'css/styles.css?v=mode-fix-20260510b', AQX_BASE+'js/app.js?v=mode-fix-20260510b', AQX_BASE+'aquorax-logo.png', AQX_BASE+'assets/coral-essentials-logo.jpg', AQX_BASE+'assets/icon-192.png', AQX_BASE+'assets/icon-512.png', AQX_BASE+'assets/icon-maskable-192.png', AQX_BASE+'assets/icon-maskable-512.png'];
 const AQX_FIREBASE_CONFIG = {
   apiKey: "AIzaSyDwlhhGnZcQRwIxOSQgS8keYyKcsbvYZHU",
   authDomain: "aquoraxapp.firebaseapp.com",
@@ -44,7 +44,7 @@ self.addEventListener('fetch', event => {
 });
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-  const target = (event.notification && event.notification.data && event.notification.data.url) || './index.html?v=beginner-help-bot-20260510a';
+  const target = (event.notification && event.notification.data && event.notification.data.url) || './index.html?v=mode-fix-20260510b';
   event.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(list => {
     for(const client of list){ if('focus' in client) return client.focus(); }
     if(clients.openWindow) return clients.openWindow(target);

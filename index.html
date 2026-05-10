@@ -192,24 +192,6 @@
     </div>
   </div>
 
-
-
-  <div id="aqxExperienceModeCard" class="card aqxExperienceModeCard" data-panel="quicktools">
-    <div class="aqxExperienceTop">
-      <div>
-        <span class="aqxMiniKicker">AquoraX Experience</span>
-        <h2>Choose your reef mode</h2>
-        <p id="aqxExperienceModeText">Beginner mode keeps AquoraX calm and focused. Intermediate unlocks the full reef OS.</p>
-      </div>
-      <span id="aqxExperienceBadge" class="aqxExperienceBadge">Beginner</span>
-    </div>
-    <div class="aqxExperienceToggle" role="group" aria-label="AquoraX experience mode">
-      <button id="aqxModeBeginnerBtn" class="primaryBtn" type="button" onclick="aqxSetExperienceMode('beginner')">Beginner</button>
-      <button id="aqxModeIntermediateBtn" class="secondaryBtn" type="button" onclick="aqxSetExperienceMode('intermediate')">Intermediate</button>
-    </div>
-    <p class="smallPrint">Beginner shows Journey, water tests, livestock tracking and jobs. Intermediate opens dosing, ICP, graphs, Reef Health analytics, guides and settings.</p>
-  </div>
-
   <div id="aqxReefTodayCard" class="card aqxReefTodayCard requiresCycleComplete" data-panel="insights">
     <div class="aqxReefTodayTop">
       <div>
@@ -225,14 +207,6 @@
       <div class="aqxReefTodayItem"><span>Next step</span><strong id="aqxReefNextText">Log your first test</strong></div>
       <div class="aqxReefTodayItem"><span>Recently changed</span><strong id="aqxReefChangedText">No recent test</strong></div>
     </div>
-    <details class="aqxAdvancedReveal">
-      <summary>Advanced reef tools</summary>
-      <div class="aqxAdvancedToolGrid">
-        <button class="secondaryBtn" onclick="openPage('dosing')">Dosing & ICP</button>
-        <button class="secondaryBtn" onclick="openPage('graphs')">Advanced graphs</button>
-        <button class="secondaryBtn" onclick="openPage('parameters')">Full parameters</button>
-      </div>
-    </details>
   </div>
 
   <div id="homeCycleGateCard" class="card cycleGateCard">
@@ -1282,6 +1256,22 @@
     <p>Customise AquoraX and manage what appears in the app.</p>
   </div>
 
+  <div id="aqxExperienceModeCard" class="card aqxExperienceModeCard">
+    <div class="aqxExperienceTop">
+      <div>
+        <span class="aqxMiniKicker">AquoraX Experience</span>
+        <h2>Reef experience mode</h2>
+        <p id="aqxExperienceModeText">Beginner mode keeps AquoraX calm and focused. Intermediate unlocks the full reef OS.</p>
+      </div>
+      <span id="aqxExperienceBadge" class="aqxExperienceBadge">Beginner</span>
+    </div>
+    <div class="aqxExperienceToggle" role="group" aria-label="AquoraX experience mode">
+      <button id="aqxModeBeginnerBtn" class="primaryBtn" type="button" onclick="aqxSetExperienceMode('beginner')">Beginner</button>
+      <button id="aqxModeIntermediateBtn" class="secondaryBtn" type="button" onclick="aqxSetExperienceMode('intermediate')">Intermediate</button>
+    </div>
+    <p class="smallPrint">Beginner keeps the app simple: Journey, water tests, livestock and jobs. Intermediate reveals dosing, ICP, graphs, Reef Health analytics and the rest of AquoraX OS.</p>
+  </div>
+
   <div id="aqxSettingsCloudToolsCard" class="card">
     <h2>AquoraX Cloud Backup</h2>
     <p>Backup, restore or export your AquoraX data from one place.</p>
@@ -1534,9 +1524,9 @@
 <div class="nav" aria-label="Daily navigation">
   <button id="nav-home" onclick="aqxHapticTap(this); openPage('home')">Home</button>
   <button id="nav-growth" onclick="aqxHapticTap(this); openPage('growth')">Corals</button>
-  <button id="nav-dosing" onclick="aqxHapticTap(this); openPage('dosing')">Advanced</button>
+  <button id="nav-dosing" onclick="aqxHapticTap(this); openPage('parameters')">Tests</button>
   <button id="nav-cycle" onclick="aqxHapticTap(this); openPage('cycle')">Journey</button>
-  <button id="nav-profile" onclick="aqxHapticTap(this); openPage('profile')">More</button>
+  <button id="nav-profile" onclick="aqxHapticTap(this); openPage('jobs')">Jobs</button>
 </div>
 
 
@@ -1545,7 +1535,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-messaging-compat.js"></script>
-<script src="js/app.js?v=beginner-help-bot-20260510a"></script>
+<script src="js/app.js?v=mode-fix-20260510b"></script>
 
 <div id="cycleCompleteOverlay" class="cycleCompleteOverlay">
   <div class="cycleCompleteModal">
