@@ -7430,3 +7430,86 @@ function aqxCloseCloudPanel(event){
   setTimeout(()=>{installWrap(); render();},800);
   window.aqxRenderOsHomeV3=render;
 })();
+
+
+/* =========================================================
+   AQUORAX OS COMMAND CENTER V5 — CLEAN RENDERER + REEF ONLY
+   ========================================================= */
+(function(){
+  if(window.__AQX_CC_V5__) return; window.__AQX_CC_V5__=true;
+  const esc=(s)=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const num=(v)=>{const n=parseFloat(v);return Number.isFinite(n)?n:null};
+  function tank(){try{return (typeof getActiveTank==='function'&&getActiveTank())||{name:'Main Tank',type:'reef'};}catch(e){return {name:'Main Tank',type:'reef'};}}
+  function forceReef(){
+    try{localStorage.setItem('aquoraxTankType','reef');}catch(e){}
+    try{const t=tank(); if(t&&t.type==='freshwater') t.type='reef';}catch(e){}
+    try{document.querySelectorAll('select').forEach(sel=>{Array.from(sel.options||[]).forEach(o=>{if(String(o.value).toLowerCase()==='freshwater') o.remove();});});}catch(e){}
+    try{document.querySelectorAll('button,input,label,span,div').forEach(n=>{const tx=(n.textContent||'').trim().toLowerCase(); if(tx==='fresh water'||tx==='freshwater') n.style.display='none';});}catch(e){}
+  }
+  function defs(){try{return (typeof aqxOrderedDefs==='function'?aqxOrderedDefs((typeof aqxDefsForDisplay==='function'?aqxDefsForDisplay('reef'):(window.parameterDefs||{}).reef)||[]):((window.parameterDefs||{}).reef||[]))||[];}catch(e){return [];}}
+  function data(){try{return (typeof latestMergedParameters==='function'?latestMergedParameters():{})||{};}catch(e){return {};}}
+  function score(){try{return (typeof calculateAqxScore==='function'?calculateAqxScore():{})||{};}catch(e){return {};}}
+  function statusFor(def,value){try{return (typeof parameterStatus==='function'?parameterStatus(def,value):{})||{};}catch(e){return {text:value==null?'No data':'Tracking',cls:'',cardCls:''};}}
+  function classify(result){
+    if(result.score==null) return {cls:'none',label:'Waiting for data',score:'--',ring:0,headline:'AquoraX is waiting for reef data.',sub:'Log your first reef water test to activate live intelligence.',pill:'Waiting for first reef test'};
+    const n=Math.max(0,Math.min(100,Math.round(result.score)));
+    if(n>=85) return {cls:'good',label:'Excellent',score:String(n),ring:n,headline:'Your reef looks stable.',sub:'Everything logged looks controlled. Keep maintaining consistency.',pill:'All systems normal'};
+    if(n>=65) return {cls:'watch',label:'Stability needs review',score:String(n),ring:n,headline:'AquoraX sees something to review.',sub:'No panic. Check the latest outlier, confirm the result, then correct slowly using manufacturer guidance.',pill:'Review recommended'};
+    return {cls:'bad',label:'Review needed',score:String(n),ring:n,headline:'AquoraX sees an urgent review point.',sub:'Confirm the result before changing anything. Slow, verified corrections are safer than chasing numbers.',pill:'Review recommended'};
+  }
+  function pickDefs(){
+    const d=defs(); const priority=['alkalinity','calcium','magnesium','nitrate','phosphate'];
+    const chosen=priority.map(k=>d.find(x=>x.key===k)).filter(Boolean);
+    return chosen.length?chosen:d.slice(0,5);
+  }
+  function valFor(d,def){const v=d.values?d.values[def.key]:undefined; const raw=d.values?d.values[def.key+'__raw']:undefined; return raw??v;}
+  function paramCards(d){
+    const chosen=pickDefs();
+    return chosen.map(def=>{const v=valFor(d,def); const st=statusFor(def,num(v)); let cls='track'; const txt=String(st.text||'Tracking').toLowerCase(); if(v==null||v==='') cls='none'; else if(txt.includes('urgent')||txt.includes('high')||txt.includes('danger')) cls='bad'; else if(txt.includes('warning')||txt.includes('watch')||txt.includes('low')) cls='watch'; else if(txt.includes('healthy')||txt.includes('optimal')||txt.includes('stable')) cls='ok'; const display=(v==null||v==='')?'--':v; const unit=def.unit||''; return `<div class="aqx-cc-param ${cls}" onclick="openPage('graphs')"><div class="aqx-cc-param-head"><div class="aqx-cc-param-icon">${esc(def.icon||def.label.slice(0,2))}</div><div class="aqx-cc-param-name">${esc(def.label)}</div></div><div class="aqx-cc-param-value">${esc(display)} <small>${esc(unit)}</small></div><div class="aqx-cc-param-state">${esc(v==null?'No data':st.text||'Tracking')}</div></div>`;}).join('')+`<div class="aqx-cc-param aqx-cc-param-more" onclick="openPage('log')">›</div>`;
+  }
+  function chart(cls){
+    const colorCls=cls==='bad'?'bad':cls==='watch'?'watch':'';
+    return `<div class="aqx-cc-chart ${colorCls}"><svg viewBox="0 0 320 110" preserveAspectRatio="none"><path class="grid" d="M0 25 H320 M0 55 H320 M0 85 H320"/><path class="line" d="M0 70 C28 58,43 82,66 64 S101 58,121 43 S158 78,181 52 S218 36,238 48 S280 34,320 45"/><circle class="dot" cx="66" cy="64" r="4"/><circle class="dot" cx="121" cy="43" r="4"/><circle class="dot" cx="181" cy="52" r="4"/><circle class="dot" cx="238" cy="48" r="4"/></svg></div>`;
+  }
+  function insights(s){
+    const icp=latestIcpText();
+    return `<div class="aqx-cc-insight" onclick="openPage('dosing')"><div class="aqx-cc-insight-ico">⚗️</div><div><b>ICP Status</b><span>${esc(icp==='No scan'?'No ICP scan linked yet':icp+' linked')}</span></div><div class="aqx-cc-chevron">›</div></div>
+    <div class="aqx-cc-insight" onclick="openPage('dosing')"><div class="aqx-cc-insight-ico">〽️</div><div><b>Consumption</b><span>Alk consumption tracking is ready</span></div><div class="aqx-cc-chevron">›</div></div>
+    <div class="aqx-cc-insight" onclick="openPage('log')"><div class="aqx-cc-insight-ico">🛡️</div><div><b>${s.cls==='good'?'No Alerts':'Review Needed'}</b><span>${s.cls==='good'?'All critical parameters normal':'Confirm the latest outlier'}</span></div><div class="aqx-cc-chevron">›</div></div>`;
+  }
+  function actions(){
+    let jobs=[]; try{jobs=(JSON.parse(localStorage.getItem('aquoraxJobs')||'[]')||[]).slice(0,4);}catch(e){}
+    if(!jobs.length) jobs=[{title:'Water Test',dueDate:'Tomorrow',icon:'💧'},{title:'ICP Test',dueDate:'Due in 9 days',icon:'⚗️'},{title:'Clean Skimmer',dueDate:'In 3 days',icon:'⏳'},{title:'Water Change',dueDate:'In 11 days',icon:'🗓️'}];
+    return jobs.slice(0,4).map(j=>`<div class="aqx-cc-action"><div class="aqx-cc-action-ico">${esc(j.icon||'✓')}</div><b>${esc(j.title||j.name||'Task')}</b><span>${esc(j.dueDate||j.date||j.when||'Scheduled')}</span><button onclick="openPage('jobs')">View</button></div>`).join('');
+  }
+  function activity(s){
+    const tests=(()=>{try{return (typeof getParameterTests==='function'?getParameterTests():[])||[]}catch(e){return []}})();
+    const last=tests[tests.length-1];
+    return `<div class="aqx-cc-activity-row"><i class="aqx-cc-activity-dot"></i><span>${last?'Latest reef water test saved':'Waiting for first reef water test'}</span><small>${last?esc(last.date||'Recent'):'Now'}</small></div>
+    <div class="aqx-cc-activity-row"><i class="aqx-cc-activity-dot"></i><span>${s.cls==='good'?'Stability has been controlled':'AquoraX flagged a review point'}</span><small>Live</small></div>
+    <div class="aqx-cc-activity-row"><i class="aqx-cc-activity-dot"></i><span>Reef-only AquoraX OS active</span><small>Today</small></div>`;
+  }
+  function latestIcpText(){
+    try{const arr=JSON.parse(localStorage.getItem('aquoraxIcpTests')||'[]')||[]; const x=arr[arr.length-1]; if(!x) return 'No scan'; return (x.provider||x.lab||'ICP')+(x.date?' · '+x.date:'');}catch(e){return 'No scan';}
+  }
+  function heroMetric(d){
+    const def=pickDefs()[0]; if(!def) return {label:'Alkalinity',value:'--'};
+    const v=valFor(d,def); return {label:def.label,value:(v==null||v==='')?'--':String(v)+' '+(def.unit||'')};
+  }
+  function nav(){return `<div class="aqx-cc-logo">Aquora<b>X</b></div><div class="aqx-cc-nav"><button class="active" onclick="openPage('home')"><span>⌂</span><span>Home</span></button><button onclick="openPage('growth')"><span>🪸</span><span>Livestock</span></button><button onclick="openPage('dosing')"><span>⚗️</span><span>Dosing</span></button><button onclick="openPage('cycle')"><span>🧭</span><span>Journey</span></button><button onclick="openPage('graphs')"><span>📈</span><span>Analytics</span></button><button onclick="openPage('profile')"><span>⚙</span><span>Settings</span></button></div><div class="aqx-cc-profile"><div class="aqx-cc-avatar"></div><div><b>Reef Keeper</b><br><span class="aqx-cc-pro">Pro</span></div></div>`;}
+  function render(){
+    forceReef();
+    const home=document.getElementById('home'); if(!home) return;
+    if(!home.classList.contains('active')){document.body.classList.remove('aqx-cc-home');return;}
+    document.body.classList.add('aqx-cc-home');
+    const t=tank(); const d=data(); const r=score(); const s=classify(r); const m=heroMetric(d); const ringColor=s.cls==='bad'?'#ff4268':s.cls==='watch'?'#ffd15c':'#13ff66';
+    home.innerHTML=`<div class="aqx-cc-shell"><div class="aqx-cc-mobile-top"><button class="aqx-cc-menu" onclick="document.body.classList.toggle('sidebarOpen')">☰</button><div class="aqx-cc-brand">AquoraX</div></div><div class="aqx-cc-wrap"><aside class="aqx-cc-rail">${nav()}</aside><div class="aqx-cc-main"><section class="aqx-cc-left"><div class="aqx-cc-top"><div><div class="aqx-cc-greet">Good evening, Reef Keeper 👋</div><div class="aqx-cc-title"><h1>${esc(t.name||'Main Tank')}</h1><p>Saltwater Reef</p></div></div><div class="aqx-cc-pill"><i class="aqx-cc-dot"></i><span>${esc(s.pill)}</span></div></div><section><div class="aqx-cc-label">Live reef parameters</div><div class="aqx-cc-param-row">${paramCards(d)}</div></section><section><div class="aqx-cc-label">Reef status overview</div><div class="aqx-cc-card aqx-cc-stability ${s.cls}"><div><small style="color:#b7c7d8">Reef stability is</small><h2>${esc(s.label)}</h2><p>${esc(s.cls==='good'?'Everything looks good.':s.sub)}</p></div>${chart(s.cls)}<button class="aqx-cc-range">7D⌄</button></div></section><section class="aqx-cc-grid2"><div><div class="aqx-cc-label">Reef stability overview</div><div class="aqx-cc-card aqx-cc-ring-card"><div class="aqx-cc-ring" style="--score:${s.ring};--ring:${ringColor}"><strong>${esc(s.score)}</strong></div><div class="aqx-cc-ring-text"><h3>${esc(s.cls==='good'?'Stability is good':s.cls==='none'?'Stability waiting':'Stability needs review')}</h3><p>${esc(s.sub)}</p><span class="aqx-cc-trend">Trend ${s.cls==='bad'?'Reviewing':'Improving'} ↗</span></div></div></div><div><div class="aqx-cc-label">Key insights <span class="aqx-cc-view" onclick="openPage('dosing')">View all</span></div><div class="aqx-cc-card aqx-cc-insights">${insights(s)}</div></div></section><section><div class="aqx-cc-label">Upcoming & actions</div><div class="aqx-cc-actions">${actions()}</div></section><section><div class="aqx-cc-label">Recent activity <span class="aqx-cc-view" onclick="openPage('history')">View timeline</span></div><div class="aqx-cc-card aqx-cc-activity">${activity(s)}</div></section></section><aside class="aqx-cc-right"><div class="aqx-cc-hero"><div class="aqx-cc-hero-top"><div><div class="aqx-cc-hero-kicker">AQUORAX OS</div><div class="aqx-cc-hero-title">My Reef</div></div><div class="aqx-cc-live"><i class="aqx-cc-dot"></i>Live tank</div></div><div class="aqx-cc-orb"><div class="aqx-cc-orb-score"><strong>${esc(s.score)}</strong><span>${s.cls==='good'?'STABLE':s.cls==='none'?'WAITING':'WATCH'}</span></div></div><div class="aqx-cc-hero-message"><h2>${esc(s.headline)}</h2><p>${esc(s.sub)}</p></div><div class="aqx-cc-hero-buttons"><button class="primary" onclick="openPage('log')">Log water test</button><button class="dark" onclick="openPage('dosing')">Open Reef Intelligence</button></div><div class="aqx-cc-micro"><div><span>${esc(m.label)}</span><b>${esc(m.value)}</b></div><div class="${latestIcpText()==='No scan'?'none':''}"><span>ICP</span><b>${esc(latestIcpText())}</b></div><div class="warn"><span>Next Action</span><b>${s.cls==='good'?'Maintain':s.cls==='none'?'Log test':'Review test'}</b></div></div></div><div class="aqx-cc-sync">Data synced 2 min ago ↻</div></aside></div></div></div>`;
+  }
+  function wrap(){
+    const old=window.renderHomeDashboard; if(typeof old==='function' && !old.__AQX_CC_V5__){window.renderHomeDashboard=function(){let out; try{out=old.apply(this,arguments);}catch(e){} setTimeout(render,10); return out;}; window.renderHomeDashboard.__AQX_CC_V5__=true;}
+    const op=window.openPage; if(typeof op==='function' && !op.__AQX_CC_V5__){window.openPage=function(){const out=op.apply(this,arguments); setTimeout(render,25); return out;}; window.openPage.__AQX_CC_V5__=true;}
+  }
+  document.addEventListener('DOMContentLoaded',()=>{wrap(); setTimeout(render,250); setTimeout(render,1000);});
+  setTimeout(()=>{wrap(); render();},700);
+  window.aqxRenderCommandCenterV5=render;
+})();
