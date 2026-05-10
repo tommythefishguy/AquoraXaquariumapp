@@ -199,7 +199,7 @@ function setVal(id, value){
 }
 
 function selectedTankType(){
-  return localStorage.getItem("aquoraxTankType") || localStorage.getItem("aquoraxWelcomeTank") || "reef";
+  return localStorage.getItem("aquoraxTankType") || localStorage.getItem("aquoraxWelcomeTank") || "";
 }
 
 function selectWelcomeTank(type){
@@ -424,7 +424,7 @@ function numberValue(id){
 }
 
 function updateCycle(){
-  const tank = val("cycleTank") || "reef";
+  const tank = val("cycleTank") || "freshwater";
 
   const ammonia = numberValue("ammonia");
   const nitrite = numberValue("nitrite");
@@ -453,7 +453,7 @@ function updateCycle(){
 }
 
 function updateBlueSharkDosing(){
-  const tank = val("cycleTank") || "reef";
+  const tank = val("cycleTank") || "freshwater";
   const volume = parseNum(val("cycleVolume"));
 
   const productName = tank === "reef" ? "Blue Shark Colony Marine" : "Blue Shark Colony Freshwater";
@@ -1727,7 +1727,7 @@ function resetCycle(){
   localStorage.removeItem("aquoraxGraphEvents");
   localStorage.removeItem("aquoraxDoseLog");
 
-  const savedTank = localStorage.getItem("aquoraxTankType") || "reef";
+  const savedTank = localStorage.getItem("aquoraxTankType") || "freshwater";
   const savedVolume = localStorage.getItem("aquoraxTankVolume") || "";
 
   setVal("cycleTank", savedTank);
@@ -2245,7 +2245,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const savedCycle = JSON.parse(localStorage.getItem("aquoraxCycleData") || "{}");
 
-  setVal("cycleTank", "reef");
+  setVal("cycleTank", savedCycle.tank || savedTank || "freshwater");
   setVal("cycleVolume", savedCycle.volume || savedVolume || "");
   setVal("cycleStage", savedCycle.stage || "0");
   setVal("ammonia", savedCycle.ammonia || "");
@@ -2861,7 +2861,7 @@ function aqxDefaultCustomSettings(){
   return {
     panelOpacity:96,panelGlow:12,bgDim:58,blur:0,radiusBoost:0,accent:"#00c8ff",fullClear:false,
     text:"#ffffff",heading:"#ffffff",muted:"#9fbcd3",buttonText:"#00111f",value:"#00c8ff",
-    homePanels:{parameters:true,insights:true,score:false,history:false,quicktools:true},customBg:""
+    homePanels:{parameters:true,insights:true,score:true,history:true,quicktools:true},customBg:""
   };
 }
 function aqxGetCustomSettings(){
@@ -3227,20 +3227,20 @@ function parameterStatus(def, value){
   if(def && def.icp){
     const data = latestMergedParameters();
     const st = data.values[def.key + "__status"] || "ok";
-    if(st === "ok") return {text:"Stable", cls:"paramStatusGood", cardCls:"paramCardGood", level:"good"};
-    if(st === "watch") return {text:"Review", cls:"paramStatusWatch", cardCls:"paramCardWatch", level:"watch"};
-    return {text:"Needs attention", cls:"paramStatusBad", cardCls:"paramCardBad", level:"bad"};
+    if(st === "ok") return {text:"Healthy", cls:"paramStatusGood", cardCls:"paramCardGood", level:"good"};
+    if(st === "watch") return {text:"Warning", cls:"paramStatusWatch", cardCls:"paramCardWatch", level:"watch"};
+    return {text:"Urgent", cls:"paramStatusBad", cardCls:"paramCardBad", level:"bad"};
   }
   if(def.min === null || def.max === null || def.min === undefined || def.max === undefined || Number.isNaN(Number(def.min)) || Number.isNaN(Number(def.max))){
     return {text:"Tracking", cls:"paramStatusActive", cardCls:"paramCardActive", level:"active"};
   }
-  if(value >= def.min && value <= def.max) return {text:"Stable", cls:"paramStatusGood", cardCls:"paramCardGood", level:"good"};
+  if(value >= def.min && value <= def.max) return {text:"Healthy", cls:"paramStatusGood", cardCls:"paramCardGood", level:"good"};
 
   const nearLow = value < def.min && value >= def.min * 0.85;
   const nearHigh = value > def.max && value <= def.max * 1.18;
 
-  if(nearLow || nearHigh) return {text:"Review", cls:"paramStatusWatch", cardCls:"paramCardWatch", level:"watch"};
-  return {text:"Needs attention", cls:"paramStatusBad", cardCls:"paramCardBad", level:"bad"};
+  if(nearLow || nearHigh) return {text:"Warning", cls:"paramStatusWatch", cardCls:"paramCardWatch", level:"watch"};
+  return {text:"Urgent", cls:"paramStatusBad", cardCls:"paramCardBad", level:"bad"};
 }
 
 function renderLiveParameters(){
@@ -3295,7 +3295,7 @@ function calculateAqxScore(){
 
   const score = Math.max(0, Math.min(100, 100 - penalties));
   let status = "Stable";
-  if(score < 70) status = "Review";
+  if(score < 70) status = "Unstable";
   else if(score < 85) status = "Watch";
 
   return {score, worst, status};
@@ -3315,7 +3315,7 @@ function renderSmartInsights(){
 
   let advice = "Everything logged looks steady. Keep testing consistently.";
   if(result.worst && result.worst.penalty > 0){
-    advice = `${result.worst.def.label} is ${result.worst.value} ${result.worst.def.unit}. Review this first and adjust slowly if needed.`;
+    advice = `${result.worst.def.label} is ${result.worst.value} ${result.worst.def.unit}. Start here first and correct slowly.`;
   }
 
   card.innerHTML = `
@@ -3323,7 +3323,7 @@ function renderSmartInsights(){
     <div class="timestampBox">
       <strong>${result.status === "Stable" ? "✅ Stable" : result.status === "Watch" ? "⚠️ Watch" : "🚨 Unstable"}</strong>
       ${advice}<br><br>
-      Small, steady corrections are safer than chasing numbers.
+      Small, steady corrections are safer than chasing perfect numbers.
     </div>
   `;
 
@@ -3340,7 +3340,7 @@ function updateScoreDisplay(result){
   if(num) num.innerText = result.score === null ? "--" : result.score;
   if(txt){
     if(result.score === null) txt.innerText = "Log your first test to unlock your score.";
-    else txt.innerText = result.status + " — based on your latest saved reef readings.";
+    else txt.innerText = result.status + " — based on your latest saved parameter readings.";
   }
 }
 
@@ -3349,12 +3349,12 @@ function updateHomeScoreDisplay(result){
   const num = el("homeScoreNumber");
   const txt = el("homeScoreText");
   const title = el("homeScoreTitle");
-  const type = "Reef";
-  if(title) title.innerText = type + " Stability";
+  const type = selectedTankType() === "reef" ? "Reef" : "Aquarium";
+  if(title) title.innerText = type + " Score";
   if(num) num.innerText = result.score === null ? "--" : result.score;
   if(txt){
     if(result.score === null) txt.innerText = "Log your first test to unlock your score.";
-    else txt.innerText = result.status + " — based on your latest saved reef readings.";
+    else txt.innerText = result.status + " — based on your latest saved parameter readings.";
   }
 }
 
@@ -3633,47 +3633,6 @@ function aqxRenderAIGuidance(){
     </div>`;
 }
 
-
-function aqxRenderReefToday(result){
-  const badge = el("aqxReefTodayBadge");
-  const sub = el("aqxReefTodaySub");
-  const okay = el("aqxReefOkayText");
-  const attention = el("aqxReefAttentionText");
-  const next = el("aqxReefNextText");
-  const changed = el("aqxReefChangedText");
-  if(!badge && !sub && !okay) return;
-  const tests = getParameterTests();
-  const latest = tests[tests.length-1] || null;
-  const previous = tests[tests.length-2] || null;
-  let cls = "none", label = "No data", okText = "Waiting for data", attentionText = "None yet", nextText = "Log your first water test", changeText = "No recent test";
-  if(result && result.score !== null){
-    if(result.status === "Stable"){ cls = "good"; label = "Stable"; okText = "Your logged reef data looks stable"; nextText = "Keep testing consistently"; }
-    else if(result.status === "Watch"){ cls = "watch"; label = "Watch"; okText = "One area may need watching"; nextText = "Review the guidance before changing anything"; }
-    else { cls = "bad"; label = "Review"; okText = "AquoraX suggests a review"; nextText = "Check the highlighted reading and retest if unsure"; }
-    if(result.worst && result.worst.penalty > 0){ attentionText = `${result.worst.def.label} · ${result.worst.value} ${result.worst.def.unit || ""}`.trim(); }
-    if(latest){
-      changeText = latest.date ? `Last test: ${latest.date}${latest.time ? " · " + latest.time : ""}` : "Latest test saved";
-    }
-    if(previous && latest){
-      const tracked = ["alkalinity","calcium","magnesium","nitrate","phosphate","salinity","ph"];
-      let biggest = null;
-      tracked.forEach(k=>{
-        if(typeof latest[k] !== "number" || typeof previous[k] !== "number") return;
-        const diff = Math.abs(latest[k]-previous[k]);
-        if(!biggest || diff > biggest.diff) biggest = {key:k,diff,value:latest[k]};
-      });
-      const names = {alkalinity:"Alkalinity",calcium:"Calcium",magnesium:"Magnesium",nitrate:"Nitrate",phosphate:"Phosphate",salinity:"Salinity",ph:"pH"};
-      if(biggest && biggest.diff > 0) changeText = `${names[biggest.key] || biggest.key} changed most`;
-    }
-  }
-  if(badge){ badge.className = `aqxReefTodayBadge ${cls}`; badge.textContent = label; }
-  if(sub) sub.textContent = result && result.score !== null ? "A simple beginner layer based on your latest saved reef readings." : "Log a water test to unlock your simple reef overview.";
-  if(okay) okay.textContent = okText;
-  if(attention) attention.textContent = attentionText;
-  if(next) next.textContent = nextText;
-  if(changed) changed.textContent = changeText;
-}
-
 function renderHomeDashboard(){
   const type = selectedTankType() || "freshwater";
   const isReef = type === "reef";
@@ -3682,8 +3641,8 @@ function renderHomeDashboard(){
   const homeTitle = el("homeParameterTitle");
   const homeSummary = el("homeParameterSummary");
   const homeGrid = el("homeParameterLiveGrid");
-  if(homeTitle) homeTitle.innerText = "Reef Parameters";
-  if(homeSummary) homeSummary.innerText = data.latest ? "Latest saved reef test data is tucked below for review." : "Your latest saved readings appear here after you log a test.";
+  if(homeTitle) homeTitle.innerText = isReef ? "Saltwater / Reef Parameters" : "Freshwater Parameters";
+  if(homeSummary) homeSummary.innerText = data.latest ? "Latest saved test data is shown below." : "Your latest saved readings appear here after you log a test.";
   if(homeGrid){
     aqxApplyHomeParamColours();
     const hprefs = aqxGetHomeParameterPrefs();
@@ -3705,17 +3664,16 @@ function renderHomeDashboard(){
     }).join("");
   }
   const result = calculateAqxScore();
-  aqxRenderReefToday(result);
   const insight = el("homeSmartInsightsCard");
   if(insight){
     if(result.score === null){
-      insight.innerHTML = `<h2>Guidance</h2><p>No test logged yet. Add your first result so AquoraX can compare parameters and guide you.</p>`;
+      insight.innerHTML = `<h2>Smart Insights</h2><p>No test logged yet. Add your first result so AquoraX can compare parameters and guide you.</p>`;
     }else{
       let advice = "Everything logged looks steady. Keep testing consistently.";
       if(result.worst && result.worst.penalty > 0){
-        advice = `${result.worst.def.label} is ${result.worst.value} ${result.worst.def.unit}. Review this first and adjust slowly if needed.`;
+        advice = `${result.worst.def.label} is ${result.worst.value} ${result.worst.def.unit}. Start here first and correct slowly.`;
       }
-      insight.innerHTML = `<h2>Smart Insights</h2><div class="timestampBox"><strong>${result.status === "Stable" ? "✅ Stable" : result.status === "Watch" ? "⚠️ Watch" : "🚨 Unstable"}</strong>${advice}<br><br>Small, steady corrections are safer than chasing numbers.</div>`;
+      insight.innerHTML = `<h2>Smart Insights</h2><div class="timestampBox"><strong>${result.status === "Stable" ? "✅ Stable" : result.status === "Watch" ? "⚠️ Watch" : "🚨 Unstable"}</strong>${advice}<br><br>Small, steady corrections are safer than chasing perfect numbers.</div>`;
     }
   }
   updateHomeScoreDisplay(result);
@@ -7511,278 +7469,4 @@ renderDosingInsights = function(){
     window.renderDosingPage.__aqxActiveIcpFix=true;
   }
   document.addEventListener('DOMContentLoaded',function(){setTimeout(refreshAll,900);setTimeout(refreshAll,1800);});
-})();
-
-
-/* AquoraX OS Experience Mode Layer - visibility only, does not remove systems */
-(function(){
-  const MODE_KEY = 'aquoraxExperienceMode';
-  const beginnerAllowedPages = new Set(['home','cycle','parameters','log','growth','jobs','profile']);
-  const intermediatePages = new Set(['dosing','graphs','history','guides','care','profile']);
-
-  function byId(id){ return document.getElementById(id); }
-  function currentMode(){ return localStorage.getItem(MODE_KEY) || 'beginner'; }
-
-  function setButton(id, label, page){
-    const btn = byId(id);
-    if(!btn) return;
-    btn.textContent = label;
-    btn.setAttribute('onclick', "aqxHapticTap(this); openPage('" + page + "')");
-  }
-
-  function setModeButtons(mode){
-    const beginner = byId('aqxModeBeginnerBtn');
-    const intermediate = byId('aqxModeIntermediateBtn');
-    if(beginner){ beginner.className = mode === 'beginner' ? 'primaryBtn' : 'secondaryBtn'; beginner.setAttribute('aria-pressed', mode === 'beginner' ? 'true' : 'false'); }
-    if(intermediate){ intermediate.className = mode === 'intermediate' ? 'primaryBtn' : 'secondaryBtn'; intermediate.setAttribute('aria-pressed', mode === 'intermediate' ? 'true' : 'false'); }
-    const badge = byId('aqxExperienceBadge');
-    if(badge) badge.textContent = mode === 'intermediate' ? 'Intermediate' : 'Beginner';
-    const txt = byId('aqxExperienceModeText');
-    if(txt) txt.textContent = mode === 'intermediate'
-      ? 'Intermediate mode unlocks the full AquoraX reef OS: ICP, dosing, graphs, analytics, guides and settings.'
-      : 'Beginner mode keeps AquoraX calm: Journey, water tests, livestock tracking and jobs only.';
-  }
-
-  function updateSideMenu(mode){
-    document.querySelectorAll('.aqxSideMenuGroup').forEach(group => {
-      const label = (group.querySelector('.aqxSideMenuLabel')?.textContent || '').trim().toLowerCase();
-      const buttons = Array.from(group.querySelectorAll('button'));
-      let hasVisible = false;
-      buttons.forEach(btn => {
-        const onclick = btn.getAttribute('onclick') || '';
-        const match = onclick.match(/aqxSideMenuGo\('([^']+)'\)/);
-        const page = match ? match[1] : '';
-        const isIntermediate = intermediatePages.has(page) || page === 'dosing' || page === 'graphs' || page === 'history' || page === 'guides' || page === 'care';
-        const show = mode === 'intermediate' || !isIntermediate;
-        btn.style.display = show ? '' : 'none';
-        if(show) hasVisible = true;
-      });
-      group.style.display = hasVisible ? '' : 'none';
-      group.classList.toggle('aqxIntermediateOnly', mode === 'beginner' && (label === 'app' || label === 'guidance'));
-    });
-  }
-
-  function applyMode(){
-    const mode = currentMode();
-    document.body.classList.toggle('aqxModeBeginner', mode === 'beginner');
-    document.body.classList.toggle('aqxModeIntermediate', mode === 'intermediate');
-    setModeButtons(mode);
-
-    if(mode === 'beginner'){
-      setButton('nav-home','Home','home');
-      setButton('nav-growth','Livestock','growth');
-      setButton('nav-dosing','Tests','parameters');
-      setButton('nav-cycle','Journey','cycle');
-      setButton('nav-profile','Jobs','jobs');
-    }else{
-      setButton('nav-home','Home','home');
-      setButton('nav-growth','Corals','growth');
-      setButton('nav-dosing','Dosing','dosing');
-      setButton('nav-cycle','Journey','cycle');
-      setButton('nav-profile','More','profile');
-    }
-    updateSideMenu(mode);
-  }
-
-  window.aqxGetExperienceMode = currentMode;
-  window.aqxApplyExperienceMode = applyMode;
-  window.aqxSetExperienceMode = function(mode){
-    mode = mode === 'intermediate' ? 'intermediate' : 'beginner';
-    localStorage.setItem(MODE_KEY, mode);
-    applyMode();
-    const current = localStorage.getItem('aquoraxCurrentPage') || 'home';
-    if(mode === 'beginner' && !beginnerAllowedPages.has(current)){
-      if(typeof window.openPage === 'function') window.openPage('home');
-    }
-    if(mode === 'intermediate' && typeof window.openPage === 'function'){ window.openPage('home'); }
-  };
-
-  const originalOpenPage = window.openPage;
-  if(typeof originalOpenPage === 'function'){
-    window.openPage = function(page){
-      const mode = currentMode();
-      if(mode === 'beginner' && !beginnerAllowedPages.has(page)){
-        applyMode();
-        alert('Intermediate mode unlocks that area. Open Settings > Reef experience mode when you want the full AquoraX OS.');
-        return originalOpenPage.call(this, 'home');
-      }
-      const result = originalOpenPage.apply(this, arguments);
-      setTimeout(applyMode, 0);
-      return result;
-    };
-  }
-
-  document.addEventListener('DOMContentLoaded', function(){
-    applyMode();
-    setTimeout(applyMode, 300);
-    setTimeout(applyMode, 1200);
-  });
-})();
-
-/* AquoraX OS Beginner Explainers + Ask AquoraX Helper - UI layer only */
-(function(){
-  const HELP_KEY = 'aquoraxBeginnerHelpSeenV1';
-  const MODE_KEY = 'aquoraxExperienceMode';
-  const beginnerPages = new Set(['home','cycle','parameters','log','growth','jobs']);
-  const helpCopy = {
-    home: {
-      title:'Home explains your reef at a glance',
-      body:'Use Home to see whether your reef looks stable, what needs attention, and the next sensible action. It is not meant to show every advanced tool at once.',
-      chips:['Reef health','Next action','Recent changes']
-    },
-    cycle: {
-      title:'Journey helps a new reef mature safely',
-      body:'The cycle journey watches ammonia, nitrite and nitrate so you can understand how your filter bacteria are developing. Follow the guidance and keep testing calmly.',
-      chips:['Ammonia','Nitrite','Nitrate','Fish guidance']
-    },
-    parameters: {
-      title:'Parameters are your reef water readings',
-      body:'Parameters are the numbers from your water tests. AquoraX uses them to explain stability, highlight things to review, and show what changed since the last test.',
-      chips:['Green stable','Orange review','Red urgent','Grey no data']
-    },
-    log: {
-      title:'Log only what you tested',
-      body:'You do not have to fill every box. Add the readings you tested, leave the rest blank, and AquoraX will update the latest values safely.',
-      chips:['Leave blanks','Save test','Add notes']
-    },
-    growth: {
-      title:'Livestock keeps a record of your reef life',
-      body:'Track corals and fish with notes and photos so you can see growth, behaviour changes and recovery over time.',
-      chips:['Coral photos','Fish notes','Progress tracking']
-    },
-    jobs: {
-      title:'Jobs are simple reef reminders',
-      body:'Use jobs for water tests, water changes, dosing reminders, equipment cleaning and livestock checks. They help beginners build a routine.',
-      chips:['Water tests','Water changes','Cleaning','Dosing reminders']
-    }
-  };
-  const termHelp = {
-    temperature:['Temperature','Keeps fish, coral and bacteria comfortable. Stability matters more than chasing tiny changes.'],
-    salinity:['Specific Gravity / Salinity','How salty the water is. Reef tanks need this stable because fast swings can stress livestock.'],
-    ph:['pH','Shows how acidic or alkaline the water is. Look for stability and trends rather than reacting to one reading.'],
-    alkalinity:['Alkalinity','A major reef stability number. Corals use it to build skeletons, and sudden swings can cause stress.'],
-    calcium:['Calcium','Used by stony corals and coralline algae for growth. Best understood together with alkalinity and magnesium.'],
-    magnesium:['Magnesium','Helps stabilise calcium and alkalinity. Low magnesium can make other numbers harder to keep steady.'],
-    ammonia:['Ammonia','A waste signal. In a mature reef it should normally stay at zero; during cycling it tells you bacteria are still developing.'],
-    nitrite:['Nitrite','Part of the cycling process. It should fall as the biological filter matures.'],
-    nitrate:['Nitrate','End result of the nitrogen cycle. Corals need some nutrients, but high or fast-rising nitrate needs review.'],
-    phosphate:['Phosphate','A nutrient linked with coral colour, algae and stability. Too low or too high can both cause issues.'],
-    jobs:['Jobs','Reminders for routine reef care, so nothing important gets forgotten.'],
-    coral:['Coral Tracker','A place to save coral photos, placement, growth notes and changes over time.'],
-    fish:['Fish Tracker','A place to save fish notes, condition, behaviour and photos.'],
-    cycle:['Cycle Journey','Guides a new reef through the early bacteria-building stage using your water tests.']
-  };
-
-  function mode(){ return localStorage.getItem(MODE_KEY) || 'beginner'; }
-  function isBeginner(){ return mode() === 'beginner'; }
-  function esc(s){ return String(s||'').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
-  function pageId(){ const p=document.querySelector('.page.active'); return p ? p.id : 'home'; }
-  function visible(el){ return !!(el && el.offsetParent !== null); }
-
-  function helpCardHtml(id){
-    const h = helpCopy[id] || helpCopy.home;
-    return '<div class="card aqxBeginnerExplainCard" data-aqx-beginner-help="'+esc(id)+'">'
-      + '<div class="aqxBeginnerExplainTop"><div><span class="aqxMiniKicker">Beginner guide</span><h2>'+esc(h.title)+'</h2><p>'+esc(h.body)+'</p></div>'
-      + '<button type="button" onclick="aqxOpenAskBot(\''+esc(id)+'\')">Ask AquoraX</button></div>'
-      + '<div class="aqxBeginnerHelpChips">'+h.chips.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>'
-      + '</div>';
-  }
-
-  function injectPageHelp(){
-    Object.keys(helpCopy).forEach(id=>{
-      const page=document.getElementById(id); if(!page) return;
-      if(page.querySelector('[data-aqx-beginner-help="'+id+'"]')) return;
-      const header=page.querySelector('.pageHeader') || page.firstElementChild;
-      if(!header) return;
-      header.insertAdjacentHTML('afterend', helpCardHtml(id));
-    });
-  }
-
-  function showHelpForMode(){
-    document.querySelectorAll('[data-aqx-beginner-help]').forEach(card=>{
-      const id=card.getAttribute('data-aqx-beginner-help');
-      card.style.display = (isBeginner() && beginnerPages.has(id)) ? '' : 'none';
-    });
-    const ask=document.getElementById('aqxAskBotButton');
-    if(ask) ask.style.display = isBeginner() ? '' : 'none';
-  }
-
-  function addInfoButtons(){
-    document.querySelectorAll('#log label, #cycle label, #parameters label, #jobs label').forEach(label=>{
-      if(label.querySelector('.aqxInfoDot')) return;
-      const txt=(label.textContent||'').toLowerCase();
-      let key='';
-      Object.keys(termHelp).forEach(k=>{ if(!key && txt.indexOf(k)>=0) key=k; });
-      if(!key && txt.indexOf('specific gravity')>=0) key='salinity';
-      if(!key) return;
-      const btn=document.createElement('button');
-      btn.type='button'; btn.className='aqxInfoDot'; btn.textContent='?';
-      btn.setAttribute('aria-label','Explain '+(termHelp[key][0]||'this'));
-      btn.addEventListener('click',function(ev){ev.preventDefault(); ev.stopPropagation(); openExplain(key);});
-      label.appendChild(btn);
-    });
-    document.querySelectorAll('.trackerOpenCard strong').forEach(strong=>{
-      const txt=(strong.textContent||'').toLowerCase();
-      const key=txt.indexOf('coral')>=0?'coral':(txt.indexOf('fish')>=0?'fish':'');
-      if(!key || strong.querySelector('.aqxInfoDot')) return;
-      const btn=document.createElement('button'); btn.type='button'; btn.className='aqxInfoDot'; btn.textContent='?';
-      btn.addEventListener('click',function(ev){ev.preventDefault(); ev.stopPropagation(); openExplain(key);});
-      strong.appendChild(btn);
-    });
-  }
-
-  function ensureModal(){
-    if(document.getElementById('aqxExplainModal')) return;
-    document.body.insertAdjacentHTML('beforeend','<div id="aqxExplainModal" class="aqxExplainModal" onclick="aqxCloseExplain(event)"><div class="aqxExplainSheet" onclick="event.stopPropagation()"><button class="aqxExplainClose" onclick="aqxCloseExplain()">×</button><span class="aqxMiniKicker">Simple explanation</span><h2 id="aqxExplainTitle">AquoraX</h2><p id="aqxExplainBody"></p><button class="primaryBtn" onclick="aqxOpenAskBot()">Ask a follow-up</button></div></div>');
-  }
-  function openExplain(key){
-    ensureModal(); const data=termHelp[key]||['AquoraX','This feature helps you understand and manage your reef more calmly.'];
-    document.getElementById('aqxExplainTitle').textContent=data[0];
-    document.getElementById('aqxExplainBody').textContent=data[1];
-    document.getElementById('aqxExplainModal').classList.add('show');
-  }
-  window.aqxCloseExplain=function(ev){ if(ev && ev.target && ev.target.id!=='aqxExplainModal') return; const m=document.getElementById('aqxExplainModal'); if(m) m.classList.remove('show'); };
-
-  function botAnswer(q){
-    const s=String(q||'').toLowerCase();
-    if(!s.trim()) return 'Ask me about cycling, water tests, coral tracking, fish tracking, jobs, nitrate, phosphate, alkalinity or what to do next.';
-    if(s.includes('cycle') || s.includes('cycling') || s.includes('ammonia') || s.includes('nitrite')) return 'Cycling is the stage where bacteria learn to process waste. Keep logging ammonia, nitrite and nitrate. Watch for ammonia and nitrite to settle, and avoid rushing livestock decisions.';
-    if(s.includes('nitrate') || s.includes('no3')) return 'Nitrate is a nutrient. A little can be normal in reef tanks, but high or rising nitrate is a review signal. Check feeding, filtration, water changes and recent changes before reacting.';
-    if(s.includes('phosphate') || s.includes('po4')) return 'Phosphate is another nutrient. Too high can fuel algae, but too low can upset corals. AquoraX treats it as a stability signal, not a panic number.';
-    if(s.includes('alk') || s.includes('alkalinity') || s.includes('dkh')) return 'Alkalinity is one of the main reef stability numbers. Corals use it for skeleton growth. In beginner mode, focus on steady testing and avoiding sudden swings.';
-    if(s.includes('calcium')) return 'Calcium supports coral skeleton growth. It is best reviewed with alkalinity and magnesium rather than on its own.';
-    if(s.includes('magnesium')) return 'Magnesium helps keep calcium and alkalinity stable. If it is off, the other major reef numbers can become harder to control.';
-    if(s.includes('salinity') || s.includes('specific gravity') || s.includes('sg')) return 'Salinity tells you how salty the reef water is. Stability is key. Check with a reliable tester and avoid fast changes.';
-    if(s.includes('coral')) return 'Use the Coral Tracker to save photos, placement, growth notes and changes. It helps you spot slow improvement or decline that is easy to miss day to day.';
-    if(s.includes('fish')) return 'Use the Fish Tracker for behaviour, condition, feeding notes and photos. Changes in behaviour can be an early sign to review water quality or compatibility.';
-    if(s.includes('job') || s.includes('task') || s.includes('remind')) return 'Jobs are reef care reminders. Good beginner jobs include weekly water test, water change, glass cleaning, skimmer clean and equipment checks.';
-    if(s.includes('what do i do') || s.includes('next') || s.includes('attention')) return 'Start with the latest Reef Health card, then log a water test if readings are old. Review any orange or red signals calmly and check what changed recently.';
-    if(s.includes('icp') || s.includes('dosing') || s.includes('graph')) return 'That is an intermediate tool. Beginner mode keeps things simple, but you can switch to Intermediate on Home when you want ICP, dosing, graphs and deeper analysis.';
-    return 'For beginner reef keeping, focus on stable water tests, regular jobs, livestock observations and slow changes. Ask me with words like nitrate, phosphate, alkalinity, coral, fish, cycle or jobs for a clearer answer.';
-  }
-
-  function ensureBot(){
-    if(document.getElementById('aqxAskBotButton')) return;
-    document.body.insertAdjacentHTML('beforeend','<button id="aqxAskBotButton" class="aqxAskBotButton" onclick="aqxOpenAskBot()">Ask AquoraX</button><div id="aqxAskBotPanel" class="aqxAskBotPanel" aria-hidden="true"><div class="aqxAskBotTop"><div><span class="aqxMiniKicker">Beginner reef helper</span><h2>Ask AquoraX</h2></div><button onclick="aqxCloseAskBot()">×</button></div><div id="aqxAskBotMessages" class="aqxAskBotMessages"></div><div class="aqxAskBotQuick"><button onclick="aqxAskBotQuick(\'What should I do next?\')">What next?</button><button onclick="aqxAskBotQuick(\'What does nitrate mean?\')">Nitrate</button><button onclick="aqxAskBotQuick(\'How does cycling work?\')">Cycling</button><button onclick="aqxAskBotQuick(\'What jobs should I add?\')">Jobs</button></div><div class="aqxAskBotInput"><input id="aqxAskBotInput" placeholder="Ask a reef question..."><button onclick="aqxAskBotSend()">Send</button></div><p class="aqxAskBotSafe">Educational guidance only. Always verify livestock health, product labels and unusual readings before making changes.</p></div>');
-    seedBot();
-  }
-  function addMsg(role,text){ const box=document.getElementById('aqxAskBotMessages'); if(!box) return; box.insertAdjacentHTML('beforeend','<div class="aqxAskMsg '+role+'">'+esc(text)+'</div>'); box.scrollTop=box.scrollHeight; }
-  function seedBot(){ const box=document.getElementById('aqxAskBotMessages'); if(box && !box.children.length) addMsg('bot','Hi, I’m Ask AquoraX. I can explain beginner reef terms, what the app buttons do, and what to check next.'); }
-  window.aqxOpenAskBot=function(topic){ ensureBot(); const p=document.getElementById('aqxAskBotPanel'); if(p){p.classList.add('show');p.setAttribute('aria-hidden','false');} seedBot(); if(topic && helpCopy[topic]) addMsg('bot', helpCopy[topic].body); setTimeout(()=>{const i=document.getElementById('aqxAskBotInput'); if(i) i.focus();},80); };
-  window.aqxCloseAskBot=function(){ const p=document.getElementById('aqxAskBotPanel'); if(p){p.classList.remove('show');p.setAttribute('aria-hidden','true');} };
-  window.aqxAskBotSend=function(){ const input=document.getElementById('aqxAskBotInput'); const q=input?input.value:''; if(!q.trim()) return; addMsg('user',q); if(input) input.value=''; setTimeout(()=>addMsg('bot',botAnswer(q)),120); };
-  window.aqxAskBotQuick=function(q){ addMsg('user',q); setTimeout(()=>addMsg('bot',botAnswer(q)),120); };
-
-  function enhance(){ injectPageHelp(); addInfoButtons(); ensureBot(); showHelpForMode(); }
-  const oldApply=window.aqxApplyExperienceMode;
-  if(typeof oldApply==='function' && !oldApply.__aqxBeginnerHelp){
-    window.aqxApplyExperienceMode=function(){ const out=oldApply.apply(this,arguments); setTimeout(enhance,0); return out; };
-    window.aqxApplyExperienceMode.__aqxBeginnerHelp=true;
-  }
-  const oldOpen=window.openPage;
-  if(typeof oldOpen==='function' && !oldOpen.__aqxBeginnerHelp){
-    window.openPage=function(){ const out=oldOpen.apply(this,arguments); setTimeout(enhance,50); return out; };
-    window.openPage.__aqxBeginnerHelp=true;
-  }
-  document.addEventListener('DOMContentLoaded',function(){ setTimeout(enhance,350); setTimeout(enhance,1200); });
 })();
