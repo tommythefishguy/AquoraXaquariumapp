@@ -5025,6 +5025,116 @@ body.aqxLoggedIn .page,
 .aqxReefIntelFooter{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.aqxReefIntelFooter span{border-radius:999px;padding:7px 10px;background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.14);color:#bfefff;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}.aqxReefIntelLoading{color:#bfefff;font-weight:900}
 @media(max-width:720px){.aqxReefIntelTop{align-items:flex-start}.aqxReefScore{width:82px;height:82px}.aqxReefScore b{font-size:1.25rem}.aqxReefIntelGrid{grid-template-columns:1fr}.aqxReefIntelTop h2{font-size:1.22rem}}
 
-.aqxReefIntelTop{background:linear-gradient(135deg,rgba(32,42,72,.92),rgba(15,20,35,.96));padding:18px;border-radius:24px;border:1px solid rgba(110,160,255,.18);box-shadow:0 10px 30px rgba(0,0,0,.28)}
-.aqxPrediction{border-radius:18px;padding:14px;margin-top:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
-.aqxInlineReviewBtn{margin-top:10px;background:#4b7bff;color:#fff;border:none;padding:10px 14px;border-radius:12px;font-weight:700}
+/* AquoraX OS Visual Refactor */
+body{
+  background:
+    radial-gradient(circle at top left, rgba(0,200,255,.12), transparent 30%),
+    radial-gradient(circle at top right, rgba(122,92,255,.10), transparent 26%),
+    linear-gradient(180deg,#02070d 0%,#06111c 100%);
+  min-height:100vh;
+}
+
+.page{
+  animation:aqFade .35s ease;
+}
+
+@keyframes aqFade{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.card{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(145deg, rgba(10,22,35,.88), rgba(3,10,18,.92));
+  border:1px solid rgba(120,220,255,.12);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-radius:28px;
+  padding:22px;
+  margin-bottom:20px;
+  box-shadow:
+    0 12px 40px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 0 30px rgba(0,200,255,.06);
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(255,255,255,.03), transparent 40%);
+  pointer-events:none;
+}
+
+.pageHeader h1,
+.homeBrandHeader h1{
+  font-size:34px;
+  letter-spacing:-1px;
+  font-weight:800;
+}
+
+.pageHeader p,
+.homeBrandHeader p,
+.card p{
+  color:#9cb5c8;
+  font-size:15px;
+  line-height:1.7;
+}
+
+.primaryBtn,
+.secondaryBtn,
+.dangerBtn,
+.lockedBtn{
+  border-radius:20px;
+  min-height:54px;
+  transition:all .22s ease;
+}
+
+.primaryBtn{
+  background:linear-gradient(135deg,#33d6ff,#0099ff);
+  box-shadow:0 10px 24px rgba(0,170,255,.28);
+}
+
+.primaryBtn:active,
+.secondaryBtn:active{
+  transform:scale(.98);
+}
+
+input,select,textarea{
+  border-radius:20px;
+  background:rgba(5,13,21,.88);
+  border:1px solid rgba(130,220,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+.bottomNav{
+  position:fixed;
+  left:14px;
+  right:14px;
+  bottom:14px;
+  border-radius:28px;
+  background:rgba(4,11,18,.84);
+  border:1px solid rgba(120,220,255,.10);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  box-shadow:0 18px 40px rgba(0,0,0,.45);
+  padding:10px 8px;
+}
+
+.bottomNav button{
+  border-radius:18px;
+  transition:all .2s ease;
+}
+
+.bottomNav button.active,
+.bottomNav button:hover{
+  background:rgba(0,200,255,.14);
+  box-shadow:0 0 16px rgba(0,200,255,.12);
+}
+
+.heroCard{
+  background:
+  radial-gradient(circle at top right, rgba(0,200,255,.22), transparent 45%),
+  linear-gradient(145deg, rgba(10,22,35,.96), rgba(3,10,18,.98));
+}
