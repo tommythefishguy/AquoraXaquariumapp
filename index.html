@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AquoraX</title>
+<title>AquoraX OS — Intelligent Reef Management</title>
 <meta name="theme-color" content="#00131c">
 <meta name="msapplication-TileColor" content="#00131c">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -67,14 +67,13 @@
 <div id="welcomeScreen">
   <img src="aquorax-logo.png" class="welcomeLogo" alt="AquoraX Logo">
   <h1>Welcome to AquoraX</h1>
-  <p>The home of aquarium keeping. Build, track, and perfect your aquarium.</p>
+  <p>AquoraX OS — intelligent reef management. Track reef chemistry, ICP, dosing, livestock and stability in one premium reef system.</p>
 
-  <div class="welcomeChoiceGrid">
-    <button id="welcomeSalt" class="welcomeChoice" onclick="selectWelcomeTank('reef')">Salt Water</button>
-    <button id="welcomeFresh" class="welcomeChoice" onclick="selectWelcomeTank('freshwater')">Fresh Water</button>
+  <div class="welcomeChoiceGrid reefOnlyWelcome">
+    <button id="welcomeSalt" class="welcomeChoice active" onclick="selectWelcomeTank('reef')">Saltwater Reef</button>
   </div>
 
-  <button class="primaryBtn" style="max-width:320px;" onclick="enterApp()">Get Started</button>
+  <button class="primaryBtn" style="max-width:320px;" onclick="enterApp()">Enter AquoraX OS</button>
 </div>
 
 <div id="cycleStartedModal" class="modalOverlay">
@@ -133,7 +132,7 @@
     <div class="aqxSideMenuTop">
       <div>
         <img src="aquorax-logo.png" class="aqxSideMenuLogo" alt="AquoraX Logo">
-        <p>Tools, settings and aquarium management.</p>
+        <p>Tools, settings and intelligent reef management.</p>
       </div>
       <button class="aqxSideMenuClose" type="button" onclick="aqxCloseSideMenu()">×</button>
     </div>
@@ -261,7 +260,7 @@
   <input id="cycleStage" type="hidden" value="0">
   <div class="pageHeader">
     <h1>Journey</h1>
-    <p>Official AquoraX cycle journey powered by Blue Shark Trading Co. setup guidance.</p>
+    <p>Official AquoraX reef cycle journey powered by Blue Shark Trading Co. setup guidance.</p>
   </div>
 
   
@@ -277,14 +276,11 @@
     </div>
 
     <h2>Blue Shark Dosing Calculator</h2>
-    <p>Enter your tank type and system volume. Dose calculations update instantly.</p>
+    <p>Enter your reef system volume. Dose calculations update instantly.</p>
 
     <div style="margin-top:14px;">
-      <label>Tank Type</label>
-      <select id="cycleTank" onchange="saveCycle()">
-        <option value="freshwater">Freshwater</option>
-        <option value="reef">Reef / Marine</option>
-      </select>
+      <input id="cycleTank" type="hidden" value="reef">
+      <div class="aqxReefOnlyPill">Saltwater Reef / Marine system</div>
 
       <label>System Volume Litres</label>
       <input id="cycleVolume" type="number" step="1" placeholder="Example: 100" oninput="saveCycle()">
@@ -292,7 +288,7 @@
 
     <div class="doseGrid">
       <div class="doseBox">
-        <strong id="rapidProductName">Blue Shark Colony Freshwater</strong>
+        <strong id="rapidProductName">Blue Shark Colony Marine</strong>
         <div id="rapidDose" class="doseValue">Enter volume</div>
         <div id="rapidNote" class="doseNote">Rapid Cycle single dose. Add once per tank/system.</div>
 
@@ -605,24 +601,18 @@
   <div id="growthMain">
     <div class="pageHeader">
       <h1>Livestock</h1>
-      <p id="growthPageIntro">Track fish, corals, inverts, plants and algae for the active tank.</p>
+      <p id="growthPageIntro">Track fish, corals, inverts, coral growth and algae for the active reef.</p>
     </div>
 
     <div class="card">
       <h2>Life Trackers</h2>
-      <p>Open the part of your tank life you want to manage. Each active tank keeps its own fish, corals, inverts, plants and algae logs.</p>
+      <p>Open the part of your reef life you want to manage. Each active reef keeps its own fish, corals, inverts, growth and algae logs.</p>
 
       <div class="trackerHubGrid">
         <button id="growthCoralTrackerOpen" class="trackerOpenCard" onclick="openGrowthTrackerPanel('coral')">
           <strong>Coral Tracker</strong>
           <span>Add coral images, date added, placement, growth notes and side-by-side progress photos.</span>
           <small>Open Coral Tracker</small>
-        </button>
-
-        <button id="growthPlantTrackerOpen" class="trackerOpenCard" onclick="openGrowthTrackerPanel('plant')">
-          <strong>Plant Tracker</strong>
-          <span>Add plant images, date added, placement, growth notes and side-by-side progress photos.</span>
-          <small>Open Plant Tracker</small>
         </button>
 
         <button id="growthFishTrackerOpen" class="trackerOpenCard" onclick="openGrowthTrackerPanel('fish')">
@@ -686,49 +676,7 @@
       <div id="coralTrackerList" class="trackerList"></div>
     </div>
   </div>
-
-  <div id="plantTrackerPanel" class="trackerPanel">
-    <button class="secondaryBtn backBtn" onclick="closeTrackerPanels()">← Back to Livestock</button>
-
-    <div class="card">
-      <h2>Plant Tracker</h2>
-      <p>Add a plant, save its first image, then add update images later to compare growth side by side.</p>
-
-      <label>Plant Name</label>
-      <input id="plantName" placeholder="Example: Java Fern">
-
-      <label>Type / Placement</label>
-      <input id="plantType" placeholder="Example: Low light · Attached to wood">
-
-      <label>Date Added</label>
-      <input id="plantDateAdded" type="date">
-
-      <label>Growth Notes</label>
-      <input id="plantGrowth" placeholder="Example: New leaves, trimmed runners">
-
-      <label>First Photo</label>
-      <input id="plantImage" class="imageInput" type="file" accept="image/*" capture="environment">
-
-      <div class="cameraQuickBox">
-        <strong>Camera</strong>
-        <span>Open your camera directly from Growth and photograph this plant now.</span>
-        <button type="button" class="cameraBtn" onclick="triggerCameraInput('plantImage')">📸 Open Camera / Add Plant Photo</button>
-      </div>
-
-      <button class="primaryBtn" onclick="addTrackerItem('plant')">Save Plant</button>
-    </div>
-
-    <div class="card">
-      <h2>Saved Plants</h2>
-      <div class="trackerCollectionTools">
-        <input id="plantTrackerSearch" class="trackerSearchInput" placeholder="Search plants..." oninput="renderTrackerList('plant')">
-        <div id="plantTrackerCount" class="trackerCountBadge">0 plants saved</div>
-      </div>
-      <div id="plantTrackerList" class="trackerList"></div>
-    </div>
-  </div>
-
-  <div id="fishTrackerPanel" class="trackerPanel">
+<div id="fishTrackerPanel" class="trackerPanel">
     <button class="secondaryBtn backBtn" onclick="closeTrackerPanels()">← Back to Livestock</button>
     <div class="card">
       <h2>Fish Tracker</h2>
@@ -906,10 +854,10 @@
       <p>Learn how to test your water and keep parameters stable.</p>
     </button>
 
-    <button class="card aqxGuideCard" onclick="aqxOpenGuide('coral-plant-care')">
+    <button class="card aqxGuideCard" onclick="aqxOpenGuide('coral-care')">
       <span>Livestock</span>
-      <h2>Coral & Plant Care</h2>
-      <p>Tips for keeping corals thriving or plants growing strong.</p>
+      <h2>Coral Care</h2>
+      <p>Tips for keeping corals thriving with stable reef chemistry, lighting and flow.</p>
     </button>
   </div>
 

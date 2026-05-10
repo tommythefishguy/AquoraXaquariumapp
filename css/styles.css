@@ -5138,3 +5138,353 @@ input,select,textarea{
   radial-gradient(circle at top right, rgba(0,200,255,.22), transparent 45%),
   linear-gradient(145deg, rgba(10,22,35,.96), rgba(3,10,18,.98));
 }
+
+
+/* =========================================================
+   AQUORAX OS — PREMIUM REEF VISUAL REFINEMENT v1
+   Baseline-safe: visual only, preserves existing IDs and logic
+   ========================================================= */
+:root{--aqx-bg-0:#020812;--aqx-bg-1:#061522;--aqx-card:rgba(8,24,38,.78);--aqx-line:rgba(83,214,255,.18);--aqx-line-strong:rgba(83,214,255,.36);--aqx-text:#f3fbff;--aqx-muted:#91a9b8;--aqx-blue:#00c8ff;--aqx-green:#4dffad;--aqx-orange:#ffb84d;--aqx-red:#ff5f73;}
+html{background:#020812!important;}body{background:radial-gradient(circle at 50% -18%,rgba(0,200,255,.24),transparent 34rem),radial-gradient(circle at 105% 12%,rgba(38,95,255,.18),transparent 26rem),radial-gradient(circle at -10% 85%,rgba(0,255,196,.10),transparent 24rem),linear-gradient(180deg,var(--aqx-bg-1),var(--aqx-bg-0) 52%,#01050b)!important;color:var(--aqx-text)!important;letter-spacing:-.01em;}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 78%);}
+.aqxAppHeader{backdrop-filter:blur(22px)!important;background:linear-gradient(180deg,rgba(3,12,22,.86),rgba(3,12,22,.55))!important;border-bottom:1px solid var(--aqx-line)!important;box-shadow:0 18px 45px rgba(0,0,0,.22)!important;}.aqxAppHeaderLogo{filter:drop-shadow(0 0 18px rgba(0,200,255,.28));transform:scale(1.08)}
+.aqxHeaderMenuBtn,.aqxCloudButton,.aqxSideMenuClose,.aqxCloudClose{background:rgba(8,28,44,.78)!important;border:1px solid var(--aqx-line)!important;box-shadow:0 0 24px rgba(0,200,255,.10)!important;color:#dff8ff!important;}.page{padding-bottom:112px!important;}
+.pageHeader,.homeHero,.aqxHomeHero{padding:22px 18px!important;margin:12px 12px 16px!important;border:1px solid var(--aqx-line)!important;border-radius:30px!important;background:linear-gradient(145deg,rgba(7,22,36,.88),rgba(3,10,18,.64))!important;box-shadow:0 24px 70px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.06)!important;}.pageHeader h1,.homeHero h1,.aqxHomeHero h1{font-size:clamp(30px,8vw,46px)!important;line-height:.94!important;letter-spacing:-.055em!important;margin-bottom:8px!important;}.pageHeader p,.homeHero p,.aqxHomeHero p{color:var(--aqx-muted)!important;font-size:14px!important;line-height:1.45!important;}
+.card,.panel,.doseBox,.trackerOpenCard,.aqxSmartGuideCard,.aqxGuideCard,.parameterTile,.paramCard,.jobCard,.equipmentCard,.icpCard,.reefHealthCard{background:linear-gradient(150deg,rgba(9,29,46,.82),rgba(4,13,24,.74))!important;border:1px solid var(--aqx-line)!important;border-radius:26px!important;box-shadow:0 20px 60px rgba(0,0,0,.30),0 0 34px rgba(0,200,255,.055),inset 0 1px 0 rgba(255,255,255,.055)!important;backdrop-filter:blur(18px)!important;}.card:hover,.trackerOpenCard:hover,.aqxGuideCard:hover{border-color:var(--aqx-line-strong)!important;box-shadow:0 24px 70px rgba(0,0,0,.36),0 0 42px rgba(0,200,255,.12)!important;}
+button,.primaryBtn,.secondaryBtn,.dangerBtn,a.button,.partnerLinks a{border-radius:18px!important;font-weight:800!important;letter-spacing:-.02em!important;min-height:46px;}.primaryBtn{background:linear-gradient(135deg,#00c8ff,#147cff)!important;color:#00131c!important;border:0!important;box-shadow:0 14px 35px rgba(0,200,255,.24)!important;}.secondaryBtn,.partnerLinks a{background:rgba(10,32,50,.72)!important;color:#dff8ff!important;border:1px solid var(--aqx-line)!important;}.dangerBtn{background:rgba(255,95,115,.12)!important;color:#ffdce2!important;border:1px solid rgba(255,95,115,.28)!important;}
+input,select,textarea{background:rgba(2,11,20,.70)!important;border:1px solid rgba(126,223,255,.18)!important;border-radius:18px!important;color:var(--aqx-text)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;}label{color:#cfeeff!important;font-weight:800!important;font-size:12px!important;text-transform:uppercase;letter-spacing:.08em;}
+.bottomNav,.aqxBottomNav{left:12px!important;right:12px!important;bottom:12px!important;width:auto!important;border-radius:28px!important;background:rgba(2,10,18,.86)!important;border:1px solid var(--aqx-line)!important;box-shadow:0 16px 60px rgba(0,0,0,.48),0 0 28px rgba(0,200,255,.12)!important;backdrop-filter:blur(22px)!important;overflow:hidden!important;}.bottomNav button,.aqxBottomNav button{border-radius:20px!important;color:#86a9ba!important;}.bottomNav button.active,.aqxBottomNav button.active,.bottomNav button:hover,.aqxBottomNav button:hover{background:linear-gradient(180deg,rgba(0,200,255,.18),rgba(0,200,255,.05))!important;color:#f2fcff!important;box-shadow:inset 0 0 0 1px rgba(0,200,255,.18)!important;}
+.parameterGrid,.homeParameterGrid,.parameterCards,.aqxHomeParameterGrid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;}.parameterTile,.paramCard{min-height:118px!important;padding:16px!important;position:relative!important;overflow:hidden!important;}.parameterTile:before,.paramCard:before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at 86% 4%,rgba(0,200,255,.18),transparent 44%);pointer-events:none;}.parameterTile strong,.paramCard strong{font-size:13px!important;color:#a9cbd9!important;text-transform:uppercase;letter-spacing:.07em;}.parameterTile .value,.paramCard .value,.parameterValue{font-size:27px!important;font-weight:900!important;color:#f7fdff!important;letter-spacing:-.06em!important;}
+.status-ok,.ok,.aqxStatusOk{color:var(--aqx-green)!important}.status-watch,.watch,.warning,.aqxStatusWatch{color:var(--aqx-orange)!important}.status-urgent,.urgent,.high,.aqxStatusUrgent{color:var(--aqx-red)!important}.aqxLoginScreen{background:radial-gradient(circle at 50% 0%,rgba(0,200,255,.26),transparent 35rem),linear-gradient(180deg,#061522,#01050b)!important;}.aqxLoginCard,#welcomeScreen{background:linear-gradient(150deg,rgba(9,29,46,.90),rgba(3,10,18,.78))!important;border:1px solid var(--aqx-line)!important;border-radius:34px!important;box-shadow:0 28px 90px rgba(0,0,0,.50),0 0 60px rgba(0,200,255,.13)!important;backdrop-filter:blur(24px)!important;}.welcomeLogo,.aqxLoginLogo{filter:drop-shadow(0 0 32px rgba(0,200,255,.26));}.welcomeChoiceGrid{grid-template-columns:1fr!important}.welcomeChoice{background:linear-gradient(135deg,rgba(0,200,255,.18),rgba(20,124,255,.12))!important;border:1px solid var(--aqx-line-strong)!important;color:#f2fcff!important;}.aqxReefOnlyPill{margin-top:8px;padding:13px 15px;border-radius:18px;border:1px solid var(--aqx-line);background:rgba(0,200,255,.10);color:#dff8ff;font-weight:900;}
+#growthPlantTrackerOpen,#plantTrackerPanel,#welcomeFresh{display:none!important;}.aqxSideMenuPanel{background:linear-gradient(180deg,rgba(5,18,31,.96),rgba(2,8,15,.96))!important;border-right:1px solid var(--aqx-line)!important;box-shadow:28px 0 90px rgba(0,0,0,.45)!important;}.aqxSideMenuPanel button{background:rgba(10,32,50,.58)!important;border:1px solid rgba(126,223,255,.14)!important;color:#e9fbff!important;}
+@media (min-width:760px){.parameterGrid,.homeParameterGrid,.parameterCards,.aqxHomeParameterGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.page{max-width:1120px;margin:0 auto!important}.card{margin-left:auto!important;margin-right:auto!important}}@media (max-width:420px){.pageHeader,.homeHero,.aqxHomeHero{margin-left:10px!important;margin-right:10px!important;border-radius:26px!important}.card{border-radius:24px!important}.parameterGrid,.homeParameterGrid,.parameterCards,.aqxHomeParameterGrid{gap:10px!important}}
+
+/* =========================================================
+   AQUORAX OS — TOP TIER REEF VISUAL SYSTEM v2
+   Safe CSS-only cinematic upgrade. No auth / data / logic changes.
+   ========================================================= */
+:root{
+  --bg:#03070d;
+  --panel:rgba(7,18,29,.82);
+  --panel2:rgba(9,27,44,.74);
+  --blue:#47d7ff;
+  --blue2:#087dff;
+  --cyan:#5ef4ff;
+  --text:#f7fcff;
+  --muted:#9bb8cd;
+  --line:rgba(93,219,255,.20);
+  --green:#65f6a5;
+  --amber:#ffd36b;
+  --purple:#bda4ff;
+  --danger:#ff6676;
+  --reefGlow:rgba(52,201,255,.18);
+  --reefGlass:rgba(6,17,28,.70);
+  --reefShadow:0 24px 80px rgba(0,0,0,.50), 0 0 34px rgba(42,191,255,.10);
+}
+html{background:#03070d;scroll-behavior:smooth;}
+body{
+  min-height:100svh;
+  background:
+    radial-gradient(circle at 18% -12%, rgba(54,210,255,.28) 0, transparent 34%),
+    radial-gradient(circle at 88% 5%, rgba(54,109,255,.18) 0, transparent 30%),
+    radial-gradient(circle at 50% 118%, rgba(0,200,255,.10) 0, transparent 38%),
+    linear-gradient(180deg,#06111c 0%,#02060c 45%,#010409 100%) !important;
+  color:var(--text);
+  letter-spacing:-.01em;
+  overflow-x:hidden;
+}
+body:before,
+body:after{
+  content:"";
+  position:fixed;
+  pointer-events:none;
+  z-index:-1;
+}
+body:before{
+  inset:0;
+  background:
+    linear-gradient(115deg, transparent 0 20%, rgba(90,230,255,.035) 21%, transparent 22% 46%, rgba(90,230,255,.025) 47%, transparent 48% 100%),
+    radial-gradient(circle at center, transparent 0 55%, rgba(0,0,0,.52) 100%);
+  opacity:.95;
+}
+body:after{
+  width:520px;height:520px;right:-260px;top:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(77,220,255,.16),transparent 62%);
+  filter:blur(8px);
+  animation:aqxReefDrift 12s ease-in-out infinite alternate;
+}
+@keyframes aqxReefDrift{from{transform:translate3d(-18px,-22px,0) scale(.96)}to{transform:translate3d(18px,38px,0) scale(1.08)}}
+
+#welcomeScreen,.aqxLoginScreen{
+  background:
+    radial-gradient(circle at 50% 12%, rgba(72,215,255,.25), transparent 34%),
+    radial-gradient(circle at 12% 86%, rgba(4,125,255,.14), transparent 36%),
+    linear-gradient(180deg,#06131f,#02060c 65%,#010409) !important;
+}
+.aqxLoginCard,#welcomeScreen > *:not(.welcomeChoiceGrid){position:relative;z-index:1;}
+.aqxLoginCard{
+  width:min(92vw,430px);
+  border-radius:34px !important;
+  padding:30px 22px !important;
+  background:linear-gradient(160deg,rgba(8,28,45,.86),rgba(3,10,18,.82)) !important;
+  border:1px solid rgba(96,225,255,.24) !important;
+  box-shadow:var(--reefShadow), inset 0 1px 0 rgba(255,255,255,.08) !important;
+  backdrop-filter:blur(22px) saturate(1.25) !important;
+}
+.aqxLoginLogo,.welcomeLogo,.homeBrandLogo,.aqxAppHeaderLogo,.aqxSideMenuLogo{
+  filter:drop-shadow(0 0 18px rgba(69,211,255,.42)) drop-shadow(0 0 42px rgba(8,125,255,.18)) !important;
+}
+#welcomeScreen h1,.aqxLoginCard h1{
+  font-size:clamp(31px,8vw,46px) !important;
+  line-height:.98 !important;
+  letter-spacing:-.055em !important;
+}
+#welcomeScreen p,.aqxLoginCard p{font-size:15px;line-height:1.65;color:#abc7d9!important;}
+
+.aqxAppHeader{
+  position:sticky !important;
+  top:0;
+  z-index:40;
+  padding:8px 12px 4px !important;
+  background:linear-gradient(180deg,rgba(3,8,14,.92),rgba(3,8,14,.54) 70%,transparent) !important;
+  backdrop-filter:blur(18px) !important;
+}
+.aqxAppHeaderInner{
+  min-height:58px !important;
+  border-radius:24px !important;
+  background:linear-gradient(135deg,rgba(10,29,46,.74),rgba(3,10,18,.52)) !important;
+  border:1px solid rgba(105,229,255,.18) !important;
+  box-shadow:0 10px 35px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+.aqxHeaderMenuBtn,.aqxHeaderGhostBtn,.aqxCloudButton,.aqxCloudHomeBtn,.aqxSideMenuClose,.aqxCloudClose{
+  border-radius:18px !important;
+  background:rgba(255,255,255,.06) !important;
+  border:1px solid rgba(112,229,255,.16) !important;
+  color:#dff9ff !important;
+  box-shadow:0 0 22px rgba(70,214,255,.08) !important;
+}
+
+.page{
+  max-width:900px !important;
+  padding:16px 16px 110px !important;
+}
+.homeBrandHeader{
+  text-align:left !important;
+  margin:8px 0 18px !important;
+  padding:22px 18px 20px !important;
+  border-radius:34px !important;
+  background:
+    linear-gradient(135deg,rgba(12,35,55,.78),rgba(4,11,20,.72)),
+    radial-gradient(circle at 84% 20%,rgba(72,214,255,.18),transparent 40%) !important;
+  border:1px solid rgba(88,221,255,.22) !important;
+  box-shadow:var(--reefShadow), inset 0 1px 0 rgba(255,255,255,.08) !important;
+  overflow:hidden;
+  position:relative;
+}
+.homeBrandHeader:before{
+  content:"AquoraX OS";
+  display:inline-flex;
+  padding:7px 11px;
+  margin:0 0 12px;
+  border-radius:999px;
+  color:#bff6ff;
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  background:rgba(77,215,255,.09);
+  border:1px solid rgba(77,215,255,.18);
+}
+.homeBrandHeader:after{
+  content:"";
+  position:absolute;right:-55px;top:-70px;width:190px;height:190px;border-radius:50%;
+  background:radial-gradient(circle,rgba(83,225,255,.18),transparent 68%);
+}
+.homeBrandLogo{width:min(58%,250px)!important;margin:0 0 14px!important;max-height:100px!important;}
+.homeBrandHeader h1,.pageHeader h1{
+  font-size:clamp(32px,7vw,52px)!important;
+  line-height:.96!important;
+  letter-spacing:-.06em!important;
+}
+.homeBrandHeader h1{font-size:0!important;margin:0!important;}
+.homeBrandHeader h1:after{content:"Intelligent reef management";font-size:clamp(34px,8vw,56px);line-height:.95;display:block;color:#fff;}
+.homeBrandHeader p{margin:10px 0 0!important;max-width:520px!important;color:#a9c7db!important;font-size:15px!important;}
+.homeBrandHeader p:after{content:" Reef chemistry, ICP, dosing, care and stability — all in one calm operating system.";}
+
+.card,.aqxDosingGlassCard,.aqxCeOverviewCard,.aqxCeInsightCard,.aqxCeLibraryCard,.aqxIcpImportCard,.cycleStateCard,.blueSharkStoreCard,.beginnerGuideCard,.aqxGuideCard,.trackerItem,.jobsStat,.jobsOverview,.cycleGateCard{
+  border-radius:28px !important;
+  background:
+    linear-gradient(150deg,rgba(11,31,49,.78),rgba(4,11,20,.70) 58%,rgba(3,8,15,.78)) !important;
+  border:1px solid rgba(96,225,255,.18) !important;
+  box-shadow:0 18px 55px rgba(0,0,0,.36), 0 0 30px rgba(54,205,255,.075), inset 0 1px 0 rgba(255,255,255,.065) !important;
+  backdrop-filter:blur(18px) saturate(1.2) !important;
+}
+.card{padding:18px!important;margin-bottom:16px!important;}
+.card h2,.aqxMinimalSectionHead h2,.aqxCeSectionHead h2,.aqxDosingHeroCopy h1,.pageHeader h1{color:#fff!important;}
+.card p,.pageHeader p,.aqxMinimalSectionHead p{color:#9dbbd0!important;}
+.aqxMiniKicker,.aqxCeKicker,.cycleGateBadge,.cycleHeroBrandBadge,.partnerBadge{
+  display:inline-flex!important;align-items:center;gap:7px;
+  width:max-content;max-width:100%;
+  padding:7px 10px!important;
+  border-radius:999px!important;
+  background:rgba(78,216,255,.085)!important;
+  border:1px solid rgba(78,216,255,.18)!important;
+  color:#bff7ff!important;
+  font-size:10px!important;font-weight:900!important;letter-spacing:.14em!important;text-transform:uppercase!important;
+}
+
+.primaryBtn,.secondaryBtn,.dangerBtn,.lockedBtn,.cameraBtn,.modalBtn{
+  min-height:48px !important;
+  border-radius:18px !important;
+  font-weight:900 !important;
+  letter-spacing:-.01em !important;
+  touch-action:manipulation;
+}
+.primaryBtn,.modalBtn{
+  background:linear-gradient(135deg,#0573ff 0%,#48ddff 100%) !important;
+  color:#00131f !important;
+  box-shadow:0 13px 38px rgba(22,171,255,.24), inset 0 1px 0 rgba(255,255,255,.35) !important;
+}
+.secondaryBtn,.cameraBtn{
+  background:rgba(255,255,255,.055)!important;
+  border:1px solid rgba(133,234,255,.17)!important;
+  color:#effcff!important;
+}
+.primaryBtn:hover,.secondaryBtn:hover,.cameraBtn:hover,.modalBtn:hover{transform:translateY(-1px);filter:brightness(1.06);}
+.primaryBtn:active,.secondaryBtn:active,.dangerBtn:active,.cameraBtn:active,.modalBtn:active{transform:scale(.975)!important;}
+
+input,select,textarea{
+  border-radius:18px!important;
+  background:rgba(2,8,15,.72)!important;
+  border:1px solid rgba(118,230,255,.18)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+input:focus,select:focus,textarea:focus{border-color:rgba(94,244,255,.64)!important;box-shadow:0 0 0 4px rgba(94,244,255,.075)!important;}
+
+.parameterHero,.aqxMinimalParameterCard{
+  background:
+    radial-gradient(circle at 92% 8%,rgba(89,226,255,.22),transparent 36%),
+    linear-gradient(145deg,rgba(11,33,52,.84),rgba(3,10,18,.76)) !important;
+}
+.paramLiveGrid,.paramGrid{gap:12px!important;}
+.paramLiveCard,.paramTile{
+  position:relative;overflow:hidden;
+  border-radius:24px!important;
+  min-height:128px;
+  background:linear-gradient(160deg,rgba(10,30,48,.78),rgba(3,10,18,.74))!important;
+  border:1px solid rgba(110,230,255,.17)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 16px 36px rgba(0,0,0,.24)!important;
+}
+.paramLiveCard:before,.paramTile:before{
+  content:"";position:absolute;inset:0 0 auto;height:3px;
+  background:linear-gradient(90deg,rgba(91,236,255,.18),rgba(91,236,255,.85),rgba(92,247,166,.40));
+}
+.paramIcon{
+  width:42px!important;height:42px!important;border-radius:16px!important;
+  background:linear-gradient(145deg,rgba(72,219,255,.16),rgba(16,111,255,.08))!important;
+  color:#dffbff!important;
+}
+.paramValue{font-size:clamp(32px,8vw,44px)!important;letter-spacing:-.065em!important;}
+.paramStatusGood{color:var(--green)!important;text-shadow:0 0 18px rgba(101,246,165,.18)}
+.paramStatusWatch{color:var(--amber)!important;text-shadow:0 0 18px rgba(255,211,107,.16)}
+.paramStatusBad{color:var(--danger)!important;text-shadow:0 0 18px rgba(255,102,118,.16)}
+.paramTarget{color:#9fbace!important;}
+.aqxHomeDisclosure{
+  border-radius:22px!important;
+  background:rgba(255,255,255,.035)!important;
+  border:1px solid rgba(255,255,255,.075)!important;
+  overflow:hidden;
+}
+.aqxHomeDisclosure summary{padding:14px 14px!important;font-weight:900;color:#dff9ff;cursor:pointer;}
+
+.graphWrap,.graphCanvasWrap,canvas{
+  border-radius:26px!important;
+}
+.graphCanvasWrap{
+  background:linear-gradient(180deg,rgba(7,25,40,.78),rgba(2,7,13,.84))!important;
+  border:1px solid rgba(97,225,255,.16)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 18px 50px rgba(0,0,0,.30)!important;
+}
+
+.nav{
+  height:82px!important;
+  padding:10px 10px calc(10px + env(safe-area-inset-bottom))!important;
+  background:linear-gradient(180deg,rgba(3,8,14,.62),rgba(2,6,12,.94))!important;
+  border-top:1px solid rgba(103,229,255,.18)!important;
+  backdrop-filter:blur(22px) saturate(1.25)!important;
+  box-shadow:0 -18px 50px rgba(0,0,0,.36)!important;
+}
+.nav button{
+  min-width:0!important;
+  flex:1 1 0!important;
+  height:54px!important;
+  border-radius:22px!important;
+  background:transparent!important;
+  border:1px solid transparent!important;
+  color:#80a6bd!important;
+  font-size:10px!important;
+  font-weight:900!important;
+}
+.nav button.active{
+  color:#eaffff!important;
+  background:linear-gradient(150deg,rgba(74,218,255,.18),rgba(42,130,255,.10))!important;
+  border-color:rgba(100,230,255,.22)!important;
+  box-shadow:0 0 28px rgba(76,218,255,.16), inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+.nav button:before{content:"";display:block;width:5px;height:5px;border-radius:50%;margin:0 auto 5px;background:currentColor;opacity:.55;}
+.nav button.active:before{opacity:1;box-shadow:0 0 13px rgba(94,244,255,.85);}
+
+.aqxSideMenuOverlay,.aqxCloudOverlay,.aqxCloudPanelOverlay{backdrop-filter:blur(16px)!important;background:rgba(0,0,0,.54)!important;}
+.aqxSideMenuPanel,.aqxCloudPanel,.journeyModal,.aqxOnboardingModal{
+  border-radius:34px!important;
+  background:linear-gradient(155deg,rgba(10,31,50,.94),rgba(3,9,16,.94))!important;
+  border:1px solid rgba(96,225,255,.22)!important;
+  box-shadow:0 30px 90px rgba(0,0,0,.58),0 0 40px rgba(64,211,255,.12)!important;
+}
+.aqxSideMenuGroup button{
+  border-radius:18px!important;
+  background:rgba(255,255,255,.045)!important;
+  border:1px solid rgba(255,255,255,.075)!important;
+  color:#eafaff!important;
+}
+.aqxSideMenuGroup button:hover{background:rgba(78,216,255,.10)!important;border-color:rgba(78,216,255,.18)!important;}
+
+.aqxDosingShowcaseHero,.aqxCeHero,.cycleHeroBrandCard{
+  border-radius:34px!important;
+  background:
+    radial-gradient(circle at 88% 12%,rgba(81,222,255,.22),transparent 37%),
+    linear-gradient(145deg,rgba(10,33,54,.86),rgba(3,10,18,.78))!important;
+  border:1px solid rgba(103,230,255,.20)!important;
+  box-shadow:var(--reefShadow)!important;
+}
+.aqxDosingHeroPulse{filter:drop-shadow(0 0 28px rgba(73,219,255,.32))!important;}
+.aqxCeLogoBig,.journeyLogo{filter:drop-shadow(0 0 18px rgba(73,219,255,.22))!important;}
+
+.jobsHomeAlert,.logNote,.doseNote,.beginnerReminder,.aqxIcpImportStatus{
+  border-radius:22px!important;
+  background:rgba(77,216,255,.065)!important;
+  border:1px solid rgba(77,216,255,.15)!important;
+  color:#cfefff!important;
+}
+.historyList > *, .aqxCeActiveList > *, .aqxIcpImportReview > *, .homePriorityList > *{
+  border-radius:20px!important;
+  background:rgba(255,255,255,.04)!important;
+  border:1px solid rgba(255,255,255,.075)!important;
+}
+
+@media(min-width:760px){
+  .page{padding-left:22px!important;padding-right:22px!important;}
+  .paramLiveGrid,.paramGrid{grid-template-columns:repeat(3,1fr)!important;}
+  .homeBrandHeader{padding:30px!important;}
+  .card{padding:22px!important;}
+}
+@media(max-width:430px){
+  .page{padding-left:14px!important;padding-right:14px!important;}
+  .card{border-radius:25px!important;padding:16px!important;}
+  .paramLiveGrid,.paramGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  .paramValue{font-size:31px!important;}
+  .paramLiveCard,.paramTile{min-height:118px!important;padding:14px!important;}
+}
+@media(max-width:350px){.paramLiveGrid,.paramGrid{grid-template-columns:1fr!important;}.nav button{font-size:9px!important;}}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
