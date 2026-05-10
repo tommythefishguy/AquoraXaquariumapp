@@ -7459,3 +7459,99 @@ function aqxDismissLoginGateAfterConfirmedCloudUser(){
     setTimeout(check, 1500);
   });
 })();
+
+
+/* AquoraX Cloud full local data safety v8
+   Ensures manual/auto cloud backup includes the real saved app state, not a tiny placeholder payload. */
+function aqxBuildFullLocalStorageSnapshot(){
+  const out = {};
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      if(!k) continue;
+      // Do not backup Firebase auth internals or temporary UI-only noise.
+      if(k.indexOf("firebase:") === 0) continue;
+      if(k.indexOf("firebaseLocalStorage") >= 0) continue;
+      if(k === "aqxFirebaseFcmTokenV1") continue;
+      out[k] = localStorage.getItem(k);
+    }
+  }catch(e){}
+  return out;
+}
+
+(function(){
+  if(window.__aqxCloudFullPayloadV8) return;
+  window.__aqxCloudFullPayloadV8 = true;
+
+  const originalBuild = typeof aqxBuildBackupPayload === "function" ? aqxBuildBackupPayload : null;
+  window.aqxBuildBackupPayload = function(){
+    let payload = {};
+    try{
+      payload = originalBuild ? originalBuild() : {};
+    }catch(e){
+      payload = {};
+    }
+
+    const snapshot = aqxBuildFullLocalStorageSnapshot();
+
+    payload = payload || {};
+    payload.app = payload.app || {};
+    payload.app.name = "AquoraX OS";
+    payload.app.mode = "reef";
+    payload.app.fullLocalStorageSnapshot = snapshot;
+    payload.app.fullLocalStorageSnapshotSavedAt = new Date().toISOString();
+
+    // Also expose common objects at top level for older restore code.
+    payload.localStorage = Object.assign({}, payload.localStorage || {}, snapshot);
+    payload.savedKeys = Object.keys(snapshot);
+    payload.savedKeyCount = Object.keys(snapshot).length;
+    payload.updatedAt = new Date().toISOString();
+
+    return payload;
+  };
+
+  const originalRestore = typeof aqxRestorePayload === "function" ? aqxRestorePayload : null;
+  window.aqxRestorePayload = function(payload){
+    try{
+      const snap =
+        (payload && payload.localStorage) ||
+        (payload && payload.app && payload.app.fullLocalStorageSnapshot) ||
+        null;
+
+      if(snap && typeof snap === "object"){
+        Object.keys(snap).forEach(function(k){
+          if(typeof snap[k] === "string") localStorage.setItem(k, snap[k]);
+        });
+      }
+    }catch(e){
+      console.warn("AquoraX full snapshot restore skipped", e);
+    }
+
+    if(originalRestore){
+      return originalRestore(payload);
+    }
+
+    try{ location.reload(); }catch(e){}
+  };
+})();
+
+
+/* AquoraX Cloud backup status clarity v8 */
+(function(){
+  if(window.__aqxCloudStatusClarityV8) return;
+  window.__aqxCloudStatusClarityV8 = true;
+  const oldBackup = typeof aqxManualBackup === "function" ? aqxManualBackup : null;
+  if(oldBackup){
+    window.aqxManualBackup = async function(){
+      const beforePayload = (typeof aqxBuildBackupPayload === "function") ? aqxBuildBackupPayload() : {};
+      const count = beforePayload && beforePayload.savedKeyCount ? beforePayload.savedKeyCount : (beforePayload && beforePayload.savedKeys ? beforePayload.savedKeys.length : 0);
+      const result = await oldBackup.apply(this, arguments);
+      try{
+        if(typeof aqxUpdateCloudStatus === "function"){
+          aqxUpdateCloudStatus("Cloud backup complete. Saved " + count + " local app data keys.");
+        }
+      }catch(e){}
+      return result;
+    };
+  }
+})();
