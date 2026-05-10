@@ -248,12 +248,13 @@ function daysSince(iso){
 }
 
 function enterApp(){
-  const chosen = selectedTankType();
+  let chosen = selectedTankType();
   if(!chosen){
-    alert("AquoraX OS is reef-only in this build.");
-    return;
+    // Reef-only app: default safely to reef instead of blocking users with old freshwater-era wording.
+    chosen = "reef";
   }
   localStorage.setItem("aquoraxTankType", chosen);
+  localStorage.setItem("aquoraxWelcomeTank", chosen);
   localStorage.setItem("aquoraxWelcomeSeen", "yes");
   if(el("welcomeScreen")) el("welcomeScreen").style.display = "none";
   openPage("home");
@@ -388,7 +389,7 @@ function updateTankSummary(){
 
   let text = "No tank type selected yet.";
   if(type === "reef") text = "Reef / Marine tank selected.";
-  if(type === "freshwater") text = "Saltwater reef selected.";
+  if(type === "freshwater") text = "Freshwater tank selected.";
   if(volume) text += " System volume: " + volume + " L.";
 
   if(el("tankSummary")) el("tankSummary").innerText = text;
@@ -424,7 +425,7 @@ function numberValue(id){
 }
 
 function updateCycle(){
-  const tank = val("cycleTank") || "reef";
+  const tank = val("cycleTank") || "freshwater";
 
   const ammonia = numberValue("ammonia");
   const nitrite = numberValue("nitrite");
@@ -453,10 +454,10 @@ function updateCycle(){
 }
 
 function updateBlueSharkDosing(){
-  const tank = val("cycleTank") || "reef";
+  const tank = val("cycleTank") || "freshwater";
   const volume = parseNum(val("cycleVolume"));
 
-  const productName = tank === "reef" ? "Blue Shark Colony Marine" : "Blue Shark Colony Marine";
+  const productName = tank === "reef" ? "Blue Shark Colony Marine" : "Blue Shark Colony Freshwater";
   if(el("rapidProductName")) el("rapidProductName").innerText = productName;
 
   if(volume === null || volume <= 0){
@@ -526,7 +527,7 @@ function confirmRapidCycleDose(){
   log.rapid = {
     type:"rapid",
     label:"Rapid Cycle",
-    product: val("cycleTank") === "reef" ? "Blue Shark Colony Marine" : "Blue Shark Colony Marine",
+    product: val("cycleTank") === "reef" ? "Blue Shark Colony Marine" : "Blue Shark Colony Freshwater",
     volume: val("cycleVolume"),
     dose: el("rapidDose") ? el("rapidDose").innerText : "",
     iso:stamp.iso,
@@ -1327,20 +1328,20 @@ function parameterTargets(type){
 
 
 function renderParameterPage(){
-  const type = selectedTankType() || "reef";
+  const type = selectedTankType() || "freshwater";
   const isReef = type === "reef";
   const title = el("parameterTitle");
   const summary = el("parameterSummary");
   const intro = el("parameterPageIntro");
   const grid = el("parameterGrid");
 
-  if(title) title.innerText = isReef ? "Saltwater / Reef Parameter Targets" : "Saltwater Reef Parameter Targets";
+  if(title) title.innerText = isReef ? "Saltwater / Reef Parameter Targets" : "Freshwater Parameter Targets";
   if(summary) summary.innerText = isReef
     ? "Use these reef targets as your quick test-chart guide. Keep changes slow and stable."
-    : "Use these reef targets as your quick test-chart guide. Adjust slowly and confirm results before changing dosing.";
+    : "Use these freshwater targets as your quick test-chart guide. Adjust slowly for your livestock and plants.";
   if(intro) intro.innerText = isReef
     ? "Saltwater selected — reef parameter targets shown below."
-    : "Saltwater reef selected — reef parameter targets shown below.";
+    : "Freshwater selected — freshwater parameter targets shown below.";
 
   if(grid){
     grid.innerHTML = parameterTargets(type).map(row => `
@@ -1366,7 +1367,7 @@ function renderParameterPage(){
 function trackerMeta(kind){
   const meta = {
     coral:{cap:"Coral", label:"coral", plural:"corals", key:"aquoraxCoralTracker", empty:"Add a coral name first.", timeline:"Coral Timeline"},
-    plant:{cap:"Plant", label:"plant", plural:"plants", key:"aquoraxPlantTracker", empty:"Add a plant name first.", timeline:"Coral Growth Timeline"},
+    plant:{cap:"Plant", label:"plant", plural:"plants", key:"aquoraxPlantTracker", empty:"Add a plant name first.", timeline:"Plant Timeline"},
     fish:{cap:"Fish", label:"fish", plural:"fish", key:"aquoraxFishTracker", empty:"Add a fish name first.", timeline:"Fish Timeline"},
     algae:{cap:"Algae", label:"algae log", plural:"algae logs", key:"aquoraxAlgaeTracker", empty:"Add an algae / area name first.", timeline:"Algae Timeline"},
     invert:{cap:"Invert", label:"invert", plural:"inverts", key:"aquoraxInvertTracker", empty:"Add an invert name first.", timeline:"Invert Timeline"}
@@ -1727,7 +1728,7 @@ function resetCycle(){
   localStorage.removeItem("aquoraxGraphEvents");
   localStorage.removeItem("aquoraxDoseLog");
 
-  const savedTank = localStorage.getItem("aquoraxTankType") || "reef";
+  const savedTank = localStorage.getItem("aquoraxTankType") || "freshwater";
   const savedVolume = localStorage.getItem("aquoraxTankVolume") || "";
 
   setVal("cycleTank", savedTank);
@@ -2245,7 +2246,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const savedCycle = JSON.parse(localStorage.getItem("aquoraxCycleData") || "{}");
 
-  setVal("cycleTank", savedCycle.tank || savedTank || "reef");
+  setVal("cycleTank", savedCycle.tank || savedTank || "freshwater");
   setVal("cycleVolume", savedCycle.volume || savedVolume || "");
   setVal("cycleStage", savedCycle.stage || "0");
   setVal("ammonia", savedCycle.ammonia || "");
@@ -2603,15 +2604,54 @@ function aqxCloudDocRef(){
   if(!aqxFirebaseReady || !aqxFirebaseDb || !aqxCloudUid()) return null;
   return aqxFirebaseDb.collection("users").doc(aqxCloudUid()).collection("backups").doc("main");
 }
+function aqxForceSignedInUiAfterLogin(){
+  try{
+    document.body.classList.add("aqxLoggedIn");
+
+    const loginScreen = el("aqxLoginScreen");
+    if(loginScreen) loginScreen.classList.remove("show");
+
+    // AquoraX is reef-only now, so first sign-in should not stall on old tank-type choices.
+    if(!localStorage.getItem("aquoraxTankType")) localStorage.setItem("aquoraxTankType", "reef");
+    if(!localStorage.getItem("aquoraxWelcomeTank")) localStorage.setItem("aquoraxWelcomeTank", "reef");
+
+    // First login should behave like the app has unlocked, not like the account failed.
+    localStorage.setItem("aquoraxWelcomeSeen", "yes");
+    const welcome = el("welcomeScreen");
+    if(welcome) welcome.style.display = "none";
+
+    aqxRefreshLoginState();
+
+    try{ openPage(localStorage.getItem("aquoraxCurrentPage") || "home"); }catch(e){
+      try{ openPage("home"); }catch(err){}
+    }
+
+    const overlay = el("aqxSavingOverlay");
+    if(overlay){
+      setTimeout(function(){ overlay.classList.remove("show"); }, 950);
+    }
+
+    setTimeout(function(){
+      aqxRefreshLoginState();
+      aqxUpdateCloudStatus("Signed in to AquoraX Cloud.");
+      try{ openPage(localStorage.getItem("aquoraxCurrentPage") || "home"); }catch(e){}
+    }, 300);
+  }catch(e){
+    console.warn("AquoraX signed-in UI refresh skipped", e);
+  }
+}
+
 async function aqxSetSessionFromFirebase(user){
   if(!user) return;
   await aqxEnsureFirestoreUser(user);
   localStorage.setItem(aqxCloudSessionKey, JSON.stringify({uid:user.uid,email:String(user.email||"").toLowerCase(),signedInAt:new Date().toISOString(),provider:"firebase"}));
   document.body.classList.add("aqxLoggedIn");
   aqxUpdateCloudStatus("Signed in. Checking cloud backup…");
+  aqxForceSignedInUiAfterLogin();
   aqxAutoRestoreOnLogin();
   aqxQueueCloudBackup("login");
   aqxRefreshLoginState();
+  aqxForceSignedInUiAfterLogin();
 }
 async function aqxCreateAccount(){
   const email=val("aqxLoginEmail").trim().toLowerCase();
@@ -3008,9 +3048,15 @@ const parameterDefs = {
     {key:"nitrate", label:"Nitrate", unit:"ppm", target:"2–20 ppm", min:2, max:20, icon:"NO₃"},
     {key:"phosphate", label:"Phosphate", unit:"ppm", target:"0.03–0.10 ppm", min:0.03, max:0.10, icon:"PO₄"}
   ],
-  freshwater:null
+  freshwater:[
+    {key:"temperature", label:"Temperature", unit:"°C", target:"22–26 °C", min:22, max:26, icon:"🌡️"},
+    {key:"ph", label:"pH", unit:"", target:"6.5–7.8", min:6.5, max:7.8, icon:"pH"},
+    {key:"ammonia", label:"Ammonia", unit:"ppm", target:"0 ppm", min:0, max:0.1, icon:"NH₃"},
+    {key:"nitrite", label:"Nitrite", unit:"ppm", target:"0 ppm", min:0, max:0.1, icon:"NO₂"},
+    {key:"nitrate", label:"Nitrate", unit:"ppm", target:"5–40 ppm", min:5, max:40, icon:"NO₃"},
+    {key:"phosphate", label:"Phosphate", unit:"ppm", target:"0.05–1.0 ppm", min:0.05, max:1.0, icon:"PO₄"}
+  ]
 };
-parameterDefs.freshwater = parameterDefs.reef; // legacy saved tank compatibility, reef-only app
 
 /* Home parameter + ICP monitoring customisation */
 function aqxSlug(text){
@@ -3067,7 +3113,7 @@ function aqxAvailableIcpParameters(){
 }
 function aqxDefsForDisplay(type){
   const prefs=aqxGetHomeParameterPrefs();
-  const standard=(parameterDefs[type]||parameterDefs.reef).filter(def=>((prefs.visibleStandard[type]||{})[def.key]!==false));
+  const standard=(parameterDefs[type]||parameterDefs.freshwater).filter(def=>((prefs.visibleStandard[type]||{})[def.key]!==false));
   const custom=(prefs.custom||[]).map(c=>({key:"custom_"+c.key,label:c.label,unit:c.unit||"",target:c.target||"Custom tracked parameter",min:c.min,max:c.max,icon:c.icon||c.label.slice(0,2),custom:true,source:"custom"}));
   const icpMap=aqxLatestIcpMap();
   const icp=(prefs.icpMonitored||[]).map(slug=>{
@@ -3109,11 +3155,11 @@ function aqxRemoveCustomHomeParameter(key){
   aqxRenderHomeParameterCustomiser(); aqxRenderHomeLayoutCustomiser(); renderParameterPage(); renderHomeDashboard();
 }
 function aqxRenderHomeParameterCustomiser(){
-  const type=selectedTankType()||"reef";
+  const type=selectedTankType()||"freshwater";
   const prefs=aqxGetHomeParameterPrefs();
   const box=el("aqxHomeParameterList");
   if(box){
-    const standard=(parameterDefs[type]||parameterDefs.reef).map(def=>`<div class="paramCustomItem"><div><strong>${def.label}</strong><span>${def.target} ${def.unit?"· "+def.unit:""}</span><span class="paramSourceBadge">Standard reef</span></div><label class="navSwitch"><input type="checkbox" ${((prefs.visibleStandard[type]||{})[def.key]!==false)?"checked":""} onchange="aqxToggleStandardHomeParam('${type}','${def.key}',this.checked)"><span class="navSlider"></span></label></div>`).join("");
+    const standard=(parameterDefs[type]||parameterDefs.freshwater).map(def=>`<div class="paramCustomItem"><div><strong>${def.label}</strong><span>${def.target} ${def.unit?"· "+def.unit:""}</span><span class="paramSourceBadge">Standard ${type==="reef"?"reef":"freshwater"}</span></div><label class="navSwitch"><input type="checkbox" ${((prefs.visibleStandard[type]||{})[def.key]!==false)?"checked":""} onchange="aqxToggleStandardHomeParam('${type}','${def.key}',this.checked)"><span class="navSlider"></span></label></div>`).join("");
     const custom=(prefs.custom||[]).map(c=>`<div class="paramCustomItem"><div><strong>${c.label}</strong><span>${c.target||"Custom tracked parameter"} ${c.unit?"· "+c.unit:""}</span><span class="paramSourceBadge">Custom</span></div><button class="dangerBtn" style="width:auto;min-width:92px;" onclick="aqxRemoveCustomHomeParameter('${c.key}')">Remove</button></div>`).join("");
     box.innerHTML=standard + (custom || '<div class="paramCustomItem"><div><strong>No custom Home parameters yet</strong><span>Add your own below or turn on ICP parameters once ICP results exist.</span></div></div>');
   }
@@ -3154,7 +3200,7 @@ function saveParameterTest(){
     tankId: (window.aqxGetActiveTank ? window.aqxGetActiveTank().id : "tank_main"),
     date:val("testDate") || new Date().toISOString().slice(0,10),
     time:new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}),
-    tank:selectedTankType() || "reef",
+    tank:selectedTankType() || "freshwater",
     temperature:paramNum("logTemp"),
     salinity:paramNum("logSalinity"),
     ph:paramNum("logPh"),
@@ -3238,7 +3284,7 @@ function parameterStatus(def, value){
 }
 
 function renderLiveParameters(){
-  const type = selectedTankType() || "reef";
+  const type = selectedTankType() || "freshwater";
   const defs = aqxOrderedDefs(aqxDefsForDisplay(type));
   const data = latestMergedParameters();
   const grid = el("parameterLiveGrid");
@@ -3264,7 +3310,7 @@ function renderLiveParameters(){
 }
 
 function calculateAqxScore(){
-  const type = selectedTankType() || "reef";
+  const type = selectedTankType() || "freshwater";
   const defs = aqxOrderedDefs(aqxDefsForDisplay(type));
   const data = latestMergedParameters();
   let scored = 0;
@@ -3503,7 +3549,7 @@ function aqxRenderHomeLayoutCustomiser(){
     sizeBox.innerHTML=sizes.map(([key,label])=>`<button class="homeStyleBtn ${prefs.globalTileSize===key?"active":""}" onclick="aqxSetHomeGlobalSize('${key}')">${label}</button>`).join("");
   }
   if(!box) return;
-  const defs=aqxOrderedDefs(aqxDefsForDisplay(selectedTankType()||"reef"));
+  const defs=aqxOrderedDefs(aqxDefsForDisplay(selectedTankType()||"freshwater"));
   const pinned=new Set(Array.isArray(prefs.pinned)?prefs.pinned:[]);
   if(!defs.length){box.innerHTML='<div class="paramCustomItem"><div><strong>No Home parameters visible</strong><span>Turn some parameters on first.</span></div></div>';return;}
   box.innerHTML=defs.map(def=>{
@@ -3540,7 +3586,7 @@ function aqxGuidanceTrend(tests,key){
   return delta>0?"rising":"falling";
 }
 function aqxBuildGuidanceBrain(){
-  const type=(typeof selectedTankType==="function" ? selectedTankType() : "") || "reef";
+  const type=(typeof selectedTankType==="function" ? selectedTankType() : "") || "freshwater";
   const tests=aqxGuidanceLatestTests();
   const latest=tests[tests.length-1]||null;
   const values=latest || {};
@@ -3566,7 +3612,7 @@ function aqxBuildGuidanceBrain(){
   if(!latest){
     risk="medium"; status="Waiting for first test"; why="There is not enough saved parameter data yet to make a confident tank read."; next="Log ammonia, nitrite, nitrate and pH first. Once saved, AquoraX will start guiding the next action."; confidence="Low";
   }else if(age!==null && age>7){
-    risk="medium"; status="Data is getting old"; why="Your latest test is over a week old, so the tank may have changed since AquoraX last saw it."; next="Run a new reef water test before making dosing or livestock decisions."; confidence="Low";
+    risk="medium"; status="Data is getting old"; why="Your latest test is over a week old, so the tank may have changed since AquoraX last saw it."; next="Run a fresh water test before making dosing or livestock decisions."; confidence="Low";
   }else if(ammonia!==null && ammonia>0.2){
     risk="high"; status="Ammonia needs attention"; why="Ammonia is detectable. This can stress livestock and usually means the biofilter is not keeping up yet."; next="Retest within 24 hours, avoid adding livestock, reduce feeding, and follow your Journey guidance if the tank is still cycling."; confidence=age!==null&&age<=2?"High":"Medium";
   }else if(nitrite!==null && nitrite>0.2){
@@ -3618,7 +3664,7 @@ function aqxRenderAIGuidance(){
     </div>
     <div class="aiGuidanceMeta">
       <span class="aiGuidancePill">Confidence: ${g.confidence}</span>
-      <span class="aiGuidancePill">Mode: ${g.type==="reef"?"Saltwater / Reef":"Saltwater Reef"}</span>
+      <span class="aiGuidancePill">Mode: ${g.type==="reef"?"Saltwater / Reef":"Freshwater"}</span>
       ${(g.detail||[]).slice(0,3).map(d=>`<span class="aiGuidancePill">${d}</span>`).join("")}
     </div>
     <div class="aiGuidanceActionRow">
@@ -3628,14 +3674,14 @@ function aqxRenderAIGuidance(){
 }
 
 function renderHomeDashboard(){
-  const type = selectedTankType() || "reef";
+  const type = selectedTankType() || "freshwater";
   const isReef = type === "reef";
   const defs = aqxOrderedDefs(aqxDefsForDisplay(type));
   const data = latestMergedParameters();
   const homeTitle = el("homeParameterTitle");
   const homeSummary = el("homeParameterSummary");
   const homeGrid = el("homeParameterLiveGrid");
-  if(homeTitle) homeTitle.innerText = isReef ? "Saltwater / Reef Parameters" : "Saltwater / Reef Parameters";
+  if(homeTitle) homeTitle.innerText = isReef ? "Saltwater / Reef Parameters" : "Freshwater Parameters";
   if(homeSummary) homeSummary.innerText = data.latest ? "Latest saved test data is shown below." : "Your latest saved readings appear here after you log a test.";
   if(homeGrid){
     aqxApplyHomeParamColours();
@@ -3737,8 +3783,8 @@ function drawParameterTrendGraph(){
   const ctx = canvas.getContext("2d");
   const tests = getParameterTests();
 
-  const type = selectedTankType() || "reef";
-  const defs = parameterDefs[type] || parameterDefs.reef;
+  const type = selectedTankType() || "freshwater";
+  const defs = parameterDefs[type] || parameterDefs.freshwater;
   const activeDefs = defs.filter(def => tests.some(t => typeof t[def.key] === "number"));
 
   const w = canvas.width;
@@ -4012,7 +4058,7 @@ function drawParameterTrendGraph(){
   };
   function paramDefs(){
     try{
-      const type=(typeof selectedTankType==='function' ? selectedTankType() : 'reef') || 'reef';
+      const type=(typeof selectedTankType==='function' ? selectedTankType() : 'freshwater') || 'freshwater';
       if(typeof aqxDefsForDisplay==='function'){
         const defs=aqxDefsForDisplay(type)||[];
         if(typeof aqxOrderedDefs==='function') return aqxOrderedDefs(defs);
@@ -4128,7 +4174,7 @@ function drawParameterTrendGraph(){
     if(message && typeof window.aqxSavingFeedback==='function') window.aqxSavingFeedback('Saving panel layout…','Updating your Home parameter panels.',message+' ✅');
   }
   function defs(){
-    try{const type=(typeof selectedTankType==='function'?selectedTankType():'reef')||'reef'; let d=(typeof aqxDefsForDisplay==='function'?aqxDefsForDisplay(type):[])||[]; return (typeof aqxOrderedDefs==='function'?aqxOrderedDefs(d):d)||[];}catch(e){return [];}
+    try{const type=(typeof selectedTankType==='function'?selectedTankType():'freshwater')||'freshwater'; let d=(typeof aqxDefsForDisplay==='function'?aqxDefsForDisplay(type):[])||[]; return (typeof aqxOrderedDefs==='function'?aqxOrderedDefs(d):d)||[];}catch(e){return [];}
   }
   function buttonGrid(items,current,fn){return items.map(([k,l])=>`<button type="button" class="homeStyleBtn ${String(current)===String(k)?'active aqxHomeControlActive':''}" onclick="${fn}('${k}')">${l}</button>`).join('');}
   function aqxSyncPanelControls(p){
@@ -4243,15 +4289,15 @@ function drawParameterTrendGraph(){
   function prefKey(def){ try{return (typeof aqxParamLayoutKey==='function')?aqxParamLayoutKey(def):(def.key||def.label);}catch(e){return def.key||def.label;} }
   function currentDefs(){
     try{
-      const type=(typeof selectedTankType==='function'?selectedTankType():'reef')||'reef';
+      const type=(typeof selectedTankType==='function'?selectedTankType():'freshwater')||'freshwater';
       let list=[];
       if(typeof aqxDefsForDisplay==='function') list=aqxDefsForDisplay(type)||[];
       if(typeof aqxOrderedDefs==='function') list=aqxOrderedDefs(list)||list;
       return list;
     }catch(e){
-      const type=(typeof selectedTankType==='function'?selectedTankType():'reef')||'reef';
+      const type=(typeof selectedTankType==='function'?selectedTankType():'freshwater')||'freshwater';
       const src=getParameterDefSource();
-      return src[type]||src.reef||[];
+      return src[type]||src.freshwater||[];
     }
   }
   function activeButtonGrid(id, options, current, attr){
@@ -4391,7 +4437,7 @@ function drawParameterTrendGraph(){
     return String(text||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'') || ('param_'+Date.now());
   }
   function tankType(){
-    try{return (typeof selectedTankType==='function' ? selectedTankType() : 'reef') || 'reef';}catch(e){return 'reef';}
+    try{return (typeof selectedTankType==='function' ? selectedTankType() : 'freshwater') || 'freshwater';}catch(e){return 'freshwater';}
   }
   function defSource(){
     try{ if(typeof parameterDefs !== 'undefined' && parameterDefs) return parameterDefs; }catch(e){}
@@ -4464,7 +4510,7 @@ function drawParameterTrendGraph(){
   window.aqxAvailableIcpParameters=availableIcpParameters;
   window.aqxDefsForDisplay=function(type){
     type=type||tankType(); const p=read(); const src=defSource();
-    const standard=(src[type]||src.reef||[]).filter(def=>((p.visibleStandard[type]||{})[def.key]!==false));
+    const standard=(src[type]||src.freshwater||[]).filter(def=>((p.visibleStandard[type]||{})[def.key]!==false));
     const custom=(p.custom||[]).map(c=>({key:'custom_'+c.key,label:c.label,unit:c.unit||'',target:c.target||'Custom tracked parameter',min:c.min,max:c.max,icon:c.icon||String(c.label||'C').slice(0,2),custom:true,source:'custom'}));
     const icpMap=latestIcpMap();
     const icp=(p.icpMonitored||[]).map(s=>{const latest=icpMap[s]||{}; return {key:'icp_'+s,label:latest.name||String(s).replace(/_/g,' '),unit:latest.unit||'',target:'Latest ICP result',icon:String(latest.name||'ICP').slice(0,2),icp:true,source:'icp',icpSlug:s};});
@@ -4498,9 +4544,9 @@ function drawParameterTrendGraph(){
   window.aqxRenderHomeParameterCustomiser=function(){
     const type=tankType(); const p=read(); const box=el('aqxHomeParameterList');
     if(box){
-      const standards=(defSource()[type]||defSource().reef||[]).map(def=>{
+      const standards=(defSource()[type]||defSource().freshwater||[]).map(def=>{
         const checked=((p.visibleStandard[type]||{})[def.key]!==false)?'checked':'';
-        return '<div class="paramCustomItem"><div><strong>'+def.label+'</strong><span>'+(def.target||'Tracked parameter')+(def.unit?' · '+def.unit:'')+'</span><span class="paramSourceBadge">Standard reef</span></div><label class="navSwitch"><input type="checkbox" '+checked+' onchange="aqxToggleStandardHomeParam(\''+type+'\',\''+def.key+'\',this.checked)"><span class="navSlider"></span></label></div>';
+        return '<div class="paramCustomItem"><div><strong>'+def.label+'</strong><span>'+(def.target||'Tracked parameter')+(def.unit?' · '+def.unit:'')+'</span><span class="paramSourceBadge">Standard '+(type==='reef'?'reef':'freshwater')+'</span></div><label class="navSwitch"><input type="checkbox" '+checked+' onchange="aqxToggleStandardHomeParam(\''+type+'\',\''+def.key+'\',this.checked)"><span class="navSlider"></span></label></div>';
       }).join('');
       const custom=(p.custom||[]).map(c=>'<div class="paramCustomItem"><div><strong>'+c.label+'</strong><span>'+(c.target||'Custom tracked parameter')+(c.unit?' · '+c.unit:'')+'</span><span class="paramSourceBadge">Custom</span></div><button class="dangerBtn" style="width:auto;min-width:92px;" onclick="aqxRemoveCustomHomeParameter(\''+c.key+'\')">Remove</button></div>').join('');
       box.innerHTML=standards + (custom || '<div class="paramCustomItem"><div><strong>No custom Home parameters yet</strong><span>Add your own below or turn on ICP parameters once ICP results exist.</span></div></div>');
@@ -4615,7 +4661,7 @@ function drawParameterTrendGraph(){
   function read(){try{return (typeof window.aqxGetHomeParameterPrefs==='function'?window.aqxGetHomeParameterPrefs():JSON.parse(localStorage.getItem('aquoraxHomeParameterPrefs')||'{}'))||{};}catch(e){return {};}}
   function write(p){try{if(typeof window.aqxSaveHomeParameterPrefs==='function') window.aqxSaveHomeParameterPrefs(p); else localStorage.setItem('aquoraxHomeParameterPrefs',JSON.stringify(p||{}));}catch(e){}}
   function keyOf(def){return def && def.key ? def.key : '';}
-  function defs(){try{return (typeof window.aqxDefsForDisplay==='function'?window.aqxDefsForDisplay((typeof selectedTankType==='function'?selectedTankType():'reef')||'reef'):[])||[];}catch(e){return [];}}
+  function defs(){try{return (typeof window.aqxDefsForDisplay==='function'?window.aqxDefsForDisplay((typeof selectedTankType==='function'?selectedTankType():'freshwater')||'freshwater'):[])||[];}catch(e){return [];}}
   function applyPreviewClasses(grid,p){
     if(!grid) return;
     const style=(p.globalTileStyle||'rectangle').toLowerCase();
@@ -4751,7 +4797,7 @@ function drawParameterTrendGraph(){
   function write(p){try{localStorage.setItem(PREF_KEY,JSON.stringify(Object.assign({},read(),p||{})));}catch(e){}}
   function keyOf(def){try{return (typeof aqxParamLayoutKey==='function')?aqxParamLayoutKey(def):(def.key||slug(def.label));}catch(e){return def.key||slug(def.label);}}
   function baseDefs(){
-    try{const type=(typeof selectedTankType==='function'?selectedTankType():'reef')||'reef'; return (typeof aqxDefsForDisplay==='function'?aqxDefsForDisplay(type):((parameterDefs||{})[type]||[]))||[];}catch(e){return [];}
+    try{const type=(typeof selectedTankType==='function'?selectedTankType():'freshwater')||'freshwater'; return (typeof aqxDefsForDisplay==='function'?aqxDefsForDisplay(type):((parameterDefs||{})[type]||[]))||[];}catch(e){return [];}
   }
   function ordered(list){
     const arr=(Array.isArray(list)?list.slice():[]); const order=read().order||[];
@@ -4867,7 +4913,7 @@ function drawParameterTrendGraph(){
   function read(){let saved={}; try{saved=JSON.parse(localStorage.getItem(PREF_KEY)||'{}')||{};}catch(e){} const p=Object.assign({},DEFAULTS,saved); if(!p.globalTileStyle || p.globalTileStyle==='default') p.globalTileStyle='rectangle'; p.columns=String(p.columns||'2'); if(!Array.isArray(p.order)) p.order=[]; if(!Array.isArray(p.pinned)) p.pinned=[]; return p;}
   function write(p){const merged=Object.assign({},read(),p||{}); try{localStorage.setItem(PREF_KEY,JSON.stringify(merged));}catch(e){} return merged;}
   function keyOf(def){return (def&&def.key)||String((def&&def.label)||'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');}
-  function defs(){try{const type=(typeof selectedTankType==='function'?selectedTankType():'reef')||'reef'; return (typeof aqxDefsForDisplay==='function'?aqxDefsForDisplay(type):((window.parameterDefs||{})[type]||[]))||[];}catch(e){return [];}}
+  function defs(){try{const type=(typeof selectedTankType==='function'?selectedTankType():'freshwater')||'freshwater'; return (typeof aqxDefsForDisplay==='function'?aqxDefsForDisplay(type):((window.parameterDefs||{})[type]||[]))||[];}catch(e){return [];}}
   function ordered(list){const p=read(); const order=p.order||[]; const rank=new Map(order.map((k,i)=>[k,i])); return (list||[]).slice().sort((a,b)=>{const ai=rank.has(keyOf(a))?rank.get(keyOf(a)):9999; const bi=rank.has(keyOf(b))?rank.get(keyOf(b)):9999; return ai-bi;});}
   window.aqxOrderedDefs = ordered;
   function syncInputs(p){
@@ -5095,7 +5141,7 @@ function drawParameterTrendGraph(){
   function safeJson(raw,fallback){try{const v=JSON.parse(raw||''); return v==null?fallback:v;}catch(e){return fallback;}}
   function esc(v){return String(v==null?'':v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
   function uid(){return 'tank_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);}
-  function typeLabel(t){return 'Saltwater Reef';}
+  function typeLabel(t){return t==='reef'?'Saltwater Reef':(t==='freshwater'?'Freshwater':'Aquarium');}
   function getLegacyType(){return localStorage.getItem('aquoraxTankType') || localStorage.getItem('aquoraxWelcomeTank') || 'reef';}
   function getLegacyVolume(){return localStorage.getItem('aquoraxTankVolume') || '';}
   function readTanksRaw(){const x=safeJson(localStorage.getItem(TANKS_KEY),'__bad__'); return Array.isArray(x)?x:[];}
@@ -5228,7 +5274,7 @@ function drawParameterTrendGraph(){
   };
   window.aqxAddTank=function(){
     const name=prompt('Tank name? Example: Reef 425, Frag Tank, Nano Reef'); if(!name||!name.trim()) return;
-    let type='reef';
+    let type=prompt('Tank type? Type reef or freshwater','reef'); type=String(type||'reef').toLowerCase().trim(); if(type!=='freshwater') type='reef';
     const volume=prompt('Tank volume in litres? Optional','')||'';
     const tanks=ensureTanks(); const id=uid(); tanks.push({id:id,name:name.trim(),type:type,volume:String(volume).trim(),createdAt:new Date().toISOString()}); writeTanks(tanks); localStorage.setItem(ACTIVE_KEY,id); syncActiveLegacyFields(); refreshAll();
   };
@@ -5682,7 +5728,7 @@ function drawParameterTrendGraph(){
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
   function tanks(){try{return (window.aqxGetTanks&&window.aqxGetTanks())||[];}catch(e){return []}}
   function active(){try{return (window.aqxGetActiveTank&&window.aqxGetActiveTank())||{id:'tank_main',name:'Main Tank',type:'reef'};}catch(e){return {id:'tank_main',name:'Main Tank',type:'reef'}}}
-  function typeLabel(t){return t==='freshwater'?'Saltwater Reef':'Saltwater Reef';}
+  function typeLabel(t){return t==='freshwater'?'Freshwater':'Saltwater Reef';}
   function scopedKey(base,id){try{return window.aqxScopedKey?window.aqxScopedKey(base,id):(base+'__'+id);}catch(e){return base+'__'+id;}}
   function readList(base,id){try{const v=JSON.parse(localStorage.getItem(scopedKey(base,id||active().id))||'[]'); return Array.isArray(v)?v:[];}catch(e){return []}}
   function dailyDose(p){const amt=parseFloat(p.amount||0)||0; const interval=Math.max(1,parseFloat(p.interval||1)||1); return amt/interval;}
@@ -5818,7 +5864,7 @@ function drawParameterTrendGraph(){
   const steps=[
     {page:'home',icon:'🌊',title:'Welcome to AquoraX',text:'Your complete aquarium management system. This quick tour shows where everything lives before you start using the app.'},
     {page:'home',icon:'🏠',title:'Home',text:'See all tanks, active tank summaries, alerts and quick access to the most important daily information.'},
-    {page:'growth',icon:'🐠',title:'Tank Life',text:'Track the living side of each aquarium: fish, corals, inverts, coral growth and algae and growth progress.'},
+    {page:'growth',icon:'🐠',title:'Tank Life',text:'Track the living side of each aquarium: fish, corals, inverts, plants, algae and growth progress.'},
     {page:'care',icon:'🛠️',title:'Tank Care',text:'Manage parameters, dosing countdowns, jobs, equipment maintenance and care alerts for the active tank.'},
     {page:'cycle',icon:'🧭',title:'Tank Journey',text:'Follow each tank\'s cycle journey, milestones and long-term progression separately.'},
     {page:'profile',icon:'✨',title:'Profile & Customisation',text:'Customise the look of AquoraX, manage settings, and replay this tour any time.'}
@@ -5896,7 +5942,7 @@ function drawParameterTrendGraph(){
       tag: "Beginner Guide",
       intro: "Start simple, keep the tank stable, and avoid rushing livestock. AquoraX is built to guide each tank separately as your system matures.",
       sections: [
-        ["What this guide covers", "Choosing reef equipment, salinity, flow and lighting, setting up the basics, adding your first tank in AquoraX, and avoiding early mistakes."],
+        ["What this guide covers", "Choosing freshwater or marine, setting up the basics, adding your first tank in AquoraX, and avoiding early mistakes."],
         ["First steps", "Add your tank, enter the volume, choose the tank type, then use Tank Care to begin logging tests and maintenance."],
         ["Common mistakes", "Adding livestock too early, changing too much at once, ignoring test results, or copying another tank without understanding your own system."],
         ["AquoraX tip", "Use Home for your overview, Tank Care for maintenance, Tank Life for livestock, and Tank Journey for cycle and progress." ]
@@ -5910,7 +5956,7 @@ function drawParameterTrendGraph(){
         ["What to watch", "Ammonia normally appears first, nitrite can follow, and nitrate usually rises as the cycle matures."],
         ["What to do", "Test regularly, avoid rushing livestock, and use Tank Journey to track the cycle for the active tank."],
         ["When it is safer", "A tank is generally safer when ammonia and nitrite stay at zero and nitrate is manageable for the type of aquarium."],
-        ["AquoraX tip", "Each tank has its own Tank Journey, so a new frag tank or reef tank can cycle separately from your main display." ]
+        ["AquoraX tip", "Each tank has its own Tank Journey, so a new frag tank or freshwater tank can cycle separately from your main display." ]
       ]
     },
     "water-testing": {
@@ -5918,21 +5964,21 @@ function drawParameterTrendGraph(){
       tag: "Tank Care Guide",
       intro: "Testing is about spotting trends, not chasing perfect numbers every day. Stability is usually more important than sudden corrections.",
       sections: [
-        ["Core tests", "Saltwater Reef users often track ammonia, nitrite, nitrate, pH and temperature. Reef users often add salinity, alkalinity, calcium, magnesium and phosphate."],
+        ["Core tests", "Freshwater users often track ammonia, nitrite, nitrate, pH and temperature. Reef users often add salinity, alkalinity, calcium, magnesium and phosphate."],
         ["Best practice", "Test at similar times where possible, record results straight away, and look at trends before making large changes."],
         ["Common mistakes", "Reacting too aggressively to one result, using expired test kits, or failing to compare results against livestock behaviour."],
         ["AquoraX tip", "Log tests in Tank Care so graphs, summaries and future smart alerts can understand each tank separately." ]
       ]
     },
     "coral-plant-care": {
-      title: "Coral Care",
+      title: "Coral & Plant Care",
       tag: "Tank Life Guide",
-      intro: "Corals respond to stability, light, nutrients and flow. The exact needs depend on species, placement and reef chemistry.",
+      intro: "Corals and plants both respond to stability, light, nutrients and flow. The exact needs depend on the species and tank type.",
       sections: [
         ["Coral basics", "Start with hardy corals, place them carefully, avoid sudden lighting changes, and watch extension, colour and tissue health."],
-        ["Coral basics", "Healthy corals need stable reef chemistry, suitable light, balanced nutrients and consistent flow. Growth and colour changes can show when something is missing."],
+        ["Plant basics", "Healthy plants need suitable light, nutrients and consistent maintenance. Growth changes can show when something is missing."],
         ["What to track", "Use Tank Life to record livestock, photos, notes and growth so you can see changes over time."],
-        ["AquoraX tip", "Keep coral, fish and invert records inside the active tank so every aquarium has its own living history." ]
+        ["AquoraX tip", "Keep coral, plant, fish and invert records inside the active tank so every aquarium has its own living history." ]
       ]
     }
   };
@@ -5991,7 +6037,7 @@ function drawParameterTrendGraph(){
     },
     {
       id:"coral-plant-care",
-      title:"Coral Care",
+      title:"Coral & Plant Care",
       match:function(latest){
         return Number(latest.calcium||0) < 400 || Number(latest.magnesium||0) < 1250 || Number(latest.alkalinity||0) < 7;
       },
@@ -6096,12 +6142,12 @@ function drawParameterTrendGraph(){
     const id = localStorage.getItem(ACTIVE_KEY);
     return list.find(t => t.id === id) || list[0] || null;
   }
-  function normalType(type){ return 'reef'; }
-  function typeLabel(type){ return normalType(type) === 'reef' ? 'Salt Water / Reef' : 'Saltwater Reef'; }
+  function normalType(type){ return type === 'freshwater' ? 'freshwater' : 'reef'; }
+  function typeLabel(type){ return normalType(type) === 'reef' ? 'Salt Water / Reef' : 'Fresh Water'; }
   function currentType(){
     try{ if(typeof window.selectedTankType === 'function') return normalType(window.selectedTankType()); }catch(e){}
     const active = activeTank();
-    return normalType((active && active.type) || localStorage.getItem('aquoraxTankType') || 'reef');
+    return normalType((active && active.type) || localStorage.getItem('aquoraxTankType') || 'freshwater');
   }
   function syncLegacy(type){
     localStorage.setItem('aquoraxTankType', type);
@@ -6146,13 +6192,14 @@ function drawParameterTrendGraph(){
         <div>
           <span class="aqxMiniKicker">${esc(name)}</span>
           <h2>Water Type</h2>
-          <p>Saltwater reef mode is showing reef parameters including SG, alkalinity, calcium and magnesium.</p>
+          <p>${type === 'reef' ? 'Salt water mode is showing reef parameters including SG, alkalinity, calcium and magnesium.' : 'Fresh water mode hides reef-only tests so logging stays clean.'}</p>
         </div>
       </div>
       <div class="aqxWaterTypeSwitch" role="group" aria-label="Choose water type">
         <button type="button" class="${type === 'reef' ? 'active' : ''}" onclick="aqxSetActiveWaterType('reef')">Salt Water</button>
+        <button type="button" class="${type === 'freshwater' ? 'active' : ''}" onclick="aqxSetActiveWaterType('freshwater')">Fresh Water</button>
       </div>
-      <div class="aqxWaterTypeNote">Current test mode: <strong>${typeLabel(type)}</strong></div>
+      <div class="aqxWaterTypeNote">Current test mode: <strong>${typeLabel(type)}</strong>${context === 'log' && type === 'freshwater' ? ' · Reef-only inputs are hidden for this tank.' : ''}</div>
     `;
   }
   function ensureLogSwitcher(){
@@ -6184,7 +6231,7 @@ function drawParameterTrendGraph(){
     const type = currentType();
     const isReef = type === 'reef';
     decorateFields();
-    document.body.classList.toggle('aqxSaltwater ReefMode', !isReef);
+    document.body.classList.toggle('aqxFreshwaterMode', !isReef);
     document.body.classList.toggle('aqxReefMode', isReef);
     reefOnlyCycleIds.forEach(id => {
       const item = document.getElementById(id);
@@ -6210,7 +6257,7 @@ function drawParameterTrendGraph(){
   window.aqxSetActiveWaterType = function(type){
     type = normalType(type);
     updateActiveTankType(type);
-    
+    if(type === 'freshwater') clearReefOnlyLogValues();
     refreshAll();
     try{
       if(typeof window.aqxSavingFeedback === 'function') window.aqxSavingFeedback('Saving tank type…','Updating visible parameters for this tank.','Water type saved ✅');
@@ -6294,7 +6341,7 @@ function drawParameterTrendGraph(){
   const KEY='aquorax_simple_mode_v1';
   const pageHelp={
     home:['Home','This is your control centre. Start here, then choose one clear action.'],
-    growth:['Livestock','Animals, corals, inverts and algae for the active reef.'],
+    growth:['Livestock','Animals, plants, corals, inverts and algae for the active tank.'],
     care:['Care','Water tests, dosing, jobs and equipment maintenance live here.'],
     cycle:['Journey','Cycling, milestones and long-term tank progress live here.'],
     profile:['Settings','App look, customisation, backups, tour replay and account tools live here.'],
@@ -6391,7 +6438,7 @@ function drawParameterTrendGraph(){
     const title=document.getElementById('homeParameterTitle');
     if(title && !title.dataset.aqxParamFirst){
       title.dataset.aqxParamFirst='1';
-      title.textContent=title.textContent.replace('Saltwater / Reef Parameters','Water Parameters').replace('Saltwater / Reef Parameters','Water Parameters');
+      title.textContent=title.textContent.replace('Saltwater / Reef Parameters','Water Parameters').replace('Freshwater Parameters','Water Parameters');
     }
     const subtitle=document.getElementById('homeParameterSummary');
     if(subtitle && !subtitle.dataset.aqxParamFirst){
@@ -7235,44 +7282,106 @@ function aqxCloseCloudPanel(event){
 })();
 
 
-/* AQUORAX OS REEF-ONLY VISUAL REFINEMENT PATCH — baseline-safe */
+/* AquoraX ICP import click recovery — keeps existing ICP parser/review logic intact */
 (function(){
-  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
-  function q(sel){ return document.querySelector(sel); }
-  function qa(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
-  function forceReefState(){
-    try{ localStorage.setItem('aquoraxTankType','reef'); localStorage.setItem('aquoraxWelcomeTank','reef'); var raw=localStorage.getItem('aquoraxTanksV1'); if(raw){ var list=JSON.parse(raw); if(Array.isArray(list)){ list.forEach(function(t){ if(t) t.type='reef'; }); localStorage.setItem('aquoraxTanksV1', JSON.stringify(list)); }} }catch(e){}
-    var ct=document.getElementById('cycleTank'); if(ct) ct.value='reef';
-    var wf=document.getElementById('welcomeFresh'); if(wf) wf.remove();
-    var ws=document.getElementById('welcomeSalt'); if(ws){ ws.classList.add('active'); ws.textContent='Saltwater Reef'; }
-    var pn=document.getElementById('rapidProductName'); if(pn) pn.textContent='Blue Shark Colony Marine';
-    document.body.classList.remove('aqxFreshwaterMode');
-    document.body.classList.add('aqxReefMode','aqxReefOnlyOS');
-  }
-  function polishCopy(){
-    var h=q('#welcomeScreen h1'); if(h) h.textContent='AquoraX OS';
-    var p=q('#welcomeScreen p'); if(p) p.textContent='Intelligent reef management for chemistry, ICP, dosing, livestock and long-term coral stability.';
-    var menu=q('.aqxSideMenuTop p'); if(menu) menu.textContent='Premium reef tools, tank settings and intelligent management.';
-    qa('button,span,p,h1,h2,h3,strong,small,label,option').forEach(function(n){
-      if(!n || !n.textContent) return;
-      n.textContent=n.textContent
-        .replace(/Fresh Water/g,'Saltwater Reef')
-        .replace(/Freshwater/g,'Saltwater Reef')
-        .replace(/fresh water/g,'reef water')
-        .replace(/freshwater/g,'reef')
-        .replace(/Coral & Plant Care/g,'Coral Care')
-        .replace(/Plant Tracker/g,'Coral Growth Tracker')
-        .replace(/Plants/g,'Coral Growth')
-        .replace(/plants/g,'coral growth');
+  function aqxById(id){ return document.getElementById(id); }
+
+  window.aqxSetIcpImportStatus = window.aqxSetIcpImportStatus || function(msg){
+    var ids = ["icpImportStatus","icpStatus","icpUploadStatus","icpOcrStatus"];
+    ids.forEach(function(id){
+      var el = aqxById(id);
+      if(el) el.textContent = msg;
     });
+  };
+
+  window.aqxOpenIcpFilePicker = function(){
+    var input = aqxById("icpFileInput") || aqxById("icpScreenshotInput") || aqxById("icpUploadInput") || aqxById("icpFile");
+    if(!input){
+      input = document.createElement("input");
+      input.id = "icpFileInput";
+      input.type = "file";
+      input.accept = "image/*,.pdf";
+      input.style.display = "none";
+      document.body.appendChild(input);
+      aqxBindIcpFileInput(input);
+    }
+    input.click();
+  };
+
+  window.aqxParseIcpTextBridge = function(){
+    var txt = aqxById("icpRawText") || aqxById("icpDetectedText") || aqxById("icpTextArea") || aqxById("icpPasteText");
+    if(!txt || !String(txt.value || "").trim()){
+      aqxSetIcpImportStatus("Paste ICP text first, then tap Parse Pasted Text.");
+      return;
+    }
+
+    if(typeof parseIcpText === "function") return parseIcpText(txt.value);
+    if(typeof aqxParseIcpText === "function") return aqxParseIcpText(txt.value);
+    if(typeof parseIcpReportText === "function") return parseIcpReportText(txt.value);
+    if(typeof handleIcpParsedText === "function") return handleIcpParsedText(txt.value);
+
+    aqxSetIcpImportStatus("ICP text captured. Review parser is unavailable in this build.");
+  };
+
+  function aqxReadFileToText(file, cb){
+    var reader = new FileReader();
+    reader.onload = function(){ cb(reader.result || ""); };
+    reader.onerror = function(){ aqxSetIcpImportStatus("Could not read ICP file. Try another screenshot or paste the text."); };
+    reader.readAsText(file);
   }
-  ready(function(){
-    forceReefState(); polishCopy();
-    setTimeout(function(){forceReefState(); polishCopy();}, 300);
-    setTimeout(function(){forceReefState(); polishCopy();}, 1200);
-  });
+
+  window.aqxBindIcpFileInput = function(input){
+    if(!input || input.dataset.aqxIcpBound === "yes") return;
+    input.dataset.aqxIcpBound = "yes";
+    input.addEventListener("change", function(ev){
+      var file = ev.target.files && ev.target.files[0];
+      if(!file) return;
+      aqxSetIcpImportStatus("ICP file selected. Scanning…");
+
+      if(typeof handleIcpFileUpload === "function") return handleIcpFileUpload(file);
+      if(typeof aqxHandleIcpFileUpload === "function") return aqxHandleIcpFileUpload(file);
+      if(typeof scanIcpScreenshot === "function") return scanIcpScreenshot(file);
+      if(typeof aqxScanIcpScreenshot === "function") return aqxScanIcpScreenshot(file);
+      if(typeof handleIcpScreenshotFile === "function") return handleIcpScreenshotFile(file);
+
+      // Fallback for text/PDF-like uploads where browser can read embedded text.
+      aqxReadFileToText(file, function(text){
+        var txt = aqxById("icpRawText") || aqxById("icpDetectedText") || aqxById("icpTextArea") || aqxById("icpPasteText");
+        if(txt) txt.value = text;
+        aqxSetIcpImportStatus("File loaded. Tap Parse Pasted Text to review.");
+      });
+    });
+  };
+
+  function aqxReconnectIcpImport(){
+    var upload = aqxById("icpUploadZone");
+    var scan = aqxById("icpScanBtn");
+    var parse = aqxById("icpParseTextBtn");
+    var input = aqxById("icpFileInput") || aqxById("icpScreenshotInput") || aqxById("icpUploadInput") || aqxById("icpFile");
+
+    if(upload && upload.dataset.aqxIcpClick !== "yes"){
+      upload.dataset.aqxIcpClick = "yes";
+      upload.style.cursor = "pointer";
+      upload.addEventListener("click", window.aqxOpenIcpFilePicker);
+    }
+    if(scan && scan.dataset.aqxIcpClick !== "yes"){
+      scan.dataset.aqxIcpClick = "yes";
+      scan.addEventListener("click", window.aqxOpenIcpFilePicker);
+    }
+    if(parse && parse.dataset.aqxIcpClick !== "yes"){
+      parse.dataset.aqxIcpClick = "yes";
+      parse.addEventListener("click", window.aqxParseIcpTextBridge);
+    }
+    if(input) aqxBindIcpFileInput(input);
+  }
+
+  document.addEventListener("DOMContentLoaded", aqxReconnectIcpImport);
+  window.addEventListener("load", aqxReconnectIcpImport);
+  document.addEventListener("click", function(e){
+    var t = e.target;
+    if(!t) return;
+    if(t.closest && (t.closest("#icpUploadZone") || t.closest("#icpScanBtn"))) {
+      aqxReconnectIcpImport();
+    }
+  }, true);
 })();
-
-
-/* AQX_TOP_TIER_VISUAL_V2: visual enhancement marker; no data/auth changes. */
-try{document.documentElement.classList.add('aqxTopTierVisualV2');}catch(e){}

@@ -5808,3 +5808,22 @@ input:focus,select:focus,textarea:focus{
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important;}
 }
+
+
+/* ICP import click safety */
+#icpUploadZone,
+#icpScanBtn,
+#icpParseTextBtn,
+#icpFileInput {
+  pointer-events: auto !important;
+}
+#icpUploadZone,
+.icp-upload-zone,
+.icp-import-card button {
+  position: relative;
+  z-index: 5;
+}
+.icp-import-card::before,
+.icp-import-card::after {
+  pointer-events: none !important;
+}

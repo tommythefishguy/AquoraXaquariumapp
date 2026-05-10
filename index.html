@@ -1050,7 +1050,7 @@
         <input id="aqxIcpImageInput" type="file" accept="image/*,.pdf" onchange="aqxHandleIcpFile(this.files && this.files[0])">
       </label>
       <div class="aqxIcpImportActions">
-        <button class="primaryBtn" type="button" onclick="aqxStartIcpOcr()">Scan Screenshot</button>
+        <button class="primaryBtn" type="button" onclick="aqxStartIcpOcr()" onclick="aqxOpenIcpFilePicker()">Scan Screenshot</button>
         <button class="secondaryBtn" type="button" onclick="aqxParseIcpTextFromBox()">Parse Pasted Text</button>
         <button class="secondaryBtn" type="button" onclick="aqxFillDemoIcpImport()">Load Demo ICP</button>
       </div>
@@ -1490,5 +1490,7 @@
 </div>
 
 
+
+<input id="icpFileInput" type="file" accept="image/*,.pdf" style="display:none" />
 </body>
 </html>
